@@ -9,6 +9,11 @@ inverse_ref_neon
 aarch64-bench/bench
 aarch64-bench/*.d
 
+# src directory build artifacts
+src/driver
+src/random_test
+src/inverse_ref
+
 # Python cache
 __pycache__/
 *.pyc

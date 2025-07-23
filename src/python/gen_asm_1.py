@@ -1,5 +1,6 @@
 from genlib import *
 import subprocess
+import os
 asm_main = ""
 
 
@@ -344,9 +345,17 @@ asm_main += ret()
 asm_main = q_register_replacement(asm_main)
 asm_main = w_register_replacement(asm_main)
 
-with open("inverse_1.s", "w") as f:
+# Write generated assembly to asm directory
+asm_output_path = os.path.join("..", "asm", "inverse_1.s")
+with open(asm_output_path, "w") as f:
     f.write(asm_main)
 
-# Compile and run the generated assembly with the driver
-subprocess.run(["gcc", "driver.c", "inverse_1.s", "-lgmp", "-o", "b.out"])
-subprocess.run(["./b.out"])
+# Generate snap.inc in include directory  
+snap_inc_path = os.path.join("..", "include", "snap.inc")
+write_snap_inc(snap_inc_path)
+
+print(f"Generated assembly: {asm_output_path}")
+print(f"Generated include: {snap_inc_path}")
+
+# Note: Compilation is now handled by the Makefile
+# To build and test, run: make test
