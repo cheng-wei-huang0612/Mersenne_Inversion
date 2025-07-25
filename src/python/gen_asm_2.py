@@ -86,7 +86,18 @@ asm_main += f"dup  {vec_4x_M}.4s, w7\n"
 asm_main += draw_line()
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
+
+asm_main += f"SNAP_SCALAR_REG {f}, \"f =\" \n"
+asm_main += f"SNAP_SCALAR_REG {g}, \"g =\" \n"
+asm_main += f"SNAP_SCALAR_REG {FUV}, \"FUV =\" \n"
+asm_main += f"SNAP_SCALAR_REG {GRS}, \"GRS =\" \n"
+
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+#asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=20)
+asm_main += f"SNAP_SCALAR_REG {FUV}, \"FUV =\" \n"
+asm_main += f"SNAP_SCALAR_REG {GRS}, \"GRS =\" \n"
+
+
 asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
 
@@ -102,14 +113,9 @@ asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
 
-
+#asm_main += f"SNAP_SCALAR_REG {uu}, \"uu =\" \n"
 
 # update big number
-COUNTER = "x19"
-
-asm_main += f"mov {COUNTER}, #9\n"
-
-asm_main += f"big_loop:\n"
 
 asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                    vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -156,15 +162,20 @@ asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0,
 # asm_main += f"umov %wregname{debug}, {vec}.s[3]\n"
 # asm_main += f"str  {debug}, [{ptr_inv}, #24]\n"
 
+COUNTER = "x19"
+
+asm_main += f"mov {COUNTER}, #8\n"
+
+asm_main += f"big_loop:\n"
 
 
 asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
 asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
-asm_main += f"add {f}, x9, {f}, lsl #30\n"
+asm_main += f"add {f}, x9, {f}, LSL #30\n"
 
 asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
 asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
-asm_main += f"add {g}, x9, {g}, lsl #30\n"
+asm_main += f"add {g}, x9, {g}, LSL #30\n"
 
 # if i == 0:
 #     asm_main += f"str {f}, [{ptr_inv}]\n"
@@ -176,11 +187,6 @@ asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
 
-
-asm_main += f"end:\n"
-
-
-
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
@@ -188,13 +194,10 @@ asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
-asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+#asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=19)
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
-
-#asm_main += f"end_big_loop:\n"
-asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
-asm_main += f"cbnz {COUNTER}, big_loop\n"
 
 asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -239,19 +242,85 @@ asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0,
 #     asm_main += f"umov %wregname{debug}, {vec}.s[3]\n"
 #     asm_main += f"str  {debug}, [{ptr_inv}, #24]\n"
 
+asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
+asm_main += f"bne big_loop\n"
 
 
 
+# Last outer loop:
 
-# vec = vec_V0_V1_S0_S1
-# asm_main += f"umov %wregname{debug}, {vec}.s[0]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[1]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #8]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[2]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #16]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[3]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #24]\n"
+
+
+asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
+asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
+asm_main += f"add {f}, x9, {f}, LSL #30\n"
+
+asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
+asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
+asm_main += f"add {g}, x9, {g}, LSL #30\n"
+
+
+asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
+asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
+asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
+
+asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
+asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
+asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
+asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+
+asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
+#asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=19)
+asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
+asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+
+asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+                                vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+                                vec_4x_2p30m1=vec_4x_2p30m1,
+                                uu=uu, vv=vv, rr=rr, ss=ss)
+
+# asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+#                     vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+#                     vec_F0_F1_G0_G1=vec_F0_F1_G0_G1,
+#                     vec_F2_F3_G2_G3=vec_F2_F3_G2_G3,
+#                     vec_F4_F5_G4_G5=vec_F4_F5_G4_G5,
+#                     vec_F6_F7_G6_G7=vec_F6_F7_G6_G7,
+#                     vec_F8_F9_G8_G9=vec_F8_F9_G8_G9,
+#                     vec_2x_2p30m1=vec_2x_2p30m1,
+#                     vec_prod="v16",
+#                     vec_buffer="v17")
+
+asm_main += update_FG_trunc(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+                    vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+                    vec_F0_F1_G0_G1=vec_F0_F1_G0_G1,
+                    vec_F2_F3_G2_G3=vec_F2_F3_G2_G3,
+                    vec_F4_F5_G4_G5=vec_F4_F5_G4_G5,
+                    vec_F6_F7_G6_G7=vec_F6_F7_G6_G7,
+                    vec_F8_F9_G8_G9=vec_F8_F9_G8_G9,
+                    vec_2x_2p30m1=vec_2x_2p30m1,
+                    vec_prod="v16",
+                    vec_buffer="v17")
+
+asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0, 
+            vec_uu1_rr1_vv1_ss1 = vec_uu1_rr1_vv1_ss1, 
+            vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
+            vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3, 
+            vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5, 
+            vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
+            vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9,
+            vec_2x_2p30m1 = vec_2x_2p30m1,
+            vec_m19 = "v16",
+            tmp = "x9",
+            vec_prod = "v17",
+            vec_buffer = "v18",
+            vec_4x_M = vec_4x_M,
+            vec_l0 = "v19",
+            vec_l1 = "v20")
+
+
 
 Vlimb30_0 = "x9"
 Vlimb30_1 = "x10"
@@ -350,7 +419,7 @@ asm_main = q_register_replacement(asm_main)
 asm_main = w_register_replacement(asm_main)
 
 # Write generated assembly to asm directory
-asm_output_path = os.path.join("..", "asm", "inverse_1.s")
+asm_output_path = os.path.join("..", "asm", "inverse_2.s")
 with open(asm_output_path, "w") as f:
     f.write(asm_main)
 

@@ -1,9 +1,38 @@
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdint.h>
 #include <gmp.h>
 
-extern void inverse(uint64_t inv[static 4], uint64_t x[static 4]);
+// External function declaration
+extern void bignum_inv_p25519(uint64_t z[4], const uint64_t x[4]);
+
+void print_limbs(const char* name, const uint64_t limbs[4]) {
+    printf("%s (in limbs) = [%llu, %llu, %llu, %llu]\n", 
+           name, limbs[0], limbs[1], limbs[2], limbs[3]);
+    printf("%s (in limbs) = [%llx, %llx, %llx, %llx]\n", 
+           name, limbs[0], limbs[1], limbs[2], limbs[3]);
+}
+
+void limbs_to_mpz(mpz_t result, const uint64_t limbs[4]) {
+    mpz_set_ui(result, 0);
+    for (int i = 3; i >= 0; i--) {
+        mpz_mul_2exp(result, result, 64);
+        mpz_add_ui(result, result, limbs[i]);
+    }
+}
+
+void mpz_to_limbs(uint64_t limbs[4], const mpz_t value) {
+    mpz_t temp;
+    mpz_init(temp);
+    mpz_set(temp, value);
+    
+    for (int i = 0; i < 4; i++) {
+        limbs[i] = mpz_get_ui(temp);
+        mpz_div_2exp(temp, temp, 64);
+    }
+    
+    mpz_clear(temp);
+}
+
 
 void uint64k_from_mpz(uint64_t *dst, size_t k, const mpz_t src)
 {
@@ -31,7 +60,6 @@ void mpz_from_uint64k(mpz_t dst, size_t k, const uint64_t *src)
                src);       /* op     → 來源陣列             */
 }
 
-
 int main(int argc, char const *argv[])
 {
     
@@ -41,12 +69,11 @@ int main(int argc, char const *argv[])
     mpz_init(mpInv);
 
 
-    //mpz_set_str(mpX, "20214871201774049636868342709964433550308093914181089952380808474176500195135", 10);
     mpz_set_str(mpX, "18446744073709551617", 10);
     uint64_t x[4] = {0};
     uint64k_from_mpz(x, 4, mpX);
     uint64_t inv[4] = {0};
-    inverse(inv, x);
+    bignum_inv_p25519(inv, x);
     mpz_from_uint64k(mpInv, 4, inv);
 
 

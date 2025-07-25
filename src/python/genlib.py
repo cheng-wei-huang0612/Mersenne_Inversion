@@ -184,17 +184,17 @@ def update_fg_trunc(f, g, u, v, r, s, tmp1, tmp2):
 
 def update_uuvvrrss(u, v, r, s, uu, vv, rr, ss, prod, tmp):
     asm_script = ""
-    asm_script += f"madd {prod}, {u}, {uu}, XZR\n"
+    asm_script += f"mul {prod}, {u}, {uu}\n"
     asm_script += f"madd {tmp},  {v}, {rr}, {prod}\n"
 
-    asm_script += f"madd {prod}, {r}, {uu}, XZR\n"
+    asm_script += f"mul {prod}, {r}, {uu}\n"
     asm_script += f"madd {rr}, {s}, {rr}, {prod}\n"
     asm_script += f"mov {uu}, {tmp}\n"
 
 
-    asm_script += f"madd {prod}, {u}, {vv}, XZR\n"
+    asm_script += f"mul {prod}, {u}, {vv}\n"
     asm_script += f"madd {tmp},  {v}, {ss}, {prod}\n"
-    asm_script += f"madd {prod}, {r}, {vv}, XZR\n"
+    asm_script += f"mul {prod}, {r}, {vv}\n"
     asm_script += f"madd {ss}, {s}, {ss}, {prod}\n"
     asm_script += f"mov {vv}, {tmp}\n"
 
@@ -232,19 +232,38 @@ def init_FUV_GRS(FUV, GRS, f, g, const_2p41, const_2p62):
     return asm_script
 
 
+def divstepxtimes(FUV, GRS, delta, m1, ff, times=20):
+    asm_script = ""
+    #asm_script += f".rept {times}\n"
+    for i in range(times):
+        asm_script += f"sub {m1}, {delta}, #1\n"
+        asm_script += f"tst {GRS}, #1\n"
+        asm_script += f"csel {ff}, {FUV}, xzr, ne\n"
+        asm_script += f"tst {m1}, {GRS}, ror #1\n"
+        asm_script += f"csneg {delta}, {m1}, {delta}, pl\n"
+        asm_script += f"csel {FUV}, {GRS}, {FUV}, mi\n"
+        asm_script += f"csneg {ff}, {ff}, {ff}, pl\n"
+        asm_script += f"add {GRS}, {GRS}, {ff}\n"
+        asm_script += f"asr {GRS}, {GRS}, #1\n"
+    # asm_script += f".endr\n"
+    return asm_script
+
+
+
 def divstepx20(FUV, GRS, delta, m1, ff):
     asm_script = ""
-    asm_script += f".rept 20\n"
-    asm_script += f"sub {m1}, {delta}, #1\n"
-    asm_script += f"tst {GRS}, #1\n"
-    asm_script += f"csel {ff}, {FUV}, XZR, ne\n"
-    asm_script += f"tst {m1}, {GRS}, ROR #1\n"
-    asm_script += f"csneg {delta}, {m1}, {delta}, pl\n"
-    asm_script += f"csel {FUV}, {GRS}, {FUV}, mi\n"
-    asm_script += f"csneg {ff}, {ff}, {ff}, pl\n"
-    asm_script += f"add {GRS}, {GRS}, {ff}\n"
-    asm_script += f"asr {GRS}, {GRS}, #1\n"
-    asm_script += f".endr\n"
+    # asm_script += f".rept 20\n"
+    for i in range(20):
+        asm_script += f"sub {m1}, {delta}, #1\n"
+        asm_script += f"tst {GRS}, #1\n"
+        asm_script += f"csel {ff}, {FUV}, xzr, ne\n"
+        asm_script += f"tst {m1}, {GRS}, ror #1\n"
+        asm_script += f"csneg {delta}, {m1}, {delta}, pl\n"
+        asm_script += f"csel {FUV}, {GRS}, {FUV}, mi\n"
+        asm_script += f"csneg {ff}, {ff}, {ff}, pl\n"
+        asm_script += f"add {GRS}, {GRS}, {ff}\n"
+        asm_script += f"asr {GRS}, {GRS}, #1\n"
+    # asm_script += f".endr\n"
     return asm_script
 
 def prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m1, uu, vv, rr, ss):
@@ -269,7 +288,7 @@ def prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m
     return asm_script
 
 
-def update_FG(vec_uu0_rr0_vv0_ss0, 
+def update_FG_trunc(vec_uu0_rr0_vv0_ss0, 
               vec_uu1_rr1_vv1_ss1, 
               vec_F0_F1_G0_G1, 
               vec_F2_F3_G2_G3, 
@@ -304,6 +323,122 @@ def update_FG(vec_uu0_rr0_vv0_ss0,
     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F2_F3_G2_G3}.s[2]\n"
 
     asm_script += f"and    {vec_F0_F1_G0_G1}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 3\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F2_F3_G2_G3}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F2_F3_G2_G3}.s[2]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F2_F3_G2_G3}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F2_F3_G2_G3}.s[3]\n"
+
+    # asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+    # asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    # asm_script += f"orr    {vec_F0_F1_G0_G1}.16b, {vec_F0_F1_G0_G1}.16b, {vec_buffer}.16b\n"
+
+
+    # asm_script += f"// limb 4\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F2_F3_G2_G3}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F2_F3_G2_G3}.s[3]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F4_F5_G4_G5}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F4_F5_G4_G5}.s[2]\n"
+
+    # asm_script += f"and    {vec_F2_F3_G2_G3}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 5\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F4_F5_G4_G5}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F4_F5_G4_G5}.s[2]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F4_F5_G4_G5}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F4_F5_G4_G5}.s[3]\n"
+
+    # asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+    # asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    # asm_script += f"orr    {vec_F2_F3_G2_G3}.16b, {vec_F2_F3_G2_G3}.16b, {vec_buffer}.16b\n"
+
+
+    # asm_script += f"// limb 6\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F4_F5_G4_G5}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F4_F5_G4_G5}.s[3]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F6_F7_G6_G7}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F6_F7_G6_G7}.s[2]\n"
+
+    # asm_script += f"and    {vec_F4_F5_G4_G5}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 7\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F6_F7_G6_G7}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F6_F7_G6_G7}.s[2]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F6_F7_G6_G7}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F6_F7_G6_G7}.s[3]\n"
+
+    # asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+    # asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    # asm_script += f"orr    {vec_F4_F5_G4_G5}.16b, {vec_F4_F5_G4_G5}.16b, {vec_buffer}.16b\n"
+
+
+    # asm_script += f"// limb 8\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F6_F7_G6_G7}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F6_F7_G6_G7}.s[3]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F8_F9_G8_G9}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F8_F9_G8_G9}.s[2]\n"
+
+    # asm_script += f"and    {vec_F6_F7_G6_G7}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 9\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F8_F9_G8_G9}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F8_F9_G8_G9}.s[2]\n"
+
+    # asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+    # asm_script += f"sshr   {vec_F8_F9_G8_G9}.2d, {vec_prod}.2d, #30\n"
+    # asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    # asm_script += f"orr    {vec_F6_F7_G6_G7}.16b, {vec_F6_F7_G6_G7}.16b, {vec_buffer}.16b\n"
+
+    return asm_script
+
+
+def update_FG_tail(vec_uu0_rr0_vv0_ss0, 
+              vec_uu1_rr1_vv1_ss1, 
+              vec_F0_F1_G0_G1, 
+              vec_F2_F3_G2_G3, 
+              vec_F4_F5_G4_G5, 
+              vec_F6_F7_G6_G7,
+              vec_F8_F9_G8_G9,
+              vec_2x_2p30m1,
+              vec_prod,
+              vec_buffer):
+    asm_script = ""
+
+    # asm_script += f"// limb 0\n"
+    # asm_script += f"smull  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F0_F1_G0_G1}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F0_F1_G0_G1}.s[2]\n"
+
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 1\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F0_F1_G0_G1}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F0_F1_G0_G1}.s[2]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F0_F1_G0_G1}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F0_F1_G0_G1}.s[3]\n"
+
+    # asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+    # asm_script += f"// limb 2\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F0_F1_G0_G1}.s[1]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F0_F1_G0_G1}.s[3]\n"
+    # asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F2_F3_G2_G3}.s[0]\n"
+    # asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F2_F3_G2_G3}.s[2]\n"
+
+    # asm_script += f"and    {vec_F0_F1_G0_G1}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
 
 
@@ -383,6 +518,383 @@ def update_FG(vec_uu0_rr0_vv0_ss0,
     asm_script += f"orr    {vec_F6_F7_G6_G7}.16b, {vec_F6_F7_G6_G7}.16b, {vec_buffer}.16b\n"
 
     return asm_script
+
+# def update_FG(vec_uu0_rr0_vv0_ss0, 
+#               vec_uu1_rr1_vv1_ss1, 
+#               vec_F0_F1_G0_G1, 
+#               vec_F2_F3_G2_G3, 
+#               vec_F4_F5_G4_G5, 
+#               vec_F6_F7_G6_G7,
+#               vec_F8_F9_G8_G9,
+#               vec_2x_2p30m1,
+#               vec_prod,
+#               vec_buffer):
+#     asm_script = ""
+
+#     asm_script += f"// limb 0\n"
+#     asm_script += f"smull  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F0_F1_G0_G1}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F0_F1_G0_G1}.s[2]\n"
+
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 1\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F0_F1_G0_G1}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F0_F1_G0_G1}.s[2]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F0_F1_G0_G1}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F0_F1_G0_G1}.s[3]\n"
+
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 2\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F0_F1_G0_G1}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F0_F1_G0_G1}.s[3]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F2_F3_G2_G3}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F2_F3_G2_G3}.s[2]\n"
+
+#     asm_script += f"and    {vec_F0_F1_G0_G1}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 3\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F2_F3_G2_G3}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F2_F3_G2_G3}.s[2]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F2_F3_G2_G3}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F2_F3_G2_G3}.s[3]\n"
+
+#     asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+#     asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+#     asm_script += f"orr    {vec_F0_F1_G0_G1}.16b, {vec_F0_F1_G0_G1}.16b, {vec_buffer}.16b\n"
+
+
+#     asm_script += f"// limb 4\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F2_F3_G2_G3}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F2_F3_G2_G3}.s[3]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F4_F5_G4_G5}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F4_F5_G4_G5}.s[2]\n"
+
+#     asm_script += f"and    {vec_F2_F3_G2_G3}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 5\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F4_F5_G4_G5}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F4_F5_G4_G5}.s[2]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F4_F5_G4_G5}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F4_F5_G4_G5}.s[3]\n"
+
+#     asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+#     asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+#     asm_script += f"orr    {vec_F2_F3_G2_G3}.16b, {vec_F2_F3_G2_G3}.16b, {vec_buffer}.16b\n"
+
+
+#     asm_script += f"// limb 6\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F4_F5_G4_G5}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F4_F5_G4_G5}.s[3]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F6_F7_G6_G7}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F6_F7_G6_G7}.s[2]\n"
+
+#     asm_script += f"and    {vec_F4_F5_G4_G5}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 7\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F6_F7_G6_G7}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F6_F7_G6_G7}.s[2]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F6_F7_G6_G7}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F6_F7_G6_G7}.s[3]\n"
+
+#     asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+#     asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+#     asm_script += f"orr    {vec_F4_F5_G4_G5}.16b, {vec_F4_F5_G4_G5}.16b, {vec_buffer}.16b\n"
+
+
+#     asm_script += f"// limb 8\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F6_F7_G6_G7}.s[1]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F6_F7_G6_G7}.s[3]\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.2s, {vec_F8_F9_G8_G9}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu0_rr0_vv0_ss0}.4s, {vec_F8_F9_G8_G9}.s[2]\n"
+
+#     asm_script += f"and    {vec_F6_F7_G6_G7}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
+
+
+#     asm_script += f"// limb 9\n"
+#     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_F8_F9_G8_G9}.s[0]\n"
+#     asm_script += f"smlal2 {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.4s, {vec_F8_F9_G8_G9}.s[2]\n"
+
+#     asm_script += f"and    {vec_buffer}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
+#     asm_script += f"sshr   {vec_F8_F9_G8_G9}.2d, {vec_prod}.2d, #30\n"
+#     asm_script += f"shl    {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+#     asm_script += f"orr    {vec_F6_F7_G6_G7}.16b, {vec_F6_F7_G6_G7}.16b, {vec_buffer}.16b\n"
+
+#     return asm_script
+
+def update_FG(vec_uu0_rr0_vv0_ss0, 
+              vec_uu1_rr1_vv1_ss1, 
+              vec_F0_F1_G0_G1, 
+              vec_F2_F3_G2_G3, 
+              vec_F4_F5_G4_G5, 
+              vec_F6_F7_G6_G7,
+              vec_F8_F9_G8_G9,
+              vec_2x_2p30m1,
+              vec_prod,
+              vec_buffer):
+    asm_script = ""
+    asm_script += update_FG_trunc(vec_uu0_rr0_vv0_ss0, 
+              vec_uu1_rr1_vv1_ss1, 
+              vec_F0_F1_G0_G1, 
+              vec_F2_F3_G2_G3, 
+              vec_F4_F5_G4_G5, 
+              vec_F6_F7_G6_G7,
+              vec_F8_F9_G8_G9,
+              vec_2x_2p30m1,
+              vec_prod,
+              vec_buffer)
+    asm_script += update_FG_tail(vec_uu0_rr0_vv0_ss0,
+              vec_uu1_rr1_vv1_ss1, 
+              vec_F0_F1_G0_G1, 
+              vec_F2_F3_G2_G3, 
+              vec_F4_F5_G4_G5, 
+              vec_F6_F7_G6_G7,
+              vec_F8_F9_G8_G9,
+              vec_2x_2p30m1,
+              vec_prod,
+              vec_buffer)
+    
+    return asm_script
+
+
+def update_FG_scalar(uu, vv, rr, ss, F0, F1, F2, F3, G0, G1, G2, G3,
+                     sign_uu, sign_vv, sign_rr, sign_ss, 
+                     tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6,
+                     car0, car1):
+    asm_script = ""
+    asm_script += f"cmp {uu}, xzr\n"
+    asm_script += f"csetm {sign_uu}, mi\n"
+    asm_script += f"cneg {uu}, {uu}, mi\n"
+
+    asm_script += f"cmp {vv}, xzr\n"
+    asm_script += f"csetm {sign_vv}, mi\n"
+    asm_script += f"cneg {vv}, {vv}, mi\n"
+
+    asm_script += f"cmp {rr}, xzr\n"
+    asm_script += f"csetm {sign_rr}, mi\n"
+    asm_script += f"cneg {rr}, {rr}, mi\n"
+
+    asm_script += f"cmp {ss}, xzr\n"
+    asm_script += f"csetm {sign_ss}, mi\n"
+    asm_script += f"cneg {ss}, {ss}, mi\n"
+
+    asm_script += f"SNAP_SCALAR_REG {sign_ss}, \"[during update] sign_ss () =\" \n"
+
+    asm_script += f"SNAP_SCALAR_REG {uu}, \"[during update] uu =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {vv}, \"[during update] vv =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {rr}, \"[during update] rr =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {ss}, \"[during update] ss =\" \n"
+
+    asm_script += f"SNAP_SCALAR_REG {sign_ss}, \"[during update] sign_ss () =\" \n"
+
+
+
+    asm_script += f"and {tmp0}, {uu}, {sign_uu}\n"
+    asm_script += f"and {tmp1}, {vv}, {sign_vv}\n"
+    asm_script += f"add {car0}, {tmp0}, {tmp1}\n"
+
+
+    asm_script += f"SNAP_SCALAR_REG {rr}, \"[during update] rr () =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {sign_rr}, \"[during update] sign_rr () =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {ss}, \"[during update] ss () =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {sign_ss}, \"[during update] sign_ss () =\" \n"
+
+    asm_script += f"and {tmp0}, {rr}, {sign_rr}\n"
+    asm_script += f"SNAP_SCALAR_REG {tmp0}, \"[during update] tmp0 () =\" \n"
+    asm_script += f"and {tmp1}, {ss}, {sign_ss}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 () =\" \n"
+
+
+    asm_script += f"add {car1}, {tmp0}, {tmp1}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {car1}, \"[during update] car1 () =\" \n"
+
+
+    asm_script += f"eor {tmp1}, {F0}, {sign_uu}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+    asm_script += f"mul {tmp0}, {tmp1}, {uu}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp0}, \"[during update] tmp0 (correct) =\" \n"
+
+    asm_script += f"umulh {tmp1}, {tmp1}, {uu}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+    asm_script += f"adds {tmp4}, {car0}, {tmp0}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp4}, \"[during update] tmp4 (correct) =\" \n"
+
+    asm_script += f"adc {tmp2}, xzr, {tmp1}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp2}, \"[during update] tmp2 (correct) =\" \n"
+
+    asm_script += f"eor {tmp1}, {G0}, {sign_vv}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+    asm_script += f"mul {tmp0}, {tmp1}, {vv}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp0}, \"[during update] tmp0 (correct) =\" \n"
+
+    asm_script += f"umulh {tmp1}, {tmp1}, {vv}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+    asm_script += f"adds {tmp4}, {tmp4}, {tmp0}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp4}, \"[during update] tmp4 (correct) =\" \n"
+
+    asm_script += f"adc {tmp2}, {tmp2}, {tmp1}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp2}, \"[during update] tmp2 (correct) =\" \n"
+
+
+    asm_script += f"eor {tmp1}, {F0}, {sign_rr}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+    asm_script += f"mul {tmp0}, {tmp1}, {rr}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp0}, \"[during update] tmp0 (correct) =\" \n"
+
+    asm_script += f"umulh {tmp1}, {tmp1}, {rr}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp1}, \"[during update] tmp1 (correct) =\" \n"
+
+
+    asm_script += f"SNAP_SCALAR_REG {car1}, \"[during update] car1 () =\" \n"
+
+    asm_script += f"adds {tmp5}, {car1}, {tmp0}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp5}, \"[during update] tmp5 () =\" \n"
+
+    asm_script += f"adc {tmp3}, xzr, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G0}, {sign_ss}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {ss}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {ss}\n"
+    asm_script += f"adds {tmp5}, {tmp5}, {tmp0}\n"
+    asm_script += f"adc {tmp3}, {tmp3}, {tmp1}\n"
+
+
+    asm_script += f"eor {tmp1}, {F1}, {sign_uu}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {uu}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {uu}\n"
+    asm_script += f"adds {tmp2}, {tmp2}, {tmp0}\n"
+    asm_script += f"adc {tmp6}, xzr, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G1}, {sign_vv}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {vv}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {vv}\n"
+    asm_script += f"adds {tmp2}, {tmp2}, {tmp0}\n"
+    asm_script += f"adc {tmp6}, {tmp6}, {tmp1}\n"
+    asm_script += f"extr {F0}, {tmp2}, {tmp4}, #60\n"
+
+    # asm_script += f"SNAP_SCALAR_REG {F0}, \"[during update] F0 =\" \n"
+
+    asm_script += f"eor {tmp1}, {F1}, {sign_rr}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {rr}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {rr}\n"
+    asm_script += f"adds {tmp3}, {tmp3}, {tmp0}\n"
+    asm_script += f"adc {tmp4}, xzr, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G1}, {sign_ss}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {ss}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {ss}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp3}, \"[during update] tmp3 =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {tmp0}, \"[during update] tmp0 =\" \n"
+
+    asm_script += f"adds {tmp3}, {tmp3}, {tmp0}\n"
+    asm_script += f"adc {tmp4}, {tmp4}, {tmp1}\n"
+
+    asm_script += f"SNAP_SCALAR_REG {tmp3}, \"[during update] tmp3 =\" \n"
+    asm_script += f"SNAP_SCALAR_REG {tmp5}, \"[during update] tmp5 =\" \n"
+
+    asm_script += f"extr {G0}, {tmp3}, {tmp5}, #60\n"
+
+    asm_script += f"SNAP_SCALAR_REG {G0}, \"[during update] G0 =\" \n"
+
+
+    
+    asm_script += f"eor {tmp1}, {F2}, {sign_uu}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {uu}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {uu}\n"
+    asm_script += f"adds {tmp6}, {tmp6}, {tmp0}\n"
+    asm_script += f"adc {tmp5}, xzr, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G2}, {sign_vv}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {vv}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {vv}\n"
+    asm_script += f"adds {tmp6}, {tmp6}, {tmp0}\n"
+    asm_script += f"adc {tmp5}, {tmp5}, {tmp1}\n"
+    asm_script += f"extr {F1}, {tmp6}, {tmp2}, #60\n"
+
+    asm_script += f"eor {tmp1}, {F2}, {sign_rr}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {rr}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {rr}\n"
+    asm_script += f"adds {tmp4}, {tmp4}, {tmp0}\n"
+    asm_script += f"adc {tmp2}, xzr, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G2}, {sign_ss}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {ss}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {ss}\n"
+    asm_script += f"adds {tmp4}, {tmp4}, {tmp0}\n"
+    asm_script += f"adc {tmp2}, {tmp2}, {tmp1}\n"
+    asm_script += f"extr {G1}, {tmp4}, {tmp3}, #60\n"
+
+
+    asm_script += f"eor {tmp1}, {F3}, {sign_uu}\n"
+    asm_script += f"asr {tmp3}, {tmp1}, #63\n"
+    asm_script += f"and {tmp3}, {tmp3}, {uu}\n"
+    asm_script += f"neg {tmp3}, {tmp3}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {uu}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {uu}\n"
+    asm_script += f"adds {tmp5}, {tmp5}, {tmp0}\n"
+    asm_script += f"adc  {tmp3}, {tmp3}, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G3}, {sign_vv}\n"
+    asm_script += f"asr {tmp0}, {tmp1}, #63\n"
+    asm_script += f"and {tmp0}, {tmp0}, {vv}\n"
+    asm_script += f"sub {tmp3}, {tmp3}, {tmp0}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {vv}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {vv}\n"
+    asm_script += f"adds {tmp5}, {tmp5}, {tmp0}\n"
+    asm_script += f"adc {tmp3}, {tmp3}, {tmp1}\n"
+    asm_script += f"extr {F2}, {tmp5}, {tmp6}, #60\n"
+    asm_script += f"extr {F3}, {tmp3}, {tmp5}, #60\n"
+
+    asm_script += f"eor {tmp1}, {F3}, {sign_rr}\n"
+    asm_script += f"asr {tmp5}, {tmp1}, #63\n"
+    asm_script += f"and {tmp5}, {tmp5}, {rr}\n"
+    asm_script += f"neg {tmp5}, {tmp5}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {rr}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {rr}\n"
+    asm_script += f"adds {tmp2}, {tmp2}, {tmp0}\n"
+    asm_script += f"adc  {tmp5}, {tmp5}, {tmp1}\n"
+    asm_script += f"eor {tmp1}, {G3}, {sign_ss}\n"
+    asm_script += f"asr {tmp0}, {tmp1}, #63\n"
+    asm_script += f"and {tmp0}, {tmp0}, {ss}\n"
+    asm_script += f"sub {tmp5}, {tmp5}, {tmp0}\n"
+    asm_script += f"mul {tmp0}, {tmp1}, {ss}\n"
+    asm_script += f"umulh {tmp1}, {tmp1}, {ss}\n"
+    asm_script += f"adds {tmp2}, {tmp2}, {tmp0}\n"
+    asm_script += f"adc {tmp5}, {tmp5}, {tmp1}\n"
+    asm_script += f"extr {G2}, {tmp2}, {tmp4}, #60\n"
+    asm_script += f"extr {G3}, {tmp5}, {tmp2}, #60\n"
+
+
+    return asm_script
+    
 
 
 def update_V_no_reduction(vec_uu0_rr0_vv0_ss0, 
@@ -748,129 +1260,140 @@ def C_include(include_file):
 
 
 def write_snap_inc(path):
-    content = """#pragma once
-// ──────────────────────────────────────────────────────────────
+    content = """// ──────────────────────────────────────────────────────────────
 //  snap.inc – scalar & vector register snapshot macros (AArch64)
 // ──────────────────────────────────────────────────────────────
 
 /*
- * 使用方式：
- *   • 在組譯命令加上 -DASM_TRACE，可啟用所有快照巨集。
- *   • 不加 -DASM_TRACE 亦可順利編譯，巨集本體將被摺疊為空。
+ * SNAPSHOT MACROS - Always enabled and ready to use
+ * 
+ * Usage: Just use SNAP_SCALAR_REG, SNAP_VECTOR_REG_U32x4, etc. in your assembly
+ * Note: Requires snap.c to be linked (automatically handled by Makefile debug target)
  */
 
-// #define ASM_TRACE 1
+.macro SNAP_PUSH_CALLER
+    stp  x0,  x1,  [sp, #-16]!
+    stp  x2,  x3,  [sp, #-16]!
+    stp  x4,  x5,  [sp, #-16]!
+    stp  x6,  x7,  [sp, #-16]!
+    stp  x8,  x9,  [sp, #-16]!
+    stp  x10, x11, [sp, #-16]!
+    stp  x12, x13, [sp, #-16]!
+    stp  x14, x15, [sp, #-16]!
+    stp  x16, x17, [sp, #-16]!
+    sub  sp, sp, #16
+    str  x30,      [sp]
+    sub  sp, sp, #128
+    stp  q0,  q1,  [sp, #0]
+    stp  q2,  q3,  [sp, #32]
+    stp  q4,  q5,  [sp, #64]
+    stp  q6,  q7,  [sp, #96]
+.endm
 
-#ifdef ASM_TRACE
-    .text
+.macro SNAP_POP_CALLER
+    ldp  q6,  q7,  [sp, #96]
+    ldp  q4,  q5,  [sp, #64]
+    ldp  q2,  q3,  [sp, #32]
+    ldp  q0,  q1,  [sp, #0]
+    add  sp, sp, #128
+    ldr  x30,      [sp]
+    add  sp, sp, #16
+    ldp  x16, x17, [sp], #16
+    ldp  x14, x15, [sp], #16
+    ldp  x12, x13, [sp], #16
+    ldp  x10, x11, [sp], #16
+    ldp  x8,  x9,  [sp], #16
+    ldp  x6,  x7,  [sp], #16
+    ldp  x4,  x5,  [sp], #16
+    ldp  x2,  x3,  [sp], #16
+    ldp  x0,  x1,  [sp], #16
+.endm
 
-// ──────────────────────────────────────────────────────────────
-// Helper 1：push all caller-saved GPR + x30
-// ──────────────────────────────────────────────────────────────
-    .macro SNAP_PUSH_CALLER
-        stp  x0,  x1,  [sp, #-16]!
-        stp  x2,  x3,  [sp, #-16]!
-        stp  x4,  x5,  [sp, #-16]!
-        stp  x6,  x7,  [sp, #-16]!
-        stp  x8,  x9,  [sp, #-16]!
-        stp  x10, x11, [sp, #-16]!
-        stp  x12, x13, [sp, #-16]!
-        stp  x14, x15, [sp, #-16]!
-        stp  x16, x17, [sp, #-16]!
-        sub  sp, sp, #16
-        str  x30,      [sp]
-        sub  sp, sp, #128
-        stp  q0,  q1,  [sp, #0]
-        stp  q2,  q3,  [sp, #32]
-        stp  q4,  q5,  [sp, #64]
-        stp  q6,  q7,  [sp, #96]
-    .endm
-
-// ──────────────────────────────────────────────────────────────
-    .macro SNAP_POP_CALLER
-        ldp  q6,  q7,  [sp, #96]
-        ldp  q4,  q5,  [sp, #64]
-        ldp  q2,  q3,  [sp, #32]
-        ldp  q0,  q1,  [sp, #0]
-        add  sp, sp, #128
-        ldr  x30,      [sp]
-        add  sp, sp, #16
-        ldp  x16, x17, [sp], #16
-        ldp  x14, x15, [sp], #16
-        ldp  x12, x13, [sp], #16
-        ldp  x10, x11, [sp], #16
-        ldp  x8,  x9,  [sp], #16
-        ldp  x6,  x7,  [sp], #16
-        ldp  x4,  x5,  [sp], #16
-        ldp  x2,  x3,  [sp], #16
-        ldp  x0,  x1,  [sp], #16
-    .endm
-
-// ──────────────────────────────────────────────────────────────
-    .macro SNAP_SCALAR_REG reg, tag
-        SNAP_PUSH_CALLER
-        mov  x0,  \\reg
-        adr  x1,  1000f
-        bl   _print_scalar_reg_tag
-        SNAP_POP_CALLER
-        b    2000f
-        .balign 4
+.macro SNAP_SCALAR_REG reg, tag
+    SNAP_PUSH_CALLER
+    mov  x0,  \\reg
+    adr  x1,  1000f
+    bl   _print_scalar_reg_tag
+    SNAP_POP_CALLER
+    b    2000f
+    .balign 4
 1000:   .asciz "\\tag"
-        .balign 4
+    .balign 4
 2000:
-    .endm
+.endm
 
-// ──────────────────────────────────────────────────────────────
-    .macro SNAP_VECTOR_REG_U32x4 vreg, tag
-        SNAP_PUSH_CALLER
-        sub  sp, sp, #16
-        st1  {\\vreg\\().4s}, [sp]
-        mov  x0,  sp
-        adr  x1,  1000f
-        bl   _print_vector_reg_u32x4
-        add  sp, sp, #16
-        SNAP_POP_CALLER
-        b    2000f
-        .balign 4
+.macro SNAP_VECTOR_REG_U32x4 vreg, tag
+    SNAP_PUSH_CALLER
+    sub  sp, sp, #16
+    st1  {\\vreg\\().4s}, [sp]
+    mov  x0,  sp
+    adr  x1,  1000f
+    bl   _print_vector_reg_u32x4
+    add  sp, sp, #16
+    SNAP_POP_CALLER
+    b    2000f
+    .balign 4
 1000:   .asciz "\\tag"
-        .balign 4
+    .balign 4
 2000:
-    .endm
+.endm
 
-// ──────────────────────────────────────────────────────────────
-    .macro SNAP_VECTOR_REG_U64x2 vreg, tag
-        SNAP_PUSH_CALLER
-        sub  sp, sp, #16
-        st1  {\\vreg\\().2d}, [sp]
-        mov  x0,  sp
-        adr  x1,  1000f
-        bl   _print_vector_reg_u64x2
-        add  sp, sp, #16
-        SNAP_POP_CALLER
-        b    2000f
-        .balign 4
+.macro SNAP_VECTOR_REG_U64x2 vreg, tag
+    SNAP_PUSH_CALLER
+    sub  sp, sp, #16
+    st1  {\\vreg\\().2d}, [sp]
+    mov  x0,  sp
+    adr  x1,  1000f
+    bl   _print_vector_reg_u64x2
+    add  sp, sp, #16
+    SNAP_POP_CALLER
+    b    2000f
+    .balign 4
 1000:   .asciz "\\tag"
-        .balign 4
+    .balign 4
 2000:
-    .endm
-
-#else
-    .macro SNAP_PUSH_CALLER
-    .endm
-
-    .macro SNAP_POP_CALLER
-    .endm
-
-    .macro SNAP_SCALAR_REG reg, tag
-    .endm
-
-    .macro SNAP_VECTOR_REG_U32x4 vreg, tag
-    .endm
-
-    .macro SNAP_VECTOR_REG_U64x2 vreg, tag
-    .endm
-#endif
+.endm
 """
     with open(path, "w") as f:
         f.write(content)
 
+
+
+def write_snap_c(path):
+    content = """// ──────────────────────────────────────────────────────────────
+//  snap.c – print helpers for scalar / vector snapshots
+// ──────────────────────────────────────────────────────────────
+#include <stdio.h>
+#include <stdint.h>
+
+void print_scalar_reg_tag(unsigned long long reg_val, const char* tag)
+{
+    printf("[SNAPSHOT] %s: 0x%016llx (%llu)\\n",
+           tag, reg_val, reg_val);
+}
+
+
+/// 印出 128-bit 向量的 4 個 uint32_t
+void print_vector_reg_u32x4(const uint32_t vec[4], const char* tag)
+{
+    printf("[SNAPSHOT] %s: "
+           "{0x%08x, 0x%08x, 0x%08x, 0x%08x}\\n",
+           tag,
+           vec[0], vec[1], vec[2], vec[3]);
+}
+
+/// 印出 128-bit 向量的 2 個 uint64_t
+void print_vector_reg_u64x2(const uint64_t vec[2], const char* tag)
+{
+    printf("[SNAPSHOT] %s: "
+           "{0x%016llx, 0x%016llx}\\n",
+           tag,
+           (unsigned long long)vec[0],
+           (unsigned long long)vec[1]);
+}
+
+// ──────────────────────────────────────────────────────────────
+//  end of snap.c
+// ──────────────────────────────────────────────────────────────"""
+    with open(path, "w") as f:
+        f.write(content)
