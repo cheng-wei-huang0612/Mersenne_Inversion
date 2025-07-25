@@ -7,12 +7,12 @@ if __name__ == "__main__":
 from slothy import Slothy
 
 import slothy.targets.aarch64.aarch64_neon as AArch64_Neon
-import slothy.targets.aarch64.cortex_a76_frontend as Target_CortexA76
+import slothy.targets.aarch64.cortex_a72_frontend as Target_CortexA72
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 arch = AArch64_Neon
-target = Target_CortexA76
+target = Target_CortexA72
 
 slothy = Slothy(arch, target)
 
@@ -29,4 +29,4 @@ slothy.config.reserved_regs = ["x0", "x19","sp"]
 
 
 slothy.optimize("big_loop","end")
-slothy.write_source_to_file("../opt/inverse_2_a76.s")
+slothy.write_source_to_file("../opt/inverse_2_a72.s")

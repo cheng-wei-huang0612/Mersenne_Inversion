@@ -122,10 +122,10 @@ asm_main += f"mov {COUNTER}, #9\n"
 asm_main += f"big_loop:\n"
 
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
-                                   vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
-                                   vec_4x_2p30m1=vec_4x_2p30m1,
-                                   uu=uu, vv=vv, rr=rr, ss=ss)
+asm_main += prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+                                vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+                                vec_4x_2p30m1=vec_4x_2p30m1,
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
 
 asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -209,11 +209,22 @@ asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
 asm_main += f"cbnz {COUNTER}, big_loop\n"
 
 
+# asm_main += f"SNAP_SCALAR_REG {uu}, \"uu =\" \n"
+# asm_main += f"SNAP_SCALAR_REG {vv}, \"vv =\" \n"
+# asm_main += f"SNAP_SCALAR_REG {rr}, \"rr =\" \n"
+# asm_main += f"SNAP_SCALAR_REG {ss}, \"ss =\" \n"
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+# asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+#                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+#                                 vec_4x_2p30m1=vec_4x_2p30m1,
+#                                 uu=uu, vv=vv, rr=rr, ss=ss)
+asm_main += prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss)
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
+
+# asm_main += f"SNAP_VECTOR_REG_U32x4 {vec_uu0_rr0_vv0_ss0}, \"uu0, rr0, vv0, ss0 =\" \n"
+# asm_main += f"SNAP_VECTOR_REG_U32x4 {vec_uu1_rr1_vv1_ss1}, \"uu1, rr1, vv1, ss1 =\" \n"
 
 # asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 #                     vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,

@@ -174,10 +174,10 @@ def update_fg_trunc(f, g, u, v, r, s, tmp1, tmp2):
 
     asm_script += f"mul {tmp2}, {r}, {f}\n"
     asm_script += f"madd {tmp2}, {s}, {g}, {tmp2}\n"
-    asm_script += f"asr {tmp2}, {tmp2}, #20\n"
+    asm_script += f"asr {g}, {tmp2}, #20\n"
 
     asm_script += f"mov {f}, {tmp1}\n"
-    asm_script += f"mov {g}, {tmp2}\n"
+    # asm_script += f"mov {g}, {tmp2}\n"
 
 
     return asm_script
@@ -286,6 +286,24 @@ def prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m
 
 
     return asm_script
+
+
+def prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m1, uu, vv, rr, ss, vec_uu_rr, vec_vv_ss):
+    asm_script = ""
+    asm_script += f"stp {uu}, {rr}, [sp, #-16]\n"
+    asm_script += f"stp {vv}, {ss}, [sp, #-32]\n"
+    asm_script += f"ldp %qregname{vec_vv_ss}, %qregname{vec_uu_rr}, [sp, #-32]\n"
+
+
+    asm_script += f"uzp1 {vec_uu0_rr0_vv0_ss0}.4s, {vec_uu_rr}.4s, {vec_vv_ss}.4s\n"
+    asm_script += f"and {vec_uu0_rr0_vv0_ss0}.16b, {vec_uu0_rr0_vv0_ss0}.16b, {vec_4x_2p30m1}.16b\n"
+    asm_script += f"sshr {vec_uu_rr}.2d, {vec_uu_rr}.2d, #30\n"
+    asm_script += f"sshr {vec_vv_ss}.2d, {vec_vv_ss}.2d, #30\n"
+    asm_script += f"uzp1 {vec_uu1_rr1_vv1_ss1}.4s, {vec_uu_rr}.4s, {vec_vv_ss}.4s\n"
+
+
+    return asm_script
+
 
 
 def update_FG_trunc(vec_uu0_rr0_vv0_ss0, 
