@@ -2,11 +2,14 @@
 
 .PHONY: clean
 
-TARGET = bench
+TARGET = bench bench_inverse_1_a72 bench_inverse_1_a76
 CC  ?= gcc
 LD  := $(CC)
 
-SOURCES = hal/hal.c bench.c ../src/inverse_1.s
+COMMON_SOURCES = hal/hal.c
+BENCH_SOURCES = $(COMMON_SOURCES) bench.c ../src/asm/inverse_1.s
+BENCH_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_1_a72.c ../src/opt/inverse_1_a72.s
+BENCH_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_1_a76.c ../src/opt/inverse_1_a76.s
 
 CFLAGS := \
 	-Wall \
@@ -43,8 +46,14 @@ endif
 
 all: $(TARGET)
 
-$(TARGET): $(SOURCES)
-	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET)
+bench: $(BENCH_SOURCES)
+	$(CC) $(CFLAGS) $(BENCH_SOURCES) -o bench
+
+bench_inverse_1_a72: $(BENCH_A72_SOURCES)
+	$(CC) $(CFLAGS) $(BENCH_A72_SOURCES) -o bench_inverse_1_a72
+
+bench_inverse_1_a76: $(BENCH_A76_SOURCES)
+	$(CC) $(CFLAGS) $(BENCH_A76_SOURCES) -o bench_inverse_1_a76
 
 clean:
 	-$(RM) -rf $(TARGET) *.d
