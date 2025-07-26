@@ -46,11 +46,6 @@ def initialization(ptr_x,
     vec_p0_p3 = vec_F0_F1_G0_G1
     vec_p2_p1 = vec_F2_F3_G2_G3
     vec_x0_x1 = vec_F4_F5_G4_G5
-
-
-    print(f"vec_p2_p1: {vec_p2_p1}")
-
-
     vec_x2_x3 = vec_F6_F7_G6_G7
 
     asm_script += f"ldp %qregname{vec_x0_x1}, %qregname{vec_x2_x3}, [{ptr_x}]\n"
@@ -226,9 +221,11 @@ def hensel_lifting_get_M(two, inv, tmp, p, vec_4x_M):
 def init_FUV_GRS(FUV, GRS, f, g, const_2p41, const_2p62):
     asm_script = ""
     asm_script += f"and {FUV}, {f}, #1048575\n"
-    asm_script += f"sub {FUV}, {FUV}, {const_2p41}\n"
     asm_script += f"and {GRS}, {g}, #1048575\n"
-    asm_script += f"sub {GRS}, {GRS}, {const_2p62}\n"
+    # asm_script += f"sub {FUV}, {FUV}, {const_2p41}\n"
+    asm_script += f"orr {FUV}, {FUV}, #0xFFFFFE0000000000\n"
+    # asm_script += f"sub {GRS}, {GRS}, {const_2p62}\n"
+    asm_script += f"orr {GRS}, {GRS}, #0xC000000000000000\n"
     return asm_script
 
 
@@ -287,7 +284,7 @@ def prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m
 
     return asm_script
 
-
+# not faster, TODO: replace stp/ldp by mov
 def prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0, vec_uu1_rr1_vv1_ss1, vec_4x_2p30m1, uu, vv, rr, ss, vec_uu_rr, vec_vv_ss):
     asm_script = ""
     asm_script += f"stp {uu}, {rr}, [sp, #-16]\n"
