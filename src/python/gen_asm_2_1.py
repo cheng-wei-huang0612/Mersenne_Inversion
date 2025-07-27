@@ -124,10 +124,10 @@ asm_main += f"mov {COUNTER}, #9\n"
 asm_main += f"big_loop:\n"
 
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss)
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
 
 asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -216,10 +216,11 @@ asm_main += f"cbnz {COUNTER}, big_loop\n"
 # asm_main += f"SNAP_SCALAR_REG {rr}, \"rr =\" \n"
 # asm_main += f"SNAP_SCALAR_REG {ss}, \"ss =\" \n"
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss)
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
+
 # asm_main += prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 #                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
 #                                 vec_4x_2p30m1=vec_4x_2p30m1,
@@ -365,7 +366,7 @@ asm_main = q_register_replacement(asm_main)
 asm_main = w_register_replacement(asm_main)
 
 # Write generated assembly to asm directory
-asm_output_path = os.path.join("..", "asm", "inverse_2.s")
+asm_output_path = os.path.join("..", "asm", "inverse_2_1.s")
 with open(asm_output_path, "w") as f:
     f.write(asm_main)
 

@@ -81,9 +81,9 @@ dup  v15.4s, w7
 
 
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -282,9 +282,9 @@ madd x10, x14, x2, x10
 asr x2, x10, #20
 mov x1, x9
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -493,9 +493,9 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -880,9 +880,9 @@ umov w2, v3.s[3]
 umov w9, v3.s[2]
 add x2, x9, x2, lsl #30
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -1082,9 +1082,9 @@ asr x2, x10, #20
 mov x1, x9
 end:
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -1293,9 +1293,9 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 and x7, x1, #1048575
-sub x7, x7, x4
 and x8, x2, #1048575
-sub x8, x8, x5
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
