@@ -1,14 +1,13 @@
 
 
 .text
-.global inverse
 .global _inverse
-
 #ifdef __ELF__          // 在 Linux / GNU toolchain 會自動定義
+.global inverse
     .type   inverse, %function
+inverse:
 #endif
 
-inverse:
 _inverse:
 stp x29, x30, [sp, #-16]!
 mov x29, sp
