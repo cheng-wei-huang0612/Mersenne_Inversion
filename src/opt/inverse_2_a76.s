@@ -2000,6 +2000,6 @@ ldp x29, x30, [sp], #16
 ret
 
 
-# #ifdef __ELF__
-#     .size   inverse, .-inverse
-# #endif
+#ifdef __ELF__
+    .size   inverse, .-inverse
+#endif
