@@ -87,13 +87,13 @@ static int bench(void)
 
   qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("ntt", cycles_ntt);
+  print_median("inv", cycles_ntt);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("ntt", cycles_ntt);
+  print_percentiles("inv", cycles_ntt);
 
   return 0;
 }
