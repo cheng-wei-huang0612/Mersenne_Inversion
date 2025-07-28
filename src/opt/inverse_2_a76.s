@@ -1,5 +1,13 @@
+
+
+.text
 .global inverse
 .global _inverse
+
+#ifdef __ELF__          // 在 Linux / GNU toolchain 會自動定義
+    .type   inverse, %function
+#endif
+
 inverse:
 _inverse:
 stp x29, x30, [sp, #-16]!
@@ -1990,3 +1998,8 @@ ldp x21, x22, [sp], #16
 ldp x19, x20, [sp], #16
 ldp x29, x30, [sp], #16
 ret
+
+
+#ifdef __ELF__
+    .size   inverse, .-inverse
+#endif
