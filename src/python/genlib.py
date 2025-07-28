@@ -228,6 +228,16 @@ def init_FUV_GRS(FUV, GRS, f, g, const_2p41, const_2p62):
     asm_script += f"orr {GRS}, {GRS}, #0xC000000000000000\n"
     return asm_script
 
+def init_FUV_GRS_2(FUV, GRS, f, g):
+    asm_script = ""
+    asm_script += f"and {FUV}, {f}, #1048575\n"
+    asm_script += f"and {GRS}, {g}, #1048575\n"
+    # asm_script += f"sub {FUV}, {FUV}, {const_2p41}\n"
+    asm_script += f"orr {FUV}, {FUV}, #0xFFFFFE0000000000\n"
+    # asm_script += f"sub {GRS}, {GRS}, {const_2p62}\n"
+    asm_script += f"orr {GRS}, {GRS}, #0xC000000000000000\n"
+    return asm_script
+
 
 def divstepxtimes(FUV, GRS, delta, m1, ff, times=20):
     asm_script = ""

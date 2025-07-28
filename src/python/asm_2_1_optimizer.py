@@ -23,13 +23,17 @@ slothy.config.variable_size = True
 slothy.config.constraints.stalls_first_attempt = 32
 
 slothy.config.inputs_are_outputs = True
-slothy.config.outputs = ["x1","x2","x3"]
 slothy.config.reserved_regs = ["x0", "x19","sp"]
+slothy.config.outputs = ["x1","x2","x3","x7","x8"]
+slothy.optimize("Lbig_loop","Lend")
 
 
 
+slothy.config.outputs = ["x1","x2","x3","x7","x8"]
 
-slothy.optimize("big_loop","end")
+
+slothy.optimize("L_begin_opt1","L_end_opt1")
+slothy.optimize("L_begin_opt2","L_end_opt2")
 slothy.write_source_to_file("../opt/inverse_2_1_a72.s")
 
 
@@ -42,11 +46,15 @@ slothy.config.variable_size = True
 slothy.config.constraints.stalls_first_attempt = 32
 
 slothy.config.inputs_are_outputs = True
-slothy.config.outputs = ["x1","x2","x3"]
 slothy.config.reserved_regs = ["x0", "x19","sp"]
+slothy.config.outputs = ["x1","x2","x3","x7","x8"]
+slothy.optimize("Lbig_loop","Lend")
 
 
 
+slothy.config.outputs = ["x1","x2","x3","x7","x8"]
 
-slothy.optimize("big_loop","end")
+
+slothy.optimize("L_begin_opt1","L_end_opt1")
+slothy.optimize("L_begin_opt2","L_end_opt2")
 slothy.write_source_to_file("../opt/inverse_2_1_a76.s")

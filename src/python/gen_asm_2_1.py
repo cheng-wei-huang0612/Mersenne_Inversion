@@ -121,13 +121,13 @@ asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod
 
 COUNTER = "x19"
 asm_main += f"mov {COUNTER}, #9\n"
-asm_main += f"big_loop:\n"
+asm_main += f"Lbig_loop:\n"
 
 
-asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
+                                uu=uu, vv=vv, rr=rr, ss=ss)
 
 asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -187,20 +187,24 @@ asm_main += f"add {g}, x9, {g}, lsl #30\n"
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += f"Lend:\n"
+asm_main += f"L_begin_opt1:\n"
 asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
 
 
-asm_main += f"end:\n"
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
+asm_main += f"L_end_opt1:\n"
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += f"L_begin_opt2:\n"
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
 #asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += f"L_end_opt2:\n"
 asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=19)
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
@@ -208,7 +212,7 @@ asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod
 
 
 asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
-asm_main += f"cbnz {COUNTER}, big_loop\n"
+asm_main += f"cbnz {COUNTER}, Lbig_loop\n"
 
 
 # asm_main += f"SNAP_SCALAR_REG {uu}, \"uu =\" \n"
@@ -216,11 +220,10 @@ asm_main += f"cbnz {COUNTER}, big_loop\n"
 # asm_main += f"SNAP_SCALAR_REG {rr}, \"rr =\" \n"
 # asm_main += f"SNAP_SCALAR_REG {ss}, \"ss =\" \n"
 
-asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
-
+                                uu=uu, vv=vv, rr=rr, ss=ss)
 # asm_main += prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 #                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
 #                                 vec_4x_2p30m1=vec_4x_2p30m1,
