@@ -4,9 +4,9 @@
 .global inverse
 .global _inverse
 
-#ifdef __ELF__          // 在 Linux / GNU toolchain 會自動定義
-    .type   inverse, %function
-#endif
+# #ifdef __ELF__          // 在 Linux / GNU toolchain 會自動定義
+#     .type   inverse, %function
+# #endif
 
 inverse:
 _inverse:
@@ -2000,6 +2000,6 @@ ldp x29, x30, [sp], #16
 ret
 
 
-#ifdef __ELF__
-    .size   inverse, .-inverse
-#endif
+# #ifdef __ELF__
+#     .size   inverse, .-inverse
+# #endif
