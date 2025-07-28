@@ -5,7 +5,7 @@ import subprocess
 import os
 asm_main = ""
 
-asm_main += dot_include("snap.inc")
+# asm_main += dot_include("snap.inc")
 asm_main += enter("inverse")
 
 asm_main += push_callee_saved_registers()
