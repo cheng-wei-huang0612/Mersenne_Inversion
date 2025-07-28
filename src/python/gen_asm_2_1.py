@@ -188,26 +188,26 @@ asm_main += f"add {g}, x9, {g}, lsl #30\n"
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += f"Lend:\n"
-asm_main += f"L_begin_opt1:\n"
 asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
 
 
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
-asm_main += f"L_end_opt1:\n"
 asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
-asm_main += f"L_begin_opt2:\n"
+asm_main += f"L_begin_opt1:\n"
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+asm_main += f"L_end_opt1:\n"
 
 asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, const_2p62=const_2p62)
 #asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
-asm_main += f"L_end_opt2:\n"
 asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=19)
+asm_main += f"L_begin_opt2:\n"
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+asm_main += f"L_end_opt2:\n"
 
 
 
