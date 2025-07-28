@@ -29,7 +29,7 @@ slothy.config.reserved_regs = ["x0", "x19","sp"]
 
 
 
-slothy.optimize("big_loop","end")
+slothy.optimize("Lbig_loop","Lend")
 slothy.write_source_to_file("../opt/inverse_2_a72.s")
 
 
@@ -48,5 +48,5 @@ slothy.config.reserved_regs = ["x0", "x19","sp"]
 
 
 
-slothy.optimize("big_loop","end")
+slothy.optimize("Lbig_loop","Lend")
 slothy.write_source_to_file("../opt/inverse_2_a76.s")

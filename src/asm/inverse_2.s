@@ -668,7 +668,7 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 mov x19, #9
-big_loop:
+Lbig_loop:
 ins v13.s[0], w11
 ins v13.s[1], w13
 ins v13.s[2], w12
@@ -1051,7 +1051,7 @@ mul x10, x13, x1
 madd x10, x14, x2, x10
 asr x2, x10, #20
 mov x1, x9
-end:
+Lend:
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
@@ -1459,7 +1459,7 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 subs x19, x19, #1
-cbnz x19, big_loop
+cbnz x19, Lbig_loop
 ins v13.s[0], w11
 ins v13.s[1], w13
 ins v13.s[2], w12
