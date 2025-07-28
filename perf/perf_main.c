@@ -1,4 +1,6 @@
 #include <stdint.h>
+
+__attribute__((noinline))
 extern void inverse(uint64_t[static 4], const uint64_t[static 4]);
 
 int main(void)
