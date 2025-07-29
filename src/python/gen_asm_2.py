@@ -3,6 +3,24 @@
 from genlib import *
 import subprocess
 import os
+
+# Subprocedure mapping:
+func_mapping = {
+    "initialization": initialization_2,
+    "update_FG": update_FG_2,
+    "loop_update_FG": update_FG_2,
+    "update_VS": update_VS_2,
+    "loop_update_VS": update_VS_2
+}
+
+
+initialization = func_mapping["initialization"]
+update_FG = func_mapping["update_FG"]
+loop_update_FG = func_mapping["loop_update_FG"]
+update_VS = func_mapping["update_VS"]
+loop_update_VS = func_mapping["loop_update_VS"]
+
+
 asm_main = ""
 
 # asm_main += dot_include("snap.inc")
@@ -32,19 +50,20 @@ vec_uu1_rr1_vv1_ss1 = "v14"
 vec_4x_M =  "v15"
 
 
+
 asm_main += initialization(ptr_x = ptr_x, 
-                           tmp_x = "x2",
-                           vec_2x_2p30m1 = vec_2x_2p30m1,
-                            vec_F0_F1_G0_G1 = vec_F0_F1_G0_G1,
-                            vec_F2_F3_G2_G3 = vec_F2_F3_G2_G3,
-                            vec_F4_F5_G4_G5 = vec_F4_F5_G4_G5,
-                            vec_F6_F7_G6_G7 = vec_F6_F7_G6_G7,
-                            vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9,
-                            vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1,
-                            vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3,
-                            vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5,
-                            vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
-                            vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9)
+                    tmp_x = "x2",
+                    vec_2x_2p30m1 = vec_2x_2p30m1,
+                    vec_F0_F1_G0_G1 = vec_F0_F1_G0_G1,
+                    vec_F2_F3_G2_G3 = vec_F2_F3_G2_G3,
+                    vec_F4_F5_G4_G5 = vec_F4_F5_G4_G5,
+                    vec_F6_F7_G6_G7 = vec_F6_F7_G6_G7,
+                    vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9,
+                    vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1,
+                    vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3,
+                    vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5,
+                    vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
+                    vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9)
 
 asm_main += f"uzp1 {vec_4x_2p30m1}.4s, {vec_2x_2p30m1}.4s, {vec_2x_2p30m1}.4s\n"
 
@@ -129,7 +148,7 @@ asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
                                 uu=uu, vv=vv, rr=rr, ss=ss)
 
-asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += loop_update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                       vec_F0_F1_G0_G1=vec_F0_F1_G0_G1,
                       vec_F2_F3_G2_G3=vec_F2_F3_G2_G3,
@@ -143,7 +162,7 @@ asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 
 
 
-asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0, 
+asm_main += loop_update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0, 
               vec_uu1_rr1_vv1_ss1 = vec_uu1_rr1_vv1_ss1, 
               vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
               vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3, 

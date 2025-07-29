@@ -1,3 +1,4 @@
+.include "snap.inc"
 .global inverse
 .global _inverse
 inverse:
@@ -28,28 +29,32 @@ ushr v1.2d, v4.2d, #34
 and v3.16b, v8.16b, v1.16b
 ushr v12.2d, v8.2d, #30
 and v12.16b, v12.16b, v1.16b
-sli v3.2d, v12.2d, #32
+shl v12.2d, v12.2d, #32
+orr v3.16b, v3.16b, v12.16b
 ushr v4.2d, v8.2d, #60
 shl v12.2d, v9.2d, #4
 and v12.16b, v12.16b, v1.16b
 orr v4.16b, v4.16b, v12.16b
 ushr v12.2d, v9.2d, #26
 and v12.16b, v12.16b, v1.16b
-sli v4.2d, v12.2d, #32
+shl v12.2d, v12.2d, #32
+orr v4.16b, v4.16b, v12.16b
 ushr v5.2d, v9.2d, #56
 shl v12.2d, v10.2d, #8
 and v12.16b, v12.16b, v1.16b
 orr v5.16b, v5.16b, v12.16b
 ushr v12.2d, v10.2d, #22
 and v12.16b, v12.16b, v1.16b
-sli v5.2d, v12.2d, #32
+shl v12.2d, v12.2d, #32
+orr v5.16b, v5.16b, v12.16b
 ushr v6.2d, v10.2d, #52
 shl v12.2d, v11.2d, #12
 and v12.16b, v12.16b, v1.16b
 orr v6.16b, v6.16b, v12.16b
 ushr v12.2d, v11.2d, #18
 and v12.16b, v12.16b, v1.16b
-sli v6.2d, v12.2d, #32
+shl v12.2d, v12.2d, #32
+orr v6.16b, v6.16b, v12.16b
 ushr v7.2d, v11.2d, #48
 movi v8.2d, #0
 mov  x2, #1
@@ -63,6 +68,7 @@ ldr x2, [x1]
 mov x1, #-19
 mov x3, #1
 movz x4, #512, LSL #32
+movz x5, #16384, LSL #48
 add  x6, x4, #1048576
 movz  x7, #10347, LSL #16
 movk  x7, #51739
@@ -78,6 +84,33 @@ and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
 orr x8, x8, #0xC000000000000000
+sub x9, x3, #1
+tst x8, #1
+csel x10, x7, xzr, ne
+tst x9, x8, ror #1
+csneg x3, x9, x3, pl
+csel x7, x8, x7, mi
+csneg x10, x10, x10, pl
+add x8, x8, x10
+asr x8, x8, #1
+sub x9, x3, #1
+tst x8, #1
+csel x10, x7, xzr, ne
+tst x9, x8, ror #1
+csneg x3, x9, x3, pl
+csel x7, x8, x7, mi
+csneg x10, x10, x10, pl
+add x8, x8, x10
+asr x8, x8, #1
+sub x9, x3, #1
+tst x8, #1
+csel x10, x7, xzr, ne
+tst x9, x8, ror #1
+csneg x3, x9, x3, pl
+csel x7, x8, x7, mi
+csneg x10, x10, x10, pl
+add x8, x8, x10
+asr x8, x8, #1
 sub x9, x3, #1
 tst x8, #1
 csel x10, x7, xzr, ne
@@ -664,7 +697,7 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 mov x19, #9
-Lbig_loop:
+big_loop:
 ins v13.s[0], w11
 ins v13.s[1], w13
 ins v13.s[2], w12
@@ -702,7 +735,8 @@ smlal  v16.2d, v13.2s, v4.s[1]
 smlal2 v16.2d, v13.4s, v4.s[3]
 and    v17.16b, v16.16b, v1.16b
 sshr   v16.2d, v16.2d, #30
-sli    v3.2d, v17.2d, #32
+shl    v17.2d, v17.2d, #32
+orr    v3.16b, v3.16b, v17.16b
 // limb 4
 smlal  v16.2d, v14.2s, v4.s[1]
 smlal2 v16.2d, v14.4s, v4.s[3]
@@ -717,7 +751,8 @@ smlal  v16.2d, v13.2s, v5.s[1]
 smlal2 v16.2d, v13.4s, v5.s[3]
 and    v17.16b, v16.16b, v1.16b
 sshr   v16.2d, v16.2d, #30
-sli    v4.2d, v17.2d, #32
+shl    v17.2d, v17.2d, #32
+orr    v4.16b, v4.16b, v17.16b
 // limb 6
 smlal  v16.2d, v14.2s, v5.s[1]
 smlal2 v16.2d, v14.4s, v5.s[3]
@@ -732,7 +767,8 @@ smlal  v16.2d, v13.2s, v6.s[1]
 smlal2 v16.2d, v13.4s, v6.s[3]
 and    v17.16b, v16.16b, v1.16b
 sshr   v16.2d, v16.2d, #30
-sli    v5.2d, v17.2d, #32
+shl    v17.2d, v17.2d, #32
+orr    v5.16b, v5.16b, v17.16b
 // limb 8
 smlal  v16.2d, v14.2s, v6.s[1]
 smlal2 v16.2d, v14.4s, v6.s[3]
@@ -745,7 +781,8 @@ smlal  v16.2d, v14.2s, v7.s[0]
 smlal2 v16.2d, v14.4s, v7.s[2]
 and    v17.16b, v16.16b, v1.16b
 sshr   v7.2d, v16.2d, #30
-sli    v6.2d, v17.2d, #32
+shl    v17.2d, v17.2d, #32
+orr    v6.16b, v6.16b, v17.16b
 mov x9, #19
 dup v16.2d, x9
 // limb 0
@@ -780,7 +817,8 @@ smlal  v17.2d, v13.2s, v9.s[1]
 smlal2 v17.2d, v13.4s, v9.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v8.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v8.16b, v8.16b, v18.16b
 // limb 4
 smlal  v17.2d, v14.2s, v9.s[1]
 smlal2 v17.2d, v14.4s, v9.s[3]
@@ -795,7 +833,8 @@ smlal  v17.2d, v13.2s, v10.s[1]
 smlal2 v17.2d, v13.4s, v10.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v9.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v9.16b, v9.16b, v18.16b
 // limb 6
 smlal  v17.2d, v14.2s, v10.s[1]
 smlal2 v17.2d, v14.4s, v10.s[3]
@@ -810,7 +849,8 @@ smlal  v17.2d, v13.2s, v11.s[1]
 smlal2 v17.2d, v13.4s, v11.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v10.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v10.16b, v10.16b, v18.16b
 // limb 8
 smlal  v17.2d, v14.2s, v11.s[1]
 smlal2 v17.2d, v14.4s, v11.s[3]
@@ -827,7 +867,8 @@ ushll  v20.2d, v20.2s, #15
 add    v17.2d, v17.2d, v20.2d
 and    v18.16b, v17.16b, v1.16b
 sshr   v12.2d, v17.2d, #30
-sli    v11.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v11.16b, v11.16b, v18.16b
 sshr   v18.2d, v12.2d, #15
 shl    v17.2d, v18.2d, #15
 sub    v12.2d, v12.2d, v17.2d
@@ -1039,7 +1080,7 @@ mul x10, x13, x1
 madd x10, x14, x2, x10
 asr x2, x10, #20
 mov x1, x9
-Lend:
+end:
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
@@ -1426,6 +1467,15 @@ csel x7, x8, x7, mi
 csneg x10, x10, x10, pl
 add x8, x8, x10
 asr x8, x8, #1
+sub x9, x3, #1
+tst x8, #1
+csel x10, x7, xzr, ne
+tst x9, x8, ror #1
+csneg x3, x9, x3, pl
+csel x7, x8, x7, mi
+csneg x10, x10, x10, pl
+add x8, x8, x10
+asr x8, x8, #1
 add x16, x7, x6
 asr x16, x16, #42
 add x15, x7, #1048576
@@ -1447,7 +1497,7 @@ mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
 subs x19, x19, #1
-cbnz x19, Lbig_loop
+cbnz x19, big_loop
 ins v13.s[0], w11
 ins v13.s[1], w13
 ins v13.s[2], w12
@@ -1477,6 +1527,62 @@ smlal2 v16.2d, v14.4s, v3.s[3]
 smlal  v16.2d, v13.2s, v4.s[0]
 smlal2 v16.2d, v13.4s, v4.s[2]
 and    v3.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+// limb 3
+smlal  v16.2d, v14.2s, v4.s[0]
+smlal2 v16.2d, v14.4s, v4.s[2]
+smlal  v16.2d, v13.2s, v4.s[1]
+smlal2 v16.2d, v13.4s, v4.s[3]
+and    v17.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+shl    v17.2d, v17.2d, #32
+orr    v3.16b, v3.16b, v17.16b
+// limb 4
+smlal  v16.2d, v14.2s, v4.s[1]
+smlal2 v16.2d, v14.4s, v4.s[3]
+smlal  v16.2d, v13.2s, v5.s[0]
+smlal2 v16.2d, v13.4s, v5.s[2]
+and    v4.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+// limb 5
+smlal  v16.2d, v14.2s, v5.s[0]
+smlal2 v16.2d, v14.4s, v5.s[2]
+smlal  v16.2d, v13.2s, v5.s[1]
+smlal2 v16.2d, v13.4s, v5.s[3]
+and    v17.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+shl    v17.2d, v17.2d, #32
+orr    v4.16b, v4.16b, v17.16b
+// limb 6
+smlal  v16.2d, v14.2s, v5.s[1]
+smlal2 v16.2d, v14.4s, v5.s[3]
+smlal  v16.2d, v13.2s, v6.s[0]
+smlal2 v16.2d, v13.4s, v6.s[2]
+and    v5.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+// limb 7
+smlal  v16.2d, v14.2s, v6.s[0]
+smlal2 v16.2d, v14.4s, v6.s[2]
+smlal  v16.2d, v13.2s, v6.s[1]
+smlal2 v16.2d, v13.4s, v6.s[3]
+and    v17.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+shl    v17.2d, v17.2d, #32
+orr    v5.16b, v5.16b, v17.16b
+// limb 8
+smlal  v16.2d, v14.2s, v6.s[1]
+smlal2 v16.2d, v14.4s, v6.s[3]
+smlal  v16.2d, v13.2s, v7.s[0]
+smlal2 v16.2d, v13.4s, v7.s[2]
+and    v6.16b, v16.16b, v1.16b
+sshr   v16.2d, v16.2d, #30
+// limb 9
+smlal  v16.2d, v14.2s, v7.s[0]
+smlal2 v16.2d, v14.4s, v7.s[2]
+and    v17.16b, v16.16b, v1.16b
+sshr   v7.2d, v16.2d, #30
+shl    v17.2d, v17.2d, #32
+orr    v6.16b, v6.16b, v17.16b
 mov x9, #19
 dup v16.2d, x9
 // limb 0
@@ -1511,7 +1617,8 @@ smlal  v17.2d, v13.2s, v9.s[1]
 smlal2 v17.2d, v13.4s, v9.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v8.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v8.16b, v8.16b, v18.16b
 // limb 4
 smlal  v17.2d, v14.2s, v9.s[1]
 smlal2 v17.2d, v14.4s, v9.s[3]
@@ -1526,7 +1633,8 @@ smlal  v17.2d, v13.2s, v10.s[1]
 smlal2 v17.2d, v13.4s, v10.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v9.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v9.16b, v9.16b, v18.16b
 // limb 6
 smlal  v17.2d, v14.2s, v10.s[1]
 smlal2 v17.2d, v14.4s, v10.s[3]
@@ -1541,7 +1649,8 @@ smlal  v17.2d, v13.2s, v11.s[1]
 smlal2 v17.2d, v13.4s, v11.s[3]
 and    v18.16b, v17.16b, v1.16b
 sshr   v17.2d, v17.2d, #30
-sli    v10.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v10.16b, v10.16b, v18.16b
 // limb 8
 smlal  v17.2d, v14.2s, v11.s[1]
 smlal2 v17.2d, v14.4s, v11.s[3]
@@ -1558,7 +1667,8 @@ ushll  v20.2d, v20.2s, #15
 add    v17.2d, v17.2d, v20.2d
 and    v18.16b, v17.16b, v1.16b
 sshr   v12.2d, v17.2d, #30
-sli    v11.2d, v18.2d, #32
+shl    v18.2d, v18.2d, #32
+orr    v11.16b, v11.16b, v18.16b
 sshr   v18.2d, v12.2d, #15
 shl    v17.2d, v18.2d, #15
 sub    v12.2d, v12.2d, v17.2d

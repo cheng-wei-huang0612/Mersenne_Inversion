@@ -672,6 +672,18 @@ madd x14, x18, x14, x9
 mov x12, x10
 mov x19, #9
 Lbig_loop:
+cmp x11, xzr
+csetm x23, mi
+cneg x11, mi
+cmp x12, xzr
+csetm x24, mi
+cneg x12, mi
+cmp x13, xzr
+csetm x25, mi
+cneg x13, mi
+cmp x14, xzr
+csetm x26, mi
+cneg x14, mi
 ins v13.s[0], w11
 ins v13.s[1], w13
 ins v13.s[2], w12
