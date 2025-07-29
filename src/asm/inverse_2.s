@@ -13,6 +13,7 @@ stp q8, q9, [sp, #-32]!
 stp q10, q11, [sp, #-32]!
 stp q12, q13, [sp, #-32]!
 stp q14, q15, [sp, #-32]!
+L_begin_initialization:
 ldp q5, q6, [x1]
 movi v4.2d, #-1
 mov x2, #-1
@@ -62,9 +63,9 @@ uzp1 v2.4s, v1.4s, v1.4s
 ldr x2, [x1]
 mov x1, #-19
 mov x3, #1
-movz x4, #512, LSL #32
+movz x4, #512, lsl #32
 add  x6, x4, #1048576
-movz  x7, #10347, LSL #16
+movz  x7, #10347, lsl #16
 movk  x7, #51739
 dup  v15.4s, w7
 
@@ -231,6 +232,7 @@ csel x7, x8, x7, mi
 csneg x10, x10, x10, pl
 add x8, x8, x10
 asr x8, x8, #1
+L_end_initialization:
 add x12, x7, x6
 asr x12, x12, #42
 add x11, x7, #1048576

@@ -49,7 +49,7 @@ vec_uu0_rr0_vv0_ss0 = "v13"
 vec_uu1_rr1_vv1_ss1 = "v14"
 vec_4x_M =  "v15"
 
-
+asm_main += f"L_begin_initialization:\n"
 
 asm_main += initialization(ptr_x = ptr_x, 
                     tmp_x = "x2",
@@ -96,10 +96,10 @@ asm_main += f"mov {f}, #-19\n"
 asm_main += f"mov {delta}, #1\n"
 
 # TODO, we do not need 2p41 and 2o62
-asm_main += f"movz {const_2p41}, #512, LSL #32\n"
+asm_main += f"movz {const_2p41}, #512, lsl #32\n"
 #asm_main += f"movz {const_2p62}, #16384, LSL #48\n"
 asm_main += f"add  {const_2p41a2p20}, {const_2p41}, #1048576\n"
-asm_main += f"movz  x7, #10347, LSL #16\n"
+asm_main += f"movz  x7, #10347, lsl #16\n"
 asm_main += f"movk  x7, #51739\n"
 asm_main += f"dup  {vec_4x_M}.4s, w7\n"
 
@@ -116,6 +116,7 @@ asm_main += init_FUV_GRS(FUV=FUV, GRS=GRS, f=f, g=g, const_2p41=const_2p41, cons
 
 #asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=17)
+asm_main += f"L_end_initialization:\n"
 
 
 asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
