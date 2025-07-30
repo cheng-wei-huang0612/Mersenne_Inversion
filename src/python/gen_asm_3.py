@@ -5,7 +5,7 @@ import subprocess
 import os
 asm_main = ""
 
-# asm_main += dot_include("snap.inc")
+asm_main += dot_include("snap.inc")
 asm_main += enter("inverse")
 
 asm_main += push_callee_saved_registers()
@@ -53,10 +53,10 @@ asm_main += f"uzp1 {vec_4x_2p30m1}.4s, {vec_2x_2p30m1}.4s, {vec_2x_2p30m1}.4s\n"
 f = "x1"
 g = "x2"
 delta = "x3"
-f_lo = "x4"
-f_hi = "x21"
-g_lo = "x5"
-g_hi = "x22"
+f_0 = "x4"
+f_1 = "x21"
+g_0 = "x5"
+g_1 = "x22"
 const_2p41a2p20 = "x6"
 FUV = "x7"
 GRS = "x8"
@@ -74,12 +74,12 @@ r = "x17"
 s = "x18"
 
 
-asm_main += f"ldp {g_lo}, {g_hi}, [{ptr_x}]\n"
-asm_main += f"mov {f_lo}, #-19\n"
-asm_main += f"mov {f_hi}, #-1\n"
+asm_main += f"ldp {g_0}, {g_1}, [{ptr_x}]\n"
+asm_main += f"mov {f_0}, #-19\n"
+asm_main += f"mov {f_1}, #-1\n"
 
-asm_main += f"mov {f}, {f_lo}\n"
-asm_main += f"mov {g}, {g_lo}\n"
+asm_main += f"mov {f}, {f_0}\n"
+asm_main += f"mov {g}, {g_0}\n"
 
 asm_main += f"mov {delta}, #1\n"
 
@@ -96,12 +96,7 @@ asm_main += draw_line()
 
 asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
 
-# asm_main += f"SNAP_SCALAR_REG {f}, \"f =\" \n"
-# asm_main += f"SNAP_SCALAR_REG {g}, \"g =\" \n"
-# asm_main += f"SNAP_SCALAR_REG {FUV}, \"FUV =\" \n"
-# asm_main += f"SNAP_SCALAR_REG {GRS}, \"GRS =\" \n"
 
-#asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += divstepxtimes(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=17)
 
 
@@ -123,13 +118,22 @@ asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
 
-#asm_main += f"SNAP_SCALAR_REG {uu}, \"uu =\" \n"
+
+
+
+
 
 # update big number
 
 COUNTER = "x19"
 asm_main += f"mov {COUNTER}, #9\n"
 asm_main += f"Lbig_loop:\n"
+asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+                                vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+                                vec_4x_2p30m1=vec_4x_2p30m1,
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
+
+
 
 
 sign_uu = "x23"
@@ -137,31 +141,104 @@ sign_vv = "x24"
 sign_rr = "x25"
 sign_ss = "x26"
 
+
 asm_main += f"cmp {uu}, xzr\n"
 asm_main += f"csetm {sign_uu}, mi\n"
-asm_main += f"cneg {uu}, mi\n"
+asm_main += f"cneg {uu}, {uu}, mi\n"
 
 asm_main += f"cmp {vv}, xzr\n"
 asm_main += f"csetm {sign_vv}, mi\n"
-asm_main += f"cneg {vv}, mi\n"
+asm_main += f"cneg {vv}, {vv}, mi\n"
 
 asm_main += f"cmp {rr}, xzr\n"
 asm_main += f"csetm {sign_rr}, mi\n"
-asm_main += f"cneg {rr}, mi\n"
+asm_main += f"cneg {rr}, {rr}, mi\n"
 
 asm_main += f"cmp {ss}, xzr\n"
 asm_main += f"csetm {sign_ss}, mi\n"
-asm_main += f"cneg {ss}, mi\n"
+asm_main += f"cneg {ss}, {ss}, mi\n"
+
+tmp0 = "x27"
+tmp1 = "x28"
+new_f_0 = "x15"
+new_f_1 = "x16"
+new_g_0 = "x17"
+new_g_1 = "x18"
+
+prod_lo = "x9"
+prod_hi = "x10"
+
+asm_main += f"and {tmp0}, {uu}, {sign_uu}\n"
+asm_main += f"and {tmp1}, {vv}, {sign_vv}\n"
+asm_main += f"add {new_f_0}, {tmp0}, {tmp1}\n"
+
+asm_main += f"eor {tmp0}, {f_0}, {sign_uu}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {uu}\n"
+asm_main += f"umulh {prod_hi}, {tmp0}, {uu}\n"
+
+asm_main += f"adds {new_f_0}, {prod_lo}, {new_f_0}\n"
+asm_main += f"adc {new_f_1}, {prod_hi}, xzr\n"
+
+asm_main += f"eor {tmp0}, {f_1}, {sign_uu}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {uu}\n"
+asm_main += f"add {new_f_1}, {new_f_1}, {prod_lo}\n"
+
+
+
+asm_main += f"eor {tmp0}, {g_0}, {sign_vv}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {vv}\n"
+asm_main += f"umulh {prod_hi}, {tmp0}, {vv}\n"
+
+asm_main += f"adds {new_f_0}, {prod_lo}, {new_f_0}\n"
+asm_main += f"adc {new_f_1}, {prod_hi}, {new_f_1}\n"
+
+asm_main += f"eor {tmp0}, {g_1}, {sign_vv}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {vv}\n"
+asm_main += f"add {new_f_1}, {new_f_1}, {prod_lo}\n"
+
+asm_main += f"extr {f}, {new_f_1}, {new_f_0}, #60\n"
 
 
 
 
 
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
-                                vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
-                                vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss)
+
+asm_main += f"and {tmp0}, {rr}, {sign_rr}\n"
+asm_main += f"and {tmp1}, {ss}, {sign_ss}\n"
+asm_main += f"add {new_g_0}, {tmp0}, {tmp1}\n"
+
+asm_main += f"eor {tmp0}, {f_0}, {sign_rr}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {rr}\n"
+asm_main += f"umulh {prod_hi}, {tmp0}, {rr}\n"
+
+asm_main += f"adds {new_g_0}, {prod_lo}, {new_g_0}\n"
+asm_main += f"adc {new_g_1}, {prod_hi}, xzr\n"
+
+asm_main += f"eor {tmp0}, {f_1}, {sign_rr}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {rr}\n"
+asm_main += f"add {new_g_1}, {new_g_1}, {prod_lo}\n"
+
+
+
+asm_main += f"eor {tmp0}, {g_0}, {sign_ss}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {ss}\n"
+asm_main += f"umulh {prod_hi}, {tmp0}, {ss}\n"
+
+asm_main += f"adds {new_g_0}, {prod_lo}, {new_g_0}\n"
+asm_main += f"adc {new_g_1}, {prod_hi}, {new_g_1}\n"
+
+asm_main += f"eor {tmp0}, {g_1}, {sign_ss}\n"
+asm_main += f"mul {prod_lo}, {tmp0}, {ss}\n"
+asm_main += f"add {new_g_1}, {new_g_1}, {prod_lo}\n"
+
+asm_main += f"extr {g}, {new_g_1}, {new_g_0}, #60\n"
+
+
+
+
+
+
 
 asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -173,6 +250,24 @@ asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_2x_2p30m1=vec_2x_2p30m1,
                       vec_prod="v16",
                       vec_buffer="v17")
+
+asm_main += f"umov %wregname{f_0}, {vec_F0_F1_G0_G1}.s[0]\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F0_F1_G0_G1}.s[1]\n"
+asm_main += f"add  {f_0}, {f_0}, {tmp0}, lsl #30\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F2_F3_G2_G3}.s[0]\n"
+asm_main += f"add  {f_0}, {f_0}, {tmp0}, lsl #60\n"
+asm_main += f"add  {f_1}, xzr, {tmp0}, lsr #4\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F2_F3_G2_G3}.s[1]\n"
+asm_main += f"add  {f_1}, {f_1}, {tmp0}, lsl #26\n"
+
+asm_main += f"umov %wregname{g_0}, {vec_F0_F1_G0_G1}.s[2]\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F0_F1_G0_G1}.s[3]\n"
+asm_main += f"add  {g_0}, {g_0}, {tmp0}, lsl #30\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F2_F3_G2_G3}.s[2]\n"
+asm_main += f"add  {g_0}, {g_0}, {tmp0}, lsl #60\n"
+asm_main += f"add  {g_1}, xzr, {tmp0}, lsr #4\n"
+asm_main += f"umov %wregname{tmp0}, {vec_F2_F3_G2_G3}.s[3]\n"
+asm_main += f"add  {g_1}, {g_1}, {tmp0}, lsl #26\n"
 
 
 
@@ -212,15 +307,18 @@ asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0,
 
 
 
-asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
-asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
-asm_main += f"add {f}, x9, {f}, lsl #30\n"
-
-asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
-asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
-asm_main += f"add {g}, x9, {g}, lsl #30\n"
+# asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
+# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
+# asm_main += f"add {f}, x9, {f}, lsl #30\n"
 
 
+# asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
+# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
+# asm_main += f"add {g}, x9, {g}, lsl #30\n"
+
+
+# asm_main += f"SNAP_SCALAR_REG {f}, \"f =\" \n"
+# asm_main += f"SNAP_SCALAR_REG {g}, \"g =\" \n"
 
 
 
@@ -263,10 +361,12 @@ asm_main += f"cbnz {COUNTER}, Lbig_loop\n"
 # asm_main += f"SNAP_SCALAR_REG {rr}, \"rr =\" \n"
 # asm_main += f"SNAP_SCALAR_REG {ss}, \"ss =\" \n"
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
-                                uu=uu, vv=vv, rr=rr, ss=ss)
+                                uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
+
+
 # asm_main += prepare_vec_uuvvvrrss_2(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 #                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
 #                                 vec_4x_2p30m1=vec_4x_2p30m1,

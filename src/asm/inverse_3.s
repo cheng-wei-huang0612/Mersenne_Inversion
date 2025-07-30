@@ -1,3 +1,4 @@
+.include "snap.inc"
 .global inverse
 .global _inverse
 inverse:
@@ -672,31 +673,67 @@ madd x14, x18, x14, x9
 mov x12, x10
 mov x19, #9
 Lbig_loop:
+ins v16.d[0], x11
+ins v16.d[1], x13
+ins v17.d[0], x12
+ins v17.d[1], x14
+uzp1 v13.4s, v16.4s, v17.4s
+and v13.16b, v13.16b, v2.16b
+sshr v16.2d, v16.2d, #30
+sshr v17.2d, v17.2d, #30
+uzp1 v14.4s, v16.4s, v17.4s
 cmp x11, xzr
 csetm x23, mi
-cneg x11, mi
+cneg x11, x11, mi
 cmp x12, xzr
 csetm x24, mi
-cneg x12, mi
+cneg x12, x12, mi
 cmp x13, xzr
 csetm x25, mi
-cneg x13, mi
+cneg x13, x13, mi
 cmp x14, xzr
 csetm x26, mi
-cneg x14, mi
-ins v13.s[0], w11
-ins v13.s[1], w13
-ins v13.s[2], w12
-ins v13.s[3], w14
-and v13.16b, v13.16b, v2.16b
-asr x11, x11, #30
-asr x12, x12, #30
-asr x13, x13, #30
-asr x14, x14, #30
-ins v14.s[0], w11
-ins v14.s[1], w13
-ins v14.s[2], w12
-ins v14.s[3], w14
+cneg x14, x14, mi
+and x27, x11, x23
+and x28, x12, x24
+add x15, x27, x28
+eor x27, x4, x23
+mul x9, x27, x11
+umulh x10, x27, x11
+adds x15, x9, x15
+adc x16, x10, xzr
+eor x27, x21, x23
+mul x9, x27, x11
+add x16, x16, x9
+eor x27, x5, x24
+mul x9, x27, x12
+umulh x10, x27, x12
+adds x15, x9, x15
+adc x16, x10, x16
+eor x27, x22, x24
+mul x9, x27, x12
+add x16, x16, x9
+extr x1, x16, x15, #60
+and x27, x13, x25
+and x28, x14, x26
+add x17, x27, x28
+eor x27, x4, x25
+mul x9, x27, x13
+umulh x10, x27, x13
+adds x17, x9, x17
+adc x18, x10, xzr
+eor x27, x21, x25
+mul x9, x27, x13
+add x18, x18, x9
+eor x27, x5, x26
+mul x9, x27, x14
+umulh x10, x27, x14
+adds x17, x9, x17
+adc x18, x10, x18
+eor x27, x22, x26
+mul x9, x27, x14
+add x18, x18, x9
+extr x2, x18, x17, #60
 // limb 0
 smull  v16.2d, v13.2s, v3.s[0]
 smlal2 v16.2d, v13.4s, v3.s[2]
@@ -769,6 +806,22 @@ and    v17.16b, v16.16b, v1.16b
 sshr   v7.2d, v16.2d, #30
 shl    v17.2d, v17.2d, #32
 orr    v6.16b, v6.16b, v17.16b
+umov w4, v3.s[0]
+umov w27, v3.s[1]
+add  x4, x4, x27, lsl #30
+umov w27, v4.s[0]
+add  x4, x4, x27, lsl #60
+add  x21, xzr, x27, lsr #4
+umov w27, v4.s[1]
+add  x21, x21, x27, lsl #26
+umov w5, v3.s[2]
+umov w27, v3.s[3]
+add  x5, x5, x27, lsl #30
+umov w27, v4.s[2]
+add  x5, x5, x27, lsl #60
+add  x22, xzr, x27, lsr #4
+umov w27, v4.s[3]
+add  x22, x22, x27, lsl #26
 mov x9, #19
 dup v16.2d, x9
 // limb 0
@@ -859,12 +912,6 @@ sshr   v18.2d, v12.2d, #15
 shl    v17.2d, v18.2d, #15
 sub    v12.2d, v12.2d, v17.2d
 mla    v8.4s, v18.4s, v16.4s
-umov w1, v3.s[1]
-umov w9, v3.s[0]
-add x1, x9, x1, lsl #30
-umov w2, v3.s[3]
-umov w9, v3.s[2]
-add x2, x9, x2, lsl #30
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
@@ -1475,19 +1522,15 @@ madd x14, x18, x14, x9
 mov x12, x10
 subs x19, x19, #1
 cbnz x19, Lbig_loop
-ins v13.s[0], w11
-ins v13.s[1], w13
-ins v13.s[2], w12
-ins v13.s[3], w14
+ins v16.d[0], x11
+ins v16.d[1], x13
+ins v17.d[0], x12
+ins v17.d[1], x14
+uzp1 v13.4s, v16.4s, v17.4s
 and v13.16b, v13.16b, v2.16b
-asr x11, x11, #30
-asr x12, x12, #30
-asr x13, x13, #30
-asr x14, x14, #30
-ins v14.s[0], w11
-ins v14.s[1], w13
-ins v14.s[2], w12
-ins v14.s[3], w14
+sshr v16.2d, v16.2d, #30
+sshr v17.2d, v17.2d, #30
+uzp1 v14.4s, v16.4s, v17.4s
 // limb 0
 smull  v16.2d, v13.2s, v3.s[0]
 smlal2 v16.2d, v13.4s, v3.s[2]

@@ -2,7 +2,7 @@
 
 .PHONY: clean
 
-TARGET = bench_inverse_1_a72 bench_inverse_1_a76 bench_inverse_2_a72 bench_inverse_2_a76 bench_inverse_2_1_a72 bench_inverse_2_1_a76
+TARGET = bench_inverse_1_a72 bench_inverse_1_a76 bench_inverse_2_a72 bench_inverse_2_a76 bench_inverse_2_1_a72 bench_inverse_2_1_a76 bench_inverse_3_a72
 CC  ?= gcc
 LD  := $(CC)
 
@@ -13,6 +13,7 @@ BENCH_2_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_2_a72.c ../src/opt/inverse
 BENCH_2_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_2_a76.c ../src/opt/inverse_2_a76.s
 BENCH_2_1_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_2_1_a72.c ../src/opt/inverse_2_1_a72.s
 BENCH_2_1_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_2_1_a76.c ../src/opt/inverse_2_1_a76.s
+BENCH_3_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_3_a72.c ../src/opt/inverse_3_a72.s
 
 CFLAGS := \
 	-Wall \
@@ -67,6 +68,9 @@ bench_inverse_2_1_a72: $(BENCH_2_1_A72_SOURCES)
 
 bench_inverse_2_1_a76: $(BENCH_2_1_A76_SOURCES)
 	$(CC) $(CFLAGS) $(BENCH_2_1_A76_SOURCES) -o bench_inverse_2_1_a76
+
+bench_inverse_3_a72: $(BENCH_3_A72_SOURCES)
+	$(CC) $(CFLAGS) $(BENCH_3_A72_SOURCES) -o bench_inverse_3_a72
 
 clean:
 	-$(RM) -rf $(TARGET) *.d
