@@ -55,6 +55,11 @@ bench_update: hal/hal.c bench_update.c update_scalar.s update_vector.s
 	@echo "Building bench_update"
 	$(CC) $(CFLAGS) hal/hal.c bench_update.c -x assembler-with-cpp update_scalar.s update_vector.s -o bench_update
 
+# Special target for bench_innerloop (not included in bench_all)
+bench_innerloop: hal/hal.c bench_innerloop.c s2n_innerloop.s my_innerloop.s
+	@echo "Building bench_innerloop"
+	$(CC) $(CFLAGS) hal/hal.c bench_innerloop.c -x assembler-with-cpp s2n_innerloop.s my_innerloop.s -o bench_innerloop
+
 # Generic rule to build any bench_inverse_* target
 # Try opt directory first, then asm directory
 bench_inverse_%: $(COMMON_SOURCES)
@@ -84,6 +89,7 @@ help:
 	@echo "Available targets:"
 	@echo "  all                    - Build all benchmark binaries"
 	@echo "  bench_update           - Build bench_update binary (separate from bench_all)"
+	@echo "  bench_innerloop        - Build bench_innerloop binary (separate from bench_all)"
 	@echo "  bench_all              - Build and run all benchmarks with sudo"
 	@echo "  clean                  - Remove all built binaries and dependency files"
 	@echo "  help                   - Show this help message"
@@ -106,4 +112,4 @@ help:
 	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGETS) bench_update *.d
+	-$(RM) -rf $(TARGETS) bench_update bench_innerloop *.d
