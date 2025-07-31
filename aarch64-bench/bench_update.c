@@ -51,7 +51,7 @@ static void print_percentiles(const char *txt, uint64_t cyc[NTESTS])
 extern void update_scalar();
 extern void update_vector();
 
-static int bench(void)
+static int bench_scalar(void)
 {
 
   int i, j;
@@ -73,16 +73,42 @@ static int bench(void)
     t1 = get_cyclecounter();
     cycles_ntt[i] = t1 - t0;
   }
-
   qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
-
-  print_median("inv", cycles_ntt);
-
+  print_median("scalar", cycles_ntt);
   printf("\n");
-
   print_percentile_legend();
+  print_percentiles("scalar", cycles_ntt);
 
-  print_percentiles("inv", cycles_ntt);
+  return 0;
+}
+
+static int bench_vector(void)
+{
+
+  int i, j;
+  uint64_t t0, t1;
+  uint64_t cycles_ntt[NTESTS];
+
+  for (i = 0; i < NTESTS; i++)
+  {
+    for (j = 0; j < NWARMUP; j++)
+    {
+      update_vector();
+    }
+
+    t0 = get_cyclecounter();
+    for (j = 0; j < NITERATIONS; j++)
+    {
+      update_vector();
+    }
+    t1 = get_cyclecounter();
+    cycles_ntt[i] = t1 - t0;
+  }
+  qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
+  print_median("scalar", cycles_ntt);
+  printf("\n");
+  print_percentile_legend();
+  print_percentiles("scalar", cycles_ntt);
 
   return 0;
 }
@@ -90,7 +116,9 @@ static int bench(void)
 int main(void)
 {
   enable_cyclecounter();
-  bench();
+  bench_scalar();
+  bench_vector();
+
   disable_cyclecounter();
 
   return 0;

@@ -51,9 +51,9 @@ endif
 all: $(TARGETS)
 
 # Special target for bench_update (not included in bench_all)
-bench_update: hal/hal.c bench_update.c update_scalar.s
+bench_update: hal/hal.c bench_update.c update_scalar.s update_vector.s
 	@echo "Building bench_update"
-	$(CC) $(CFLAGS) hal/hal.c bench_update.c -x assembler-with-cpp update_scalar.s -o bench_update
+	$(CC) $(CFLAGS) hal/hal.c bench_update.c -x assembler-with-cpp update_scalar.s update_vector.s -o bench_update
 
 # Generic rule to build any bench_inverse_* target
 # Try opt directory first, then asm directory
