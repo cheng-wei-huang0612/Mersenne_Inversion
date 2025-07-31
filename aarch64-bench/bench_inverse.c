@@ -47,27 +47,16 @@ static void print_percentiles(const char *txt, uint64_t cyc[NTESTS])
   printf("\n");
 }
 
-
-
-
 extern void inverse(uint64_t inv[static 4], const uint64_t x[static 4]);
-
-
-
-
-
-
 
 static int bench(void)
 {
-
   uint64_t   x[4] = {0};
   uint64_t inv[4] = {0};
 
   int i, j;
   uint64_t t0, t1;
   uint64_t cycles_ntt[NTESTS];
-
 
   for (i = 0; i < NTESTS; i++)
   {
@@ -87,13 +76,13 @@ static int bench(void)
 
   qsort(cycles_ntt, NTESTS, sizeof(uint64_t), cmp_uint64_t);
 
-  print_median("ntt", cycles_ntt);
+  print_median("inv", cycles_ntt);
 
   printf("\n");
 
   print_percentile_legend();
 
-  print_percentiles("ntt", cycles_ntt);
+  print_percentiles("inv", cycles_ntt);
 
   return 0;
 }

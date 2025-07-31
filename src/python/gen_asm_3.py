@@ -239,6 +239,53 @@ asm_main += f"extr {g}, {new_g_1}, {new_g_0}, #60\n"
 
 
 
+# vec = vec_V8_V9_S8_S9
+# asm_main += f"umov %wregname{debug}, {vec}.s[0]\n"
+# asm_main += f"str  {debug}, [{ptr_inv}]\n"
+# asm_main += f"umov %wregname{debug}, {vec}.s[1]\n"
+# asm_main += f"str  {debug}, [{ptr_inv}, #8]\n"
+# asm_main += f"umov %wregname{debug}, {vec}.s[2]\n"
+# asm_main += f"str  {debug}, [{ptr_inv}, #16]\n"
+# asm_main += f"umov %wregname{debug}, {vec}.s[3]\n"
+# asm_main += f"str  {debug}, [{ptr_inv}, #24]\n"
+
+
+
+
+
+
+
+
+
+
+# asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
+# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
+# asm_main += f"add {f}, x9, {f}, lsl #30\n"
+
+
+# asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
+# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
+# asm_main += f"add {g}, x9, {g}, lsl #30\n"
+
+
+# asm_main += f"SNAP_SCALAR_REG {f}, \"f =\" \n"
+# asm_main += f"SNAP_SCALAR_REG {g}, \"g =\" \n"
+
+
+
+
+# if i == 0:
+#     asm_main += f"str {f}, [{ptr_inv}]\n"
+#     asm_main += f"str {g}, [{ptr_inv}, #8]\n"
+
+
+asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
+asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
+asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
+asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
+
+
+
 
 asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                       vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
@@ -288,53 +335,6 @@ asm_main += update_VS(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0,
               vec_l0 = "v19",
               vec_l1 = "v20")
 
-# vec = vec_V8_V9_S8_S9
-# asm_main += f"umov %wregname{debug}, {vec}.s[0]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[1]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #8]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[2]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #16]\n"
-# asm_main += f"umov %wregname{debug}, {vec}.s[3]\n"
-# asm_main += f"str  {debug}, [{ptr_inv}, #24]\n"
-
-
-
-
-
-
-
-
-
-
-# asm_main += f"umov %wregname{f}, {vec_F0_F1_G0_G1}.s[1]\n"
-# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[0]\n"
-# asm_main += f"add {f}, x9, {f}, lsl #30\n"
-
-
-# asm_main += f"umov %wregname{g}, {vec_F0_F1_G0_G1}.s[3]\n"
-# asm_main += f"umov w9, {vec_F0_F1_G0_G1}.s[2]\n"
-# asm_main += f"add {g}, x9, {g}, lsl #30\n"
-
-
-# asm_main += f"SNAP_SCALAR_REG {f}, \"f =\" \n"
-# asm_main += f"SNAP_SCALAR_REG {g}, \"g =\" \n"
-
-
-
-
-# if i == 0:
-#     asm_main += f"str {f}, [{ptr_inv}]\n"
-#     asm_main += f"str {g}, [{ptr_inv}, #8]\n"
-
-
-asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
-asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
-asm_main += extraction(FUV=FUV, GRS=GRS, u=uu, v=vv, r=rr, s=ss, const_2p41a2p20=const_2p41a2p20)
-asm_main += update_fg_trunc(f=f, g=g, u=uu, v=vv, r=rr, s=ss, tmp1="x9", tmp2="x10")
-
-
-asm_main += f"Lend:\n"
 
 
 asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
@@ -342,6 +342,7 @@ asm_main += divstepx20(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10")
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+asm_main += f"Lend:\n"
 
 
 asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)

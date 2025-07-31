@@ -1,19 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
-.PHONY: clean
+.PHONY: clean bench_all help
 
-TARGET = bench_inverse_1_a72 bench_inverse_1_a76 bench_inverse_2_a72 bench_inverse_2_a76 bench_inverse_2_1_a72 bench_inverse_2_1_a76 bench_inverse_3_a72
+# Automatically find all .s files and generate target names
+ASM_FILES := $(wildcard ../src/opt/inverse_*.s)
+TARGETS := $(patsubst ../src/opt/inverse_%.s,bench_inverse_%,$(ASM_FILES))
+
 CC  ?= gcc
 LD  := $(CC)
 
-COMMON_SOURCES = hal/hal.c
-BENCH_1_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_1_a72.c ../src/opt/inverse_1_a72.s
-BENCH_1_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_1_a76.c ../src/opt/inverse_1_a76.s
-BENCH_2_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_2_a72.c ../src/opt/inverse_2_a72.s
-BENCH_2_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_2_a76.c ../src/opt/inverse_2_a76.s
-BENCH_2_1_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_2_1_a72.c ../src/opt/inverse_2_1_a72.s
-BENCH_2_1_A76_SOURCES = $(COMMON_SOURCES) bench_inverse_2_1_a76.c ../src/opt/inverse_2_1_a76.s
-BENCH_3_A72_SOURCES = $(COMMON_SOURCES) bench_inverse_3_a72.c ../src/opt/inverse_3_a72.s
+COMMON_SOURCES = hal/hal.c bench_inverse.c
 
 CFLAGS := \
 	-Wall \
@@ -49,28 +45,46 @@ ifeq ($(CYCLES),MAC)
 	CFLAGS += -DMAC_CYCLES
 endif
 
-all: $(TARGET)
+all: $(TARGETS)
 
-bench_inverse_1_a72: $(BENCH_1_A72_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_1_A72_SOURCES) -o bench_inverse_1_a72
+# Generic rule to build any bench_inverse_* target
+bench_inverse_%: $(COMMON_SOURCES) ../src/opt/inverse_%.s
+	$(CC) $(CFLAGS) $(COMMON_SOURCES) ../src/opt/inverse_$*.s -o $@
 
-bench_inverse_1_a76: $(BENCH_1_A76_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_1_A76_SOURCES) -o bench_inverse_1_a76
+bench_all: all
+	@echo "Running all benchmarks with sudo..."
+	@for target in $(TARGETS); do \
+		echo "=== Running $$target ==="; \
+		sudo ./$$target; \
+		echo; \
+	done
 
-bench_inverse_2_a72: $(BENCH_2_A72_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_2_A72_SOURCES) -o bench_inverse_2_a72
-
-bench_inverse_2_a76: $(BENCH_2_A76_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_2_A76_SOURCES) -o bench_inverse_2_a76
-
-bench_inverse_2_1_a72: $(BENCH_2_1_A72_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_2_1_A72_SOURCES) -o bench_inverse_2_1_a72
-
-bench_inverse_2_1_a76: $(BENCH_2_1_A76_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_2_1_A76_SOURCES) -o bench_inverse_2_1_a76
-
-bench_inverse_3_a72: $(BENCH_3_A72_SOURCES)
-	$(CC) $(CFLAGS) $(BENCH_3_A72_SOURCES) -o bench_inverse_3_a72
+help:
+	@echo "Mersenne Inversion Benchmark Suite"
+	@echo "=================================="
+	@echo ""
+	@echo "Available targets:"
+	@echo "  all                    - Build all benchmark binaries"
+	@echo "  bench_all              - Build and run all benchmarks with sudo"
+	@echo "  clean                  - Remove all built binaries and dependency files"
+	@echo "  help                   - Show this help message"
+	@echo ""
+	@echo "Auto-discovered benchmark targets:"
+	@for target in $(TARGETS); do \
+		asm_file=$$(echo $$target | sed 's/bench_//'); \
+		echo "  $$target - Build benchmark for $$asm_file"; \
+	done
+	@echo ""
+	@echo "Cycle counting options (set CYCLES variable):"
+	@echo "  CYCLES=PMU             - Use Performance Monitoring Unit (user mode)"
+	@echo "  CYCLES=PERF            - Use Linux perf events (requires root)"
+	@echo "  CYCLES=MAC             - Use Apple KPC framework (requires root on macOS)"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make CYCLES=MAC all                    - Build all with MAC cycle counting"
+	@echo "  make CYCLES=PMU bench_inverse_3_a72    - Build and run specific benchmark"
+	@echo "  make CYCLES=MAC bench_all              - Build and run all benchmarks"
+	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGET) *.d
+	-$(RM) -rf $(TARGETS) *.d
