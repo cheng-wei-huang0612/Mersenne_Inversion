@@ -61,7 +61,7 @@ stp x22, x23, [sp, #-16]!
 stp x24, x25, [sp, #-16]!
 stp x26, x27, [sp, #-16]!
 stp x28, x29, [sp, #-16]!
-stp x30, x31, [sp, #-16]!
+stp x30, x30, [sp, #-16]!
 
 
 
@@ -398,7 +398,7 @@ subs x23, x23, #1
 cbnz x23, loop
 
 
-ldp x30, x31, [sp], #16
+ldp x30, x30, [sp], #16
 ldp x28, x29, [sp], #16
 ldp x26, x27, [sp], #16
 ldp x24, x25, [sp], #16
