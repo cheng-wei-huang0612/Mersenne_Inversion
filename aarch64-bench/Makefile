@@ -50,6 +50,11 @@ endif
 
 all: $(TARGETS)
 
+# Special target for bench_update (not included in bench_all)
+bench_update: hal/hal.c bench_update.c update_scalar.s
+	@echo "Building bench_update"
+	$(CC) $(CFLAGS) hal/hal.c bench_update.c -x assembler-with-cpp update_scalar.s -o bench_update
+
 # Generic rule to build any bench_inverse_* target
 # Try opt directory first, then asm directory
 bench_inverse_%: $(COMMON_SOURCES)
@@ -78,6 +83,7 @@ help:
 	@echo ""
 	@echo "Available targets:"
 	@echo "  all                    - Build all benchmark binaries"
+	@echo "  bench_update           - Build bench_update binary (separate from bench_all)"
 	@echo "  bench_all              - Build and run all benchmarks with sudo"
 	@echo "  clean                  - Remove all built binaries and dependency files"
 	@echo "  help                   - Show this help message"
@@ -100,4 +106,4 @@ help:
 	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGETS) *.d
+	-$(RM) -rf $(TARGETS) bench_update *.d
