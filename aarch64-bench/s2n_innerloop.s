@@ -17,7 +17,7 @@ s2n_innerloop:
 _s2n_innerloop:
 
 
-mov x0, #10
+mov x0, #100
 
 loop:
 
