@@ -2,9 +2,12 @@
 
 .PHONY: clean bench_all help
 
-# Automatically find all .s files and generate target names
-ASM_FILES := $(wildcard ../src/opt/inverse_*.s)
-TARGETS := $(patsubst ../src/opt/inverse_%.s,bench_inverse_%,$(ASM_FILES))
+# Automatically find all .s files from both asm and opt directories
+ASM_FILES_OPT := $(wildcard ../src/opt/inverse_*.s)
+ASM_FILES_ASM := $(wildcard ../src/asm/inverse_*.s)
+ASM_FILES := $(ASM_FILES_OPT) $(ASM_FILES_ASM)
+TARGETS := $(patsubst ../src/opt/inverse_%.s,bench_inverse_%,$(ASM_FILES_OPT)) \
+           $(patsubst ../src/asm/inverse_%.s,bench_inverse_%,$(ASM_FILES_ASM))
 
 CC  ?= gcc
 LD  := $(CC)
@@ -48,8 +51,18 @@ endif
 all: $(TARGETS)
 
 # Generic rule to build any bench_inverse_* target
-bench_inverse_%: $(COMMON_SOURCES) ../src/opt/inverse_%.s
-	$(CC) $(CFLAGS) $(COMMON_SOURCES) ../src/opt/inverse_$*.s -o $@
+# Try opt directory first, then asm directory
+bench_inverse_%: $(COMMON_SOURCES)
+	@if [ -f ../src/opt/inverse_$*.s ]; then \
+		echo "Building $@ (optimized)"; \
+		$(CC) $(CFLAGS) $(COMMON_SOURCES) ../src/opt/inverse_$*.s -o $@; \
+	elif [ -f ../src/asm/inverse_$*.s ]; then \
+		echo "Building $@ (standard)"; \
+		$(CC) $(CFLAGS) $(COMMON_SOURCES) ../src/asm/inverse_$*.s -o $@; \
+	else \
+		echo "Error: inverse_$*.s not found in opt or asm directories"; \
+		exit 1; \
+	fi
 
 bench_all: all
 	@echo "Running all benchmarks with sudo..."
