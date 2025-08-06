@@ -682,18 +682,18 @@ and v13.16b, v13.16b, v2.16b
 sshr v16.2d, v16.2d, #30
 sshr v17.2d, v17.2d, #30
 uzp1 v14.4s, v16.4s, v17.4s
-asr x23, x11, #63
-eor x11, x11, x23
-sub x11, x11, x23
-asr x24, x12, #63
-eor x12, x12, x24
-sub x12, x12, x24
-asr x25, x13, #63
-eor x13, x13, x25
-sub x13, x13, x25
-asr x26, x14, #63
-eor x14, x14, x26
-sub x14, x14, x26
+cmp x11, xzr
+csetm x23, mi
+cneg x11, x11, mi
+cmp x12, xzr
+csetm x24, mi
+cneg x12, x12, mi
+cmp x13, xzr
+csetm x25, mi
+cneg x13, x13, mi
+cmp x14, xzr
+csetm x26, mi
+cneg x14, x14, mi
 and x27, x11, x23
 and x28, x12, x24
 add x15, x27, x28
@@ -935,6 +935,8 @@ mul x10, x13, x1
 madd x10, x14, x2, x10
 asr x2, x10, #20
 mov x1, x9
+Lend:
+L_optloop_start_1:
 // limb 0
 smull  v16.2d, v13.2s, v3.s[0]
 smlal2 v16.2d, v13.4s, v3.s[2]
@@ -1023,6 +1025,219 @@ add  x5, x5, x27, lsl #60
 add  x22, xzr, x27, lsr #4
 umov w27, v4.s[3]
 add  x22, x22, x27, lsl #26
+and x7, x1, #1048575
+and x8, x2, #1048575
+orr x7, x7, #0xFFFFFE0000000000
+orr x8, x8, #0xC000000000000000
+tst x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+tst x8, #2
+asr  x8, x8, #1
+csel x10, x7, xzr, ne
+ccmp x3, xzr, #0x8, ne
+cneg x3, x3, ge
+cneg x10, x10, ge
+csel x7, x8, x7, ge
+add  x8, x8, x10
+add  x3, x3, #2
+asr  x8, x8, #1
+add x16, x7, x6
+asr x16, x16, #42
+add x15, x7, #1048576
+lsl x15, x15, #22
+asr x15, x15, #43
+add x18, x8, x6
+asr x18, x18, #42
+add x17, x8, #1048576
+lsl x17, x17, #22
+asr x17, x17, #43
+mul x9, x15, x1
+madd x9, x16, x2, x9
+asr x9, x9, #20
+mul x10, x17, x1
+madd x10, x18, x2, x10
+asr x2, x10, #20
+mov x1, x9
+mul x9, x15, x11
+madd x10,  x16, x13, x9
+mul x9, x17, x11
+madd x13, x18, x13, x9
+mov x11, x10
+mul x9, x15, x12
+madd x10,  x16, x14, x9
+mul x9, x17, x12
+madd x14, x18, x14, x9
+mov x12, x10
+L_optloop_end_1:
+L_optloop_start_2:
 mov x9, #19
 dup v16.2d, x9
 // limb 0
@@ -1287,218 +1502,6 @@ cneg x10, x10, ge
 csel x7, x8, x7, ge
 add  x8, x8, x10
 add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-asr  x8, x8, #1
-add x16, x7, x6
-asr x16, x16, #42
-add x15, x7, #1048576
-lsl x15, x15, #22
-asr x15, x15, #43
-add x18, x8, x6
-asr x18, x18, #42
-add x17, x8, #1048576
-lsl x17, x17, #22
-asr x17, x17, #43
-mul x9, x15, x1
-madd x9, x16, x2, x9
-asr x9, x9, #20
-mul x10, x17, x1
-madd x10, x18, x2, x10
-asr x2, x10, #20
-mov x1, x9
-mul x9, x15, x11
-madd x10,  x16, x13, x9
-mul x9, x17, x11
-madd x13, x18, x13, x9
-mov x11, x10
-mul x9, x15, x12
-madd x10,  x16, x14, x9
-mul x9, x17, x12
-madd x14, x18, x14, x9
-mov x12, x10
-Lend:
-and x7, x1, #1048575
-and x8, x2, #1048575
-orr x7, x7, #0xFFFFFE0000000000
-orr x8, x8, #0xC000000000000000
-tst x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
-tst x8, #2
-asr  x8, x8, #1
-csel x10, x7, xzr, ne
-ccmp x3, xzr, #0x8, ne
-cneg x3, x3, ge
-cneg x10, x10, ge
-csel x7, x8, x7, ge
-add  x8, x8, x10
-add  x3, x3, #2
 asr  x8, x8, #1
 add x16, x7, x6
 asr x16, x16, #42
@@ -1520,6 +1523,7 @@ madd x10,  x16, x14, x9
 mul x9, x17, x12
 madd x14, x18, x14, x9
 mov x12, x10
+L_optloop_end_2:
 subs x19, x19, #1
 cbnz x19, Lbig_loop
 ins v16.d[0], x11
