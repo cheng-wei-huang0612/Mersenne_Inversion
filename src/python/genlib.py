@@ -379,6 +379,40 @@ def divstepxtimes(FUV, GRS, delta, m1, ff, times=20):
     # asm_script += f".endr\n"
     return asm_script
 
+def divstepxtimes_2(FUV, GRS, delta, m1, ff, times=20):
+    asm_script = ""
+    #asm_script += f".rept {times}\n"
+    asm_script += f"tst {GRS}, #1\n"
+
+    asm_script += f"csel {ff}, {FUV}, xzr, ne\n"
+    asm_script += f"ccmp {delta}, xzr, #0x8, ne\n"
+    asm_script += f"cneg {delta}, {delta}, ge\n"
+    asm_script += f"cneg {ff}, {ff}, ge\n"
+    asm_script += f"csel {FUV}, {GRS}, {FUV}, ge\n"
+    asm_script += f"add  {GRS}, {GRS}, {ff}\n"
+    asm_script += f"add  {delta}, {delta}, #2\n"
+
+
+    for i in range(times-1):
+        asm_script += f"tst {GRS}, #2\n"
+        asm_script += f"asr  {GRS}, {GRS}, #1\n"
+
+        asm_script += f"csel {ff}, {FUV}, xzr, ne\n"
+        asm_script += f"ccmp {delta}, xzr, #0x8, ne\n"
+        asm_script += f"cneg {delta}, {delta}, ge\n"
+        asm_script += f"cneg {ff}, {ff}, ge\n"
+        asm_script += f"csel {FUV}, {GRS}, {FUV}, ge\n"
+        asm_script += f"add  {GRS}, {GRS}, {ff}\n"
+        asm_script += f"add  {delta}, {delta}, #2\n"
+        
+    asm_script += f"asr  {GRS}, {GRS}, #1\n"
+
+
+
+    # asm_script += f".endr\n"
+    return asm_script
+
+
 
 
 def divstepx20(FUV, GRS, delta, m1, ff):
