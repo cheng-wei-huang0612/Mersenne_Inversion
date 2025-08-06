@@ -682,18 +682,18 @@ and v13.16b, v13.16b, v2.16b
 sshr v16.2d, v16.2d, #30
 sshr v17.2d, v17.2d, #30
 uzp1 v14.4s, v16.4s, v17.4s
-cmp x11, xzr
-csetm x23, mi
-cneg x11, x11, mi
-cmp x12, xzr
-csetm x24, mi
-cneg x12, x12, mi
-cmp x13, xzr
-csetm x25, mi
-cneg x13, x13, mi
-cmp x14, xzr
-csetm x26, mi
-cneg x14, x14, mi
+asr x23, x11, #63
+eor x11, x11, x23
+sub x11, x11, x23
+asr x24, x12, #63
+eor x12, x12, x24
+sub x12, x12, x24
+asr x25, x13, #63
+eor x13, x13, x25
+sub x13, x13, x25
+asr x26, x14, #63
+eor x14, x14, x26
+sub x14, x14, x26
 and x27, x11, x23
 and x28, x12, x24
 add x15, x27, x28

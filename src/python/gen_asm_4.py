@@ -146,21 +146,41 @@ sign_rr = "x25"
 sign_ss = "x26"
 
 
-asm_main += f"cmp {uu}, xzr\n"
-asm_main += f"csetm {sign_uu}, mi\n"
-asm_main += f"cneg {uu}, {uu}, mi\n"
+# asm_main += f"cmp {uu}, xzr\n"
+# asm_main += f"csetm {sign_uu}, mi\n"
+# asm_main += f"cneg {uu}, {uu}, mi\n"
 
-asm_main += f"cmp {vv}, xzr\n"
-asm_main += f"csetm {sign_vv}, mi\n"
-asm_main += f"cneg {vv}, {vv}, mi\n"
+# asm_main += f"cmp {vv}, xzr\n"
+# asm_main += f"csetm {sign_vv}, mi\n"
+# asm_main += f"cneg {vv}, {vv}, mi\n"
 
-asm_main += f"cmp {rr}, xzr\n"
-asm_main += f"csetm {sign_rr}, mi\n"
-asm_main += f"cneg {rr}, {rr}, mi\n"
+# asm_main += f"cmp {rr}, xzr\n"
+# asm_main += f"csetm {sign_rr}, mi\n"
+# asm_main += f"cneg {rr}, {rr}, mi\n"
 
-asm_main += f"cmp {ss}, xzr\n"
-asm_main += f"csetm {sign_ss}, mi\n"
-asm_main += f"cneg {ss}, {ss}, mi\n"
+# asm_main += f"cmp {ss}, xzr\n"
+# asm_main += f"csetm {sign_ss}, mi\n"
+# asm_main += f"cneg {ss}, {ss}, mi\n"
+
+
+asm_main += f"asr {sign_uu}, {uu}, #63\n"
+asm_main += f"eor {uu}, {uu}, {sign_uu}\n"
+asm_main += f"sub {uu}, {uu}, {sign_uu}\n"
+
+asm_main += f"asr {sign_vv}, {vv}, #63\n"
+asm_main += f"eor {vv}, {vv}, {sign_vv}\n"
+asm_main += f"sub {vv}, {vv}, {sign_vv}\n"
+
+asm_main += f"asr {sign_rr}, {rr}, #63\n"
+asm_main += f"eor {rr}, {rr}, {sign_rr}\n"
+asm_main += f"sub {rr}, {rr}, {sign_rr}\n"
+
+asm_main += f"asr {sign_ss}, {ss}, #63\n"
+asm_main += f"eor {ss}, {ss}, {sign_ss}\n"
+asm_main += f"sub {ss}, {ss}, {sign_ss}\n"
+
+
+
 
 tmp0 = "x27"
 tmp1 = "x28"
