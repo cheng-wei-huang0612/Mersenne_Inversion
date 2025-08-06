@@ -63,9 +63,9 @@ BIGNUM_DRIVER_BIN = bignum_driver
 CFLAGS = -O2 -std=c11 -I$(INCLUDE_DIR)
 LDFLAGS = -lgmp
 
-.PHONY: all clean generate1 generate2 generate2_1 generate3 generate4 test1 test2 test2_1 test3 test4 driver1 driver2 driver2_1 driver3 driver4 driver_a72 driver_a76 driver2_a72 driver2_a76 driver2_1_a72 driver2_1_a76 random_test1 random_test2 random_test2_1 random_test3 random_test4 random_test_a72 random_test_a76 random_test2_a72 random_test2_a76 random_test2_1_a72 random_test2_1_a76 test_a72 test_a76 test2_a72 test2_a76 test2_1_a72 test2_1_a76 random_test_a72_run random_test_a76_run random_test2_a72_run random_test2_a76_run random_test2_1_a72_run random_test2_1_a76_run inverse_ref bignum test-bignum
+.PHONY: all clean generate1 generate2 generate2_1 generate3 generate4 test1 test2 test2_1 test3 test4 driver1 driver2 driver2_1 driver3 driver4 driver_a72 driver_a76 driver2_a72 driver2_a76 driver2_1_a72 driver2_1_a76 random_test1 random_test2 random_test2_1 random_test3 random_test4 random_test_a72 random_test_a76 random_test2_a72 random_test2_a76 random_test2_1_a72 random_test2_1_a76 test_a72 test_a76 test2_a72 test2_a76 test2_1_a72 test2_1_a76 random_test_a72_run random_test_a76_run random_test2_a72_run random_test2_a76_run random_test2_1_a72_run random_test2_1_a76_run run_all_random_test inverse_ref bignum test-bignum
 
-all: generate1 driver1
+all: generate1 generate2 generate2_1 generate3 generate4 driver1 driver2 driver2_1 driver3 driver4
 
 # Generate assembly code and snap.inc for version 1
 generate1: $(GENERATED_ASM1) $(SNAP_INC)
@@ -319,7 +319,7 @@ clean:
 # Help
 help:
 	@echo "Available targets:"
-	@echo "  all         - Generate assembly (v1) and build driver1 (default)"
+	@echo "  all         - Generate all assembly versions and build all drivers (default)"
 	@echo "  generate1   - Generate assembly code from gen_asm_1.py"
 	@echo "  generate2   - Generate assembly code from gen_asm_2.py"
 	@echo "  generate2_1 - Generate assembly code from gen_asm_2_1.py"
