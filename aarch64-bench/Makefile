@@ -60,6 +60,16 @@ bench_innerloop: hal/hal.c bench_innerloop.c s2n_innerloop.s my_innerloop.s
 	@echo "Building bench_innerloop"
 	$(CC) $(CFLAGS) hal/hal.c bench_innerloop.c -x assembler-with-cpp s2n_innerloop.s my_innerloop.s -o bench_innerloop
 
+# Special target for bench_bignum_inv_p25519 (not included in bench_all)
+bench_bignum_inv_p25519: hal/hal.c bench_bignum_inv_p25519.c ../external/bignum_inv_p25519.S
+	@echo "Building bench_bignum_inv_p25519"
+	$(CC) $(CFLAGS) hal/hal.c bench_bignum_inv_p25519.c -x assembler-with-cpp ../external/bignum_inv_p25519.S -o bench_bignum_inv_p25519
+
+# Special target for bench_bignum_inv_p25519_slothy (not included in bench_all)
+bench_bignum_inv_p25519_slothy: hal/hal.c bench_bignum_inv_p25519.c ../external/bignum_inv_p25519_slothy_10_full_iterations.S
+	@echo "Building bench_bignum_inv_p25519_slothy"
+	$(CC) $(CFLAGS) hal/hal.c bench_bignum_inv_p25519.c -x assembler-with-cpp ../external/bignum_inv_p25519_slothy_10_full_iterations.S -o bench_bignum_inv_p25519_slothy
+
 # Generic rule to build any bench_inverse_* target
 # Try opt directory first, then asm directory
 bench_inverse_%: $(COMMON_SOURCES)
@@ -87,12 +97,14 @@ help:
 	@echo "=================================="
 	@echo ""
 	@echo "Available targets:"
-	@echo "  all                    - Build all benchmark binaries"
-	@echo "  bench_update           - Build bench_update binary (separate from bench_all)"
-	@echo "  bench_innerloop        - Build bench_innerloop binary (separate from bench_all)"
-	@echo "  bench_all              - Build and run all benchmarks with sudo"
-	@echo "  clean                  - Remove all built binaries and dependency files"
-	@echo "  help                   - Show this help message"
+	@echo "  all                              - Build all benchmark binaries"
+	@echo "  bench_update                     - Build bench_update binary (separate from bench_all)"
+	@echo "  bench_innerloop                  - Build bench_innerloop binary (separate from bench_all)"
+	@echo "  bench_bignum_inv_p25519          - Build bench_bignum_inv_p25519 binary (separate from bench_all)"
+	@echo "  bench_bignum_inv_p25519_slothy   - Build bench_bignum_inv_p25519_slothy binary (separate from bench_all)"
+	@echo "  bench_all                        - Build and run all benchmarks with sudo"
+	@echo "  clean                            - Remove all built binaries and dependency files"
+	@echo "  help                             - Show this help message"
 	@echo ""
 	@echo "Auto-discovered benchmark targets:"
 	@for target in $(TARGETS); do \
@@ -109,7 +121,8 @@ help:
 	@echo "  make CYCLES=MAC all                    - Build all with MAC cycle counting"
 	@echo "  make CYCLES=PMU bench_inverse_3_a72    - Build and run specific benchmark"
 	@echo "  make CYCLES=MAC bench_all              - Build and run all benchmarks"
+	@echo "  make CYCLES=PMU bench_bignum_inv_p25519 - Build and run bignum_inv_p25519 benchmark"
 	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGETS) bench_update bench_innerloop *.d
+	-$(RM) -rf $(TARGETS) bench_update bench_innerloop bench_bignum_inv_p25519 bench_bignum_inv_p25519_slothy *.d
