@@ -1716,6 +1716,23 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
 
 
 
+
+
+    return asm_script
+
+
+def update_VS_carry(vec_V0_V1_S0_S1, 
+              vec_V2_V3_S2_S3, 
+              vec_V4_V5_S4_S5, 
+              vec_V6_V7_S6_S7,
+              vec_V8_V9_S8_S9,
+              vec_2x_2p30m1,
+              vec_prod,
+              vec_buffer):
+
+    asm_script = ""
+
+
     # carry process
     vec_carry_clearer = vec_prod
     asm_script += f"dup    {vec_carry_clearer}.4s, {vec_2x_2p30m1}.s[0]\n"
@@ -1760,10 +1777,7 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
 
 
-
-
     return asm_script
-
 
 def update_VS(vec_uu0_rr0_vv0_ss0, 
               vec_uu1_rr1_vv1_ss1, 
