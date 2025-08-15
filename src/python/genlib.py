@@ -1729,6 +1729,7 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"sshr   {vec_buffer}.2d, {vec_V0_V1_S0_S1}.2d, #30\n"
     asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V0_V1_S0_S1}.16b, {vec_V0_V1_S0_S1}.16b, {vec_carry_clearer}.16b\n"
 
 
     asm_script += f"sshr   {vec_buffer}.4s,  {vec_V2_V3_S2_S3}.4s, #30\n"
@@ -1737,6 +1738,7 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"sshr   {vec_buffer}.2d, {vec_V2_V3_S2_S3}.2d, #30\n"
     asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V2_V3_S2_S3}.16b, {vec_V2_V3_S2_S3}.16b, {vec_carry_clearer}.16b\n"
 
 
 
@@ -1746,6 +1748,7 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"sshr   {vec_buffer}.2d, {vec_V4_V5_S4_S5}.2d, #30\n"
     asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V4_V5_S4_S5}.16b, {vec_V4_V5_S4_S5}.16b, {vec_carry_clearer}.16b\n"
 
 
     asm_script += f"sshr   {vec_buffer}.4s,  {vec_V6_V7_S6_S7}.4s, #30\n"
@@ -1754,14 +1757,11 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"sshr   {vec_buffer}.2d, {vec_V6_V7_S6_S7}.2d, #30\n"
     asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     asm_script += f"add    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_buffer}.4s\n"
-
-
-
-
-    asm_script += f"bic    {vec_V0_V1_S0_S1}.16b, {vec_V0_V1_S0_S1}.16b, {vec_carry_clearer}.16b\n"
-    asm_script += f"bic    {vec_V2_V3_S2_S3}.16b, {vec_V2_V3_S2_S3}.16b, {vec_carry_clearer}.16b\n"
-    asm_script += f"bic    {vec_V4_V5_S4_S5}.16b, {vec_V4_V5_S4_S5}.16b, {vec_carry_clearer}.16b\n"
     asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
+
+
+
+
 
 
     return asm_script
