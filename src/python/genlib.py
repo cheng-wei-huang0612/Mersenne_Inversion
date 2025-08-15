@@ -1762,8 +1762,6 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
 
 
 
-
-
     return asm_script
 
 
@@ -1782,7 +1780,7 @@ def update_VS(vec_uu0_rr0_vv0_ss0,
               vec_4x_M,
               vec_l0,
               vec_l1):
-    return update_VS_1(vec_uu0_rr0_vv0_ss0, 
+    return update_VS_2(vec_uu0_rr0_vv0_ss0, 
               vec_uu1_rr1_vv1_ss1, 
               vec_V0_V1_S0_S1, 
               vec_V2_V3_S2_S3, 
