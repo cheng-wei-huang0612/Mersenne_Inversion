@@ -441,8 +441,8 @@ asr x16, x16, #42
 add x15, x7, #1048576
 lsl x15, x15, #22
 asr x15, x15, #43
-add x18, x8, x6
-asr x18, x18, #42
+add x20, x8, x6
+asr x20, x20, #42
 add x17, x8, #1048576
 lsl x17, x17, #22
 asr x17, x17, #43
@@ -450,18 +450,18 @@ mul x9, x15, x1
 madd x9, x16, x2, x9
 asr x9, x9, #20
 mul x10, x17, x1
-madd x10, x18, x2, x10
+madd x10, x20, x2, x10
 asr x2, x10, #20
 mov x1, x9
 mul x9, x15, x11
 madd x10,  x16, x13, x9
 mul x9, x17, x11
-madd x13, x18, x13, x9
+madd x13, x20, x13, x9
 mov x11, x10
 mul x9, x15, x12
 madd x10,  x16, x14, x9
 mul x9, x17, x12
-madd x14, x18, x14, x9
+madd x14, x20, x14, x9
 mov x12, x10
 and x7, x1, #1048575
 and x8, x2, #1048575
@@ -652,20 +652,20 @@ asr x16, x16, #42
 add x15, x7, #1048576
 lsl x15, x15, #22
 asr x15, x15, #43
-add x18, x8, x6
-asr x18, x18, #42
+add x20, x8, x6
+asr x20, x20, #42
 add x17, x8, #1048576
 lsl x17, x17, #22
 asr x17, x17, #43
 mul x9, x15, x11
 madd x10,  x16, x13, x9
 mul x9, x17, x11
-madd x13, x18, x13, x9
+madd x13, x20, x13, x9
 mov x11, x10
 mul x9, x15, x12
 madd x10,  x16, x14, x9
 mul x9, x17, x12
-madd x14, x18, x14, x9
+madd x14, x20, x14, x9
 mov x12, x10
 mov x19, #9
 Lbig_loop:
@@ -717,19 +717,19 @@ eor x27, x4, x25
 mul x9, x27, x13
 umulh x10, x27, x13
 adds x17, x9, x17
-adc x18, x10, xzr
+adc x20, x10, xzr
 eor x27, x21, x25
 mul x9, x27, x13
-add x18, x18, x9
+add x20, x20, x9
 eor x27, x5, x26
 mul x9, x27, x14
 umulh x10, x27, x14
 adds x17, x9, x17
-adc x18, x10, x18
+adc x20, x10, x20
 eor x27, x22, x26
 mul x9, x27, x14
-add x18, x18, x9
-extr x2, x18, x17, #60
+add x20, x20, x9
+extr x2, x20, x17, #60
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
@@ -1210,8 +1210,8 @@ asr x16, x16, #42
 add x15, x7, #1048576
 lsl x15, x15, #22
 asr x15, x15, #43
-add x18, x8, x6
-asr x18, x18, #42
+add x20, x8, x6
+asr x20, x20, #42
 add x17, x8, #1048576
 lsl x17, x17, #22
 asr x17, x17, #43
@@ -1219,18 +1219,18 @@ mul x9, x15, x1
 madd x9, x16, x2, x9
 asr x9, x9, #20
 mul x10, x17, x1
-madd x10, x18, x2, x10
+madd x10, x20, x2, x10
 asr x2, x10, #20
 mov x1, x9
 mul x9, x15, x11
 madd x10,  x16, x13, x9
 mul x9, x17, x11
-madd x13, x18, x13, x9
+madd x13, x20, x13, x9
 mov x11, x10
 mul x9, x15, x12
 madd x10,  x16, x14, x9
 mul x9, x17, x12
-madd x14, x18, x14, x9
+madd x14, x20, x14, x9
 mov x12, x10
 L_optloop_end_1:
 L_optloop_start_2:
@@ -1322,29 +1322,25 @@ sub    v12.2d, v12.2d, v17.2d
 mla    v8.4s, v18.4s, v16.4s
 dup    v17.4s, v1.s[0]
 not    v17.16b, v17.16b
-bic    v18.16b, v8.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v8.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v8.4s, v8.4s, v18.4s
 sshr   v18.2d, v8.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v9.4s, v9.4s, v18.4s
-bic    v18.16b, v9.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v9.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v9.4s, v9.4s, v18.4s
 sshr   v18.2d, v9.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v10.4s, v10.4s, v18.4s
-bic    v18.16b, v10.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v10.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v10.4s, v10.4s, v18.4s
 sshr   v18.2d, v10.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v11.4s, v11.4s, v18.4s
-bic    v18.16b, v11.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v11.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v11.4s, v11.4s, v18.4s
 sshr   v18.2d, v11.2d, #30
@@ -1534,20 +1530,20 @@ asr x16, x16, #42
 add x15, x7, #1048576
 lsl x15, x15, #22
 asr x15, x15, #43
-add x18, x8, x6
-asr x18, x18, #42
+add x20, x8, x6
+asr x20, x20, #42
 add x17, x8, #1048576
 lsl x17, x17, #22
 asr x17, x17, #43
 mul x9, x15, x11
 madd x10,  x16, x13, x9
 mul x9, x17, x11
-madd x13, x18, x13, x9
+madd x13, x20, x13, x9
 mov x11, x10
 mul x9, x15, x12
 madd x10,  x16, x14, x9
 mul x9, x17, x12
-madd x14, x18, x14, x9
+madd x14, x20, x14, x9
 mov x12, x10
 L_optloop_end_2:
 subs x19, x19, #1
@@ -1665,29 +1661,25 @@ sub    v12.2d, v12.2d, v17.2d
 mla    v8.4s, v18.4s, v16.4s
 dup    v17.4s, v1.s[0]
 not    v17.16b, v17.16b
-bic    v18.16b, v8.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v8.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v8.4s, v8.4s, v18.4s
 sshr   v18.2d, v8.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v9.4s, v9.4s, v18.4s
-bic    v18.16b, v9.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v9.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v9.4s, v9.4s, v18.4s
 sshr   v18.2d, v9.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v10.4s, v10.4s, v18.4s
-bic    v18.16b, v10.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v10.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v10.4s, v10.4s, v18.4s
 sshr   v18.2d, v10.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v11.4s, v11.4s, v18.4s
-bic    v18.16b, v11.16b, v1.16b
-sshr   v18.4s,  v18.4s, #30
+sshr   v18.4s,  v11.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v11.4s, v11.4s, v18.4s
 sshr   v18.2d, v11.2d, #30

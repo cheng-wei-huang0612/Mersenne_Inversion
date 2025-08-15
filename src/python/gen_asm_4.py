@@ -74,7 +74,7 @@ ss = "x14"
 u = "x15"
 v = "x16"
 r = "x17"
-s = "x18"
+s = "x20"
 
 
 asm_main += f"ldp {g_0}, {g_1}, [{ptr_x}]\n"
@@ -198,7 +198,7 @@ tmp1 = "x28"
 new_f_0 = "x15"
 new_f_1 = "x16"
 new_g_0 = "x17"
-new_g_1 = "x18"
+new_g_1 = "x20"
 
 prod_lo = "x9"
 prod_hi = "x10"
