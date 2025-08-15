@@ -1321,7 +1321,7 @@ shl    v17.2d, v18.2d, #15
 sub    v12.2d, v12.2d, v17.2d
 mla    v8.4s, v18.4s, v16.4s
 dup    v17.4s, v1.s[0]
-not    v17.16b, v17.16b
+mvn    v17.16b, v17.16b
 sshr   v18.4s,  v8.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v8.4s, v8.4s, v18.4s
@@ -1660,7 +1660,7 @@ shl    v17.2d, v18.2d, #15
 sub    v12.2d, v12.2d, v17.2d
 mla    v8.4s, v18.4s, v16.4s
 dup    v17.4s, v1.s[0]
-not    v17.16b, v17.16b
+mvn    v17.16b, v17.16b
 sshr   v18.4s,  v8.4s, #30
 shl    v18.2d,  v18.2d, #32
 add    v8.4s, v8.4s, v18.4s

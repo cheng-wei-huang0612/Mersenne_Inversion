@@ -1719,7 +1719,7 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     # carry process
     vec_carry_clearer = vec_prod
     asm_script += f"dup    {vec_carry_clearer}.4s, {vec_2x_2p30m1}.s[0]\n"
-    asm_script += f"not    {vec_carry_clearer}.16b, {vec_carry_clearer}.16b\n"
+    asm_script += f"mvn    {vec_carry_clearer}.16b, {vec_carry_clearer}.16b\n"
 
 
 
