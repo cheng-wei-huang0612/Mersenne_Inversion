@@ -1,0 +1,3 @@
+(cd arm; rm -f libs2nbignum.a; make)
+(cd tests; rm -f test; make; ./test -10000 bignum_inv_p25519_)
+(cd benchmarks; make; ./benchmark bignum_inv_p25519_)

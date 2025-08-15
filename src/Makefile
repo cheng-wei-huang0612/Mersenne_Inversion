@@ -33,6 +33,7 @@ OPTIMIZED_ASM2_1_A72 = $(OPT_DIR)/inverse_2_1_a72.s
 OPTIMIZED_ASM2_1_A76 = $(OPT_DIR)/inverse_2_1_a76.s
 OPTIMIZED_ASM3_A72 = $(OPT_DIR)/inverse_3_a72.s
 OPTIMIZED_ASM4_A72 = $(OPT_DIR)/inverse_4_a72.s
+OPTIMIZED_ASM4_A72_4000 = $(OPT_DIR)/inverse_4_a72_4000.s
 OPTIMIZED_ASM4_A72_4100 = $(OPT_DIR)/inverse_4_a72_4100.s
 OPTIMIZED_ASM2_A72_4786 = $(OPT_DIR)/inverse_2_a72_4786.s
 OPTIMIZED_ASM2_A72_4794 = $(OPT_DIR)/inverse_2_a72_4794.s
@@ -53,6 +54,7 @@ DRIVER2_1_A72_BIN = driver2_1_a72
 DRIVER2_1_A76_BIN = driver2_1_a76
 DRIVER3_A72_BIN = driver3_a72
 DRIVER4_A72_BIN = driver4_a72
+DRIVER4_A72_4000_BIN = driver4_a72_4000
 DRIVER4_A72_4100_BIN = driver4_a72_4100
 DRIVER2_A72_4786_BIN = driver2_a72_4786
 DRIVER2_A72_4794_BIN = driver2_a72_4794
@@ -70,6 +72,7 @@ RANDOM_TEST2_1_A72_BIN = random_test2_1_a72
 RANDOM_TEST2_1_A76_BIN = random_test2_1_a76
 RANDOM_TEST3_A72_BIN = random_test3_a72
 RANDOM_TEST4_A72_BIN = random_test4_a72
+RANDOM_TEST4_A72_4000_BIN = random_test4_a72_4000
 RANDOM_TEST4_A72_4100_BIN = random_test4_a72_4100
 RANDOM_TEST2_A72_4786_BIN = random_test2_a72_4786
 RANDOM_TEST2_A72_4794_BIN = random_test2_a72_4794
@@ -81,7 +84,7 @@ BIGNUM_DRIVER_BIN = bignum_driver
 CFLAGS = -O2 -std=c11 -I$(INCLUDE_DIR)
 LDFLAGS = -lgmp
 
-.PHONY: all clean generate1 generate2 generate2_1 generate3 generate4 test1 test2 test2_1 test3 test4 driver1 driver2 driver2_1 driver3 driver4 driver_a72 driver_a76 driver2_a72 driver2_a76 driver2_1_a72 driver2_1_a76 driver3_a72 driver4_a72 driver4_a72_4100 driver2_a72_4786 driver2_a72_4794 driver2_a76_4871 random_test1 random_test2 random_test2_1 random_test3 random_test4 random_test_a72 random_test_a76 random_test2_a72 random_test2_a76 random_test2_1_a72 random_test2_1_a76 random_test3_a72 random_test4_a72 random_test4_a72_4100 random_test2_a72_4786 random_test2_a72_4794 random_test2_a76_4871 test_a72 test_a76 test2_a72 test2_a76 test2_1_a72 test2_1_a76 test3_a72 test4_a72 test4_a72_4100 test2_a72_4786 test2_a72_4794 test2_a76_4871 random_test_a72_run random_test_a76_run random_test2_a72_run random_test2_a76_run random_test2_1_a72_run random_test2_1_a76_run random_test3_a72_run random_test4_a72_run random_test4_a72_4100_run random_test2_a72_4786_run random_test2_a72_4794_run random_test2_a76_4871_run run_all_random_test inverse_ref bignum test-bignum
+.PHONY: all clean generate1 generate2 generate2_1 generate3 generate4 test1 test2 test2_1 test3 test4 driver1 driver2 driver2_1 driver3 driver4 driver_a72 driver_a76 driver2_a72 driver2_a76 driver2_1_a72 driver2_1_a76 driver3_a72 driver4_a72 driver4_a72_4000 driver4_a72_4100 driver2_a72_4786 driver2_a72_4794 driver2_a76_4871 random_test1 random_test2 random_test2_1 random_test3 random_test4 random_test_a72 random_test_a76 random_test2_a72 random_test2_a76 random_test2_1_a72 random_test2_1_a76 random_test3_a72 random_test4_a72 random_test4_a72_4000 random_test4_a72_4100 random_test2_a72_4786 random_test2_a72_4794 random_test2_a76_4871 test_a72 test_a76 test2_a72 test2_a76 test2_1_a72 test2_1_a76 test3_a72 test4_a72 test4_a72_4000 test4_a72_4100 test2_a72_4786 test2_a72_4794 test2_a76_4871 random_test_a72_run random_test_a76_run random_test2_a72_run random_test2_a76_run random_test2_1_a72_run random_test2_1_a76_run random_test3_a72_run random_test4_a72_run random_test4_a72_4000_run random_test4_a72_4100_run random_test2_a72_4786_run random_test2_a72_4794_run random_test2_a76_4871_run run_all_random_test inverse_ref bignum test-bignum
 
 all: generate1 generate2 generate2_1 generate3 generate4 driver1 driver2 driver2_1 driver3 driver4
 
@@ -193,6 +196,12 @@ driver4_a72: $(DRIVER4_A72_BIN)
 $(DRIVER4_A72_BIN): $(DRIVER_C) $(OPTIMIZED_ASM4_A72)
 	gcc $(CFLAGS) $(DRIVER_C) $(OPTIMIZED_ASM4_A72) snap.c $(LDFLAGS) -o $@
 
+# Build driver program with inverse_4 A72 optimized version (4000)
+driver4_a72_4000: $(DRIVER4_A72_4000_BIN)
+
+$(DRIVER4_A72_4000_BIN): $(DRIVER_C) $(OPTIMIZED_ASM4_A72_4000)
+	gcc $(CFLAGS) $(DRIVER_C) $(OPTIMIZED_ASM4_A72_4000) snap.c $(LDFLAGS) -o $@
+
 # Build driver program with inverse_4 A72 optimized version (4100)
 driver4_a72_4100: $(DRIVER4_A72_4100_BIN)
 
@@ -295,6 +304,12 @@ random_test4_a72: $(RANDOM_TEST4_A72_BIN)
 $(RANDOM_TEST4_A72_BIN): $(RANDOM_TEST_C) $(OPTIMIZED_ASM4_A72)
 	gcc $(CFLAGS) $(RANDOM_TEST_C) $(OPTIMIZED_ASM4_A72) snap.c $(LDFLAGS) -o $@
 
+# Build random test program with inverse_4 A72 optimized version (4000)
+random_test4_a72_4000: $(RANDOM_TEST4_A72_4000_BIN)
+
+$(RANDOM_TEST4_A72_4000_BIN): $(RANDOM_TEST_C) $(OPTIMIZED_ASM4_A72_4000)
+	gcc $(CFLAGS) $(RANDOM_TEST_C) $(OPTIMIZED_ASM4_A72_4000) snap.c $(LDFLAGS) -o $@
+
 # Build random test program with inverse_4 A72 optimized version (4100)
 random_test4_a72_4100: $(RANDOM_TEST4_A72_4100_BIN)
 
@@ -379,6 +394,10 @@ test3_a72: driver3_a72
 test4_a72: driver4_a72
 	./$(DRIVER4_A72_BIN)
 
+# Run test with inverse_4 A72 optimized version (4000)
+test4_a72_4000: driver4_a72_4000
+	./$(DRIVER4_A72_4000_BIN)
+
 # Run test with inverse_4 A72 optimized version (4100)
 test4_a72_4100: driver4_a72_4100
 	./$(DRIVER4_A72_4100_BIN)
@@ -427,6 +446,10 @@ random_test3_a72_run: random_test3_a72
 random_test4_a72_run: random_test4_a72
 	./$(RANDOM_TEST4_A72_BIN)
 
+# Run random tests with inverse_4 A72 optimized version (4000)
+random_test4_a72_4000_run: random_test4_a72_4000
+	./$(RANDOM_TEST4_A72_4000_BIN)
+
 # Run random tests with inverse_4 A72 optimized version (4100)
 random_test4_a72_4100_run: random_test4_a72_4100
 	./$(RANDOM_TEST4_A72_4100_BIN)
@@ -449,7 +472,7 @@ test-bignum: bignum
 
 # Clean build artifacts
 clean:
-	rm -f $(DRIVER1_BIN) $(DRIVER2_BIN) $(DRIVER2_1_BIN) $(DRIVER3_BIN) $(DRIVER4_BIN) $(DRIVER_A72_BIN) $(DRIVER_A76_BIN) $(DRIVER2_A72_BIN) $(DRIVER2_A76_BIN) $(DRIVER2_1_A72_BIN) $(DRIVER2_1_A76_BIN) $(DRIVER3_A72_BIN) $(DRIVER4_A72_BIN) $(DRIVER4_A72_4100_BIN) $(DRIVER2_A72_4786_BIN) $(DRIVER2_A72_4794_BIN) $(DRIVER2_A76_4871_BIN) $(RANDOM_TEST1_BIN) $(RANDOM_TEST2_BIN) $(RANDOM_TEST2_1_BIN) $(RANDOM_TEST3_BIN) $(RANDOM_TEST4_BIN) $(RANDOM_TEST_A72_BIN) $(RANDOM_TEST_A76_BIN) $(RANDOM_TEST2_A72_BIN) $(RANDOM_TEST2_A76_BIN) $(RANDOM_TEST2_1_A72_BIN) $(RANDOM_TEST2_1_A76_BIN) $(RANDOM_TEST3_A72_BIN) $(RANDOM_TEST4_A72_BIN) $(RANDOM_TEST4_A72_4100_BIN) $(RANDOM_TEST2_A72_4786_BIN) $(RANDOM_TEST2_A72_4794_BIN) $(RANDOM_TEST2_A76_4871_BIN) $(INVERSE_REF_BIN) $(BIGNUM_DRIVER_BIN)
+	rm -f $(DRIVER1_BIN) $(DRIVER2_BIN) $(DRIVER2_1_BIN) $(DRIVER3_BIN) $(DRIVER4_BIN) $(DRIVER_A72_BIN) $(DRIVER_A76_BIN) $(DRIVER2_A72_BIN) $(DRIVER2_A76_BIN) $(DRIVER2_1_A72_BIN) $(DRIVER2_1_A76_BIN) $(DRIVER3_A72_BIN) $(DRIVER4_A72_BIN) $(DRIVER4_A72_4000_BIN) $(DRIVER4_A72_4100_BIN) $(DRIVER2_A72_4786_BIN) $(DRIVER2_A72_4794_BIN) $(DRIVER2_A76_4871_BIN) $(RANDOM_TEST1_BIN) $(RANDOM_TEST2_BIN) $(RANDOM_TEST2_1_BIN) $(RANDOM_TEST3_BIN) $(RANDOM_TEST4_BIN) $(RANDOM_TEST_A72_BIN) $(RANDOM_TEST_A76_BIN) $(RANDOM_TEST2_A72_BIN) $(RANDOM_TEST2_A76_BIN) $(RANDOM_TEST2_1_A72_BIN) $(RANDOM_TEST2_1_A76_BIN) $(RANDOM_TEST3_A72_BIN) $(RANDOM_TEST4_A72_BIN) $(RANDOM_TEST4_A72_4000_BIN) $(RANDOM_TEST4_A72_4100_BIN) $(RANDOM_TEST2_A72_4786_BIN) $(RANDOM_TEST2_A72_4794_BIN) $(RANDOM_TEST2_A76_4871_BIN) $(INVERSE_REF_BIN) $(BIGNUM_DRIVER_BIN)
 	rm -f *.o *.out
 	rm -f $(GENERATED_ASM1) $(GENERATED_ASM2) $(GENERATED_ASM2_1) $(GENERATED_ASM3) $(GENERATED_ASM4)
 	rm -f $(SNAP_INC)
@@ -476,6 +499,7 @@ help:
 	@echo "  driver2_1_a76 - Build driver program with A76 optimized version (inverse_2_1)"
 	@echo "  driver3_a72 - Build driver program with A72 optimized version (inverse_3)"
 	@echo "  driver4_a72 - Build driver program with A72 optimized version (inverse_4)"
+	@echo "  driver4_a72_4000 - Build driver program with A72 optimized version (inverse_4_4000)"
 	@echo "  driver4_a72_4100 - Build driver program with A72 optimized version (inverse_4_4100)"
 	@echo "  driver2_a72_4786 - Build driver program with A72 optimized version (inverse_2_4786)"
 	@echo "  driver2_a72_4794 - Build driver program with A72 optimized version (inverse_2_4794)"
@@ -493,6 +517,7 @@ help:
 	@echo "  test2_1_a76 - Run test with A76 optimized version (inverse_2_1)"
 	@echo "  test3_a72   - Run test with A72 optimized version (inverse_3)"
 	@echo "  test4_a72   - Run test with A72 optimized version (inverse_4)"
+	@echo "  test4_a72_4000 - Run test with A72 optimized version (inverse_4_4000)"
 	@echo "  test4_a72_4100 - Run test with A72 optimized version (inverse_4_4100)"
 	@echo "  test2_a72_4786 - Run test with A72 optimized version (inverse_2_4786)"
 	@echo "  test2_a72_4794 - Run test with A72 optimized version (inverse_2_4794)"
@@ -510,6 +535,7 @@ help:
 	@echo "  random_test2_1_a76 - Build random test program with A76 optimized version (inverse_2_1)"
 	@echo "  random_test3_a72 - Build random test program with A72 optimized version (inverse_3)"
 	@echo "  random_test4_a72 - Build random test program with A72 optimized version (inverse_4)"
+	@echo "  random_test4_a72_4000 - Build random test program with A72 optimized version (inverse_4_4000)"
 	@echo "  random_test4_a72_4100 - Build random test program with A72 optimized version (inverse_4_4100)"
 	@echo "  random_test2_a72_4786 - Build random test program with A72 optimized version (inverse_2_4786)"
 	@echo "  random_test2_a72_4794 - Build random test program with A72 optimized version (inverse_2_4794)"
@@ -522,6 +548,7 @@ help:
 	@echo "  random_test2_1_a76_run - Build and run random tests with A76 optimized version (inverse_2_1)"
 	@echo "  random_test3_a72_run - Build and run random tests with A72 optimized version (inverse_3)"
 	@echo "  random_test4_a72_run - Build and run random tests with A72 optimized version (inverse_4)"
+	@echo "  random_test4_a72_4000_run - Build and run random tests with A72 optimized version (inverse_4_4000)"
 	@echo "  random_test4_a72_4100_run - Build and run random tests with A72 optimized version (inverse_4_4100)"
 	@echo "  random_test2_a72_4786_run - Build and run random tests with A72 optimized version (inverse_2_4786)"
 	@echo "  random_test2_a72_4794_run - Build and run random tests with A72 optimized version (inverse_2_4794)"
