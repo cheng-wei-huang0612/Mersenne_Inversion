@@ -160,13 +160,18 @@ def initialization_2(ptr_x,
                    vec_V4_V5_S4_S5,
                    vec_V6_V7_S6_S7,
                    vec_V8_V9_S8_S9):
-    print("This is initialization_2 function")
+    debug = "x27"
+    ptr_inv = "x0"
     asm_script = ""
+
 
     vec_p0_p3 = vec_F0_F1_G0_G1
     vec_p2_p1 = vec_F2_F3_G2_G3
     vec_x0_x1 = vec_F4_F5_G4_G5
     vec_x2_x3 = vec_F6_F7_G6_G7
+
+
+
 
     asm_script += f"ldp %qregname{vec_x0_x1}, %qregname{vec_x2_x3}, [{ptr_x}]\n"
     asm_script += f"movi {vec_p2_p1}.2d, #-1\n"
@@ -175,6 +180,9 @@ def initialization_2(ptr_x,
     asm_script += f"ins {vec_p0_p3}.d[1], {tmp_x}\n"
     asm_script += f"mov {tmp_x}, #-19\n"
     asm_script += f"ins {vec_p0_p3}.d[0], {tmp_x}\n"
+
+
+
 
     vec_p0_x0 = vec_V0_V1_S0_S1
     vec_p1_x1 = vec_V2_V3_S2_S3
@@ -186,6 +194,7 @@ def initialization_2(ptr_x,
     asm_script += f"zip1 {vec_p2_x2}.2d, {vec_p2_p1}.2d, {vec_x2_x3}.2d\n"
     asm_script += f"zip2 {vec_p3_x3}.2d, {vec_p0_p3}.2d, {vec_x2_x3}.2d\n"
 
+
     asm_script += f"ushr {vec_2x_2p30m1}.2d, {vec_p2_p1}.2d, #34\n"
 
     vec_buffer = vec_V8_V9_S8_S9
@@ -196,6 +205,11 @@ def initialization_2(ptr_x,
     asm_script += f"sli {vec_F0_F1_G0_G1}.2d, {vec_buffer}.2d, #32\n"
     # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     # asm_script += f"orr {vec_F0_F1_G0_G1}.16b, {vec_F0_F1_G0_G1}.16b, {vec_buffer}.16b\n"
+
+
+
+
+
 
     asm_script += f"ushr {vec_F2_F3_G2_G3}.2d, {vec_p0_x0}.2d, #60\n"
     asm_script += f"shl {vec_buffer}.2d, {vec_p1_x1}.2d, #4\n"
@@ -214,6 +228,8 @@ def initialization_2(ptr_x,
     asm_script += f"ushr {vec_buffer}.2d, {vec_p2_x2}.2d, #22\n"
     asm_script += f"and {vec_buffer}.16b, {vec_buffer}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sli {vec_F4_F5_G4_G5}.2d, {vec_buffer}.2d, #32\n"
+
+
     # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
     # asm_script += f"orr {vec_F4_F5_G4_G5}.16b, {vec_F4_F5_G4_G5}.16b, {vec_buffer}.16b\n"
 
@@ -1560,6 +1576,9 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     # Revisit: l0, l1 mul can be more efficient!
 
 
+    debug = "x27"
+    ptr_inv = "x0"
+
 
     asm_script = ""
     asm_script += f"mov {tmp}, #19\n"
@@ -1576,7 +1595,6 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
 
     asm_script += f"smlsl {vec_prod}.2d, {vec_l0}.2s, {vec_m19}.s[0]\n"
     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
-
 
     asm_script += f"// limb 1\n"
     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_V0_V1_S0_S1}.s[0]\n"
@@ -1600,7 +1618,6 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
 
     asm_script += f"and    {vec_V0_V1_S0_S1}.16b, {vec_prod}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sshr   {vec_prod}.2d, {vec_prod}.2d, #30\n"
-
 
     asm_script += f"// limb 3\n"
     asm_script += f"smlal  {vec_prod}.2d, {vec_uu1_rr1_vv1_ss1}.2s, {vec_V2_V3_S2_S3}.s[0]\n"
@@ -1694,6 +1711,58 @@ def update_VS_2(vec_uu0_rr0_vv0_ss0,
     asm_script += f"sub    {vec_V8_V9_S8_S9}.2d, {vec_V8_V9_S8_S9}.2d, {vec_prod}.2d\n"
 
     asm_script += f"mla    {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s, {vec_m19}.4s\n"
+
+
+
+
+
+    # carry process
+    vec_carry_clearer = vec_prod
+    asm_script += f"dup    {vec_carry_clearer}.4s, {vec_2x_2p30m1}.s[0]\n"
+    asm_script += f"not    {vec_carry_clearer}.16b, {vec_carry_clearer}.16b\n"
+
+
+    asm_script += f"bic    {vec_buffer}.16b, {vec_V0_V1_S0_S1}.16b, {vec_2x_2p30m1}.16b\n"
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_buffer}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V0_V1_S0_S1}.4s, {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V0_V1_S0_S1}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+
+    asm_script += f"bic    {vec_buffer}.16b, {vec_V2_V3_S2_S3}.16b, {vec_2x_2p30m1}.16b\n"
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_buffer}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V2_V3_S2_S3}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+
+
+    asm_script += f"bic    {vec_buffer}.16b, {vec_V4_V5_S4_S5}.16b, {vec_2x_2p30m1}.16b\n"
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_buffer}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V4_V5_S4_S5}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+
+    asm_script += f"bic    {vec_buffer}.16b, {vec_V6_V7_S6_S7}.16b, {vec_2x_2p30m1}.16b\n"
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_buffer}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V6_V7_S6_S7}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_buffer}.4s\n"
+
+
+
+
+    asm_script += f"bic    {vec_V0_V1_S0_S1}.16b, {vec_V0_V1_S0_S1}.16b, {vec_carry_clearer}.16b\n"
+    asm_script += f"bic    {vec_V2_V3_S2_S3}.16b, {vec_V2_V3_S2_S3}.16b, {vec_carry_clearer}.16b\n"
+    asm_script += f"bic    {vec_V4_V5_S4_S5}.16b, {vec_V4_V5_S4_S5}.16b, {vec_carry_clearer}.16b\n"
+    asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
+
 
     return asm_script
 

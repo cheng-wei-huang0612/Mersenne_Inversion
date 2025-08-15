@@ -404,7 +404,7 @@ void inverse(uint64_t inv[static 4], uint64_t x[static 4]){
     FUV = (f & 1048575) - ( (int64_t) 1 << 41 );
     GRS = (g & 1048575) - ( (int64_t) 1 << 62 );
     
-    divstepx20(&FUV, &GRS, &delta);
+    divstep_multiple(&FUV, &GRS, &delta, 17);
                                                                     printf("After  First Divstep FUV = %lld\n", FUV);
                                                                     printf("After  First Divstep GRS = %lld\n", GRS);
     extraction(&FUV, &GRS, uuvvrrss);
@@ -548,7 +548,7 @@ void inverse(uint64_t inv[static 4], uint64_t x[static 4]){
                         GRS = (g & 1048575) - ( (int64_t) 1 << 62 );
 
 
-                        divstepx20(&FUV, &GRS, &delta);
+                        divstep_multiple(&FUV, &GRS, &delta, 19);
                         extraction(&FUV, &GRS, uvrs);
                         update_uuvvrrss(uuvvrrss, uvrs);
         printf("[Iteration %zu] before update: F = ", loop_count);
@@ -630,7 +630,9 @@ int main(int argc, char const *argv[])
     mpz_init(mpInv);
 
 
-    mpz_set_str(mpX, "20214871201774049636868342709964433550308093914181089952380808474176500195135", 10);
+    mpz_set_str(mpX, "6129982163463555433433388108601236734474956488734408704", 10);
+    mpz_set_str(mpX, "38305559724211951161727329354596991034635343649772960093117784332570715266771", 10);
+
     uint64_t x[4] = {0};
     uint64k_from_mpz(x, 4, mpX);
     uint64_t inv[4] = {0};

@@ -43,7 +43,9 @@ int main(int argc, char const *argv[])
 
     //mpz_set_str(mpX, "20214871201774049636868342709964433550308093914181089952380808474176500195135", 10);
     //mpz_set_str(mpX, "18446744073709551617", 10);
-    mpz_set_str(mpX, "31719902485128369094351494925136195124554531553322832976359421638047637600599", 10);
+    mpz_set_str(mpX, "6129982163463555433433388108601236734474956488734408704", 10);
+    // mpz_set_str(mpX, "38305559724211951161727329354596991034635343649772960093117784332570715266771", 10);
+    gmp_printf("x = %Zd\n", mpX);
 
     uint64_t x[4] = {0};
     uint64k_from_mpz(x, 4, mpX);
@@ -64,6 +66,7 @@ int main(int argc, char const *argv[])
     mpz_clear(mpP);
     
     printf("  x (in limbs) = [%llu, %llu, %llu, %llu]\n", x[0], x[1], x[2], x[3]);
+    printf("  x (in limbs) = [%llx, %llx, %llx, %llx]\n", x[0], x[1], x[2], x[3]);
     printf("inv (in limbs) = [%llu, %llu, %llu, %llu]\n", inv[0], inv[1], inv[2], inv[3]);
     printf("inv (in limbs) = [%lld, %lld, %lld, %lld]\n", inv[0], inv[1], inv[2], inv[3]);
     printf("inv (in limbs) = [%llx, %llx, %llx, %llx]\n", inv[0], inv[1], inv[2], inv[3]);
