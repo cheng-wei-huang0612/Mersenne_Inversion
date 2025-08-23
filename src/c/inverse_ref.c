@@ -42,7 +42,7 @@ void divstep_multiple(int64_t *pFUV, int64_t *pGRS, int64_t *pDELTA, int loop_co
         
         int64_t rotated_GRS = ((uint64_t)GRS << 63) | ((uint64_t)GRS >> 1);
         int64_t tst_result = m1 & rotated_GRS;
-        
+            
         // DELTA = m1 if N=0 else -DELTA
         if (tst_result >= 0) {  // N flag (negative bit) is clear
             DELTA = m1;
