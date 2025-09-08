@@ -1,4 +1,4 @@
-from genlib import *
+from components import *
 import subprocess
 import os
 asm_main = ""
@@ -111,7 +111,7 @@ asm_main += f"mov {COUNTER}, #9\n"
 
 asm_main += f"big_loop:\n"
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += Prepare_Vec_uuvvrrss().prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                    vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                    vec_4x_2p30m1=vec_4x_2p30m1,
                                    uu=uu, vv=vv, rr=rr, ss=ss)
@@ -196,7 +196,7 @@ asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod
 asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
 asm_main += f"cbnz {COUNTER}, big_loop\n"
 
-asm_main += prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += Prepare_Vec_uuvvrrss().prepare_vec_uuvvvrrss(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
                                 uu=uu, vv=vv, rr=rr, ss=ss)

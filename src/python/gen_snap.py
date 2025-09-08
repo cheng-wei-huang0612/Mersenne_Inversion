@@ -1,4 +1,4 @@
-from genlib import *
+from python.components.genlib import *
 
 directory = "../"
 

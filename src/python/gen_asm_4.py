@@ -1,6 +1,6 @@
 # Feature: We use new innerloop
 
-from genlib import *
+from components import *
 import subprocess
 import os
 asm_main = ""
@@ -143,7 +143,7 @@ asm_main += f"Lbig_loop:\n"
 # asm_main += f"stp {f}, {g}, [x0]\n"
 
 
-asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += Prepare_Vec_uuvvrrss().prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
                                 uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")
@@ -271,18 +271,6 @@ asm_main += f"extr {g}, {new_g_1}, {new_g_0}, #60\n"
 
 
 
-asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
-                      vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
-                      vec_F0_F1_G0_G1=vec_F0_F1_G0_G1,
-                      vec_F2_F3_G2_G3=vec_F2_F3_G2_G3,
-                      vec_F4_F5_G4_G5=vec_F4_F5_G4_G5,
-                      vec_F6_F7_G6_G7=vec_F6_F7_G6_G7,
-                      vec_F8_F9_G8_G9=vec_F8_F9_G8_G9,
-                      vec_2x_2p30m1=vec_2x_2p30m1,
-                      vec_prod="v16",
-                      vec_buffer="v17")
-
-
 
 # if i == 0:
 #     asm_main += f"str {f}, [{ptr_inv}]\n"
@@ -305,24 +293,21 @@ asm_main += f"L_optloop_start_1:\n"
 
 
 
+asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+                      vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
+                      vec_F0_F1_G0_G1=vec_F0_F1_G0_G1,
+                      vec_F2_F3_G2_G3=vec_F2_F3_G2_G3,
+                      vec_F4_F5_G4_G5=vec_F4_F5_G4_G5,
+                      vec_F6_F7_G6_G7=vec_F6_F7_G6_G7,
+                      vec_F8_F9_G8_G9=vec_F8_F9_G8_G9,
+                      vec_2x_2p30m1=vec_2x_2p30m1,
+                      vec_prod="v16",
+                      vec_buffer="v17")
 
 
 
-asm_main += update_VS_2(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0, 
-              vec_uu1_rr1_vv1_ss1 = vec_uu1_rr1_vv1_ss1, 
-              vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
-              vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3, 
-              vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5, 
-              vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
-              vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9,
-              vec_2x_2p30m1 = vec_2x_2p30m1,
-              vec_m19 = "v16",
-              tmp = "x9",
-              vec_prod = "v17",
-              vec_buffer = "v18",
-              vec_4x_M = vec_4x_M,
-              vec_l0 = "v19",
-              vec_l1 = "v20")
+
+
 
 
 
@@ -369,14 +354,34 @@ asm_main += f"L_optloop_start_2:\n"
 
 
 
-asm_main += update_VS_carry(vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
+
+
+asm_main += update_VS_2(vec_uu0_rr0_vv0_ss0 = vec_uu0_rr0_vv0_ss0, 
+              vec_uu1_rr1_vv1_ss1 = vec_uu1_rr1_vv1_ss1, 
+              vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
               vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3, 
               vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5, 
               vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
               vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9,
               vec_2x_2p30m1 = vec_2x_2p30m1,
+              vec_m19 = "v16",
+              tmp = "x9",
               vec_prod = "v17",
-              vec_buffer = "v18")
+              vec_buffer = "v18",
+              vec_4x_M = vec_4x_M,
+              vec_l0 = "v19",
+              vec_l1 = "v20")
+
+
+
+# asm_main += update_VS_carry(vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1, 
+#               vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3, 
+#               vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5, 
+#               vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
+#               vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9,
+#               vec_2x_2p30m1 = vec_2x_2p30m1,
+#               vec_prod = "v17",
+#               vec_buffer = "v18")
 
 
 
@@ -417,7 +422,7 @@ asm_main += f"cbnz {COUNTER}, Lbig_loop\n"
 # asm_main += f"SNAP_SCALAR_REG {rr}, \"rr =\" \n"
 # asm_main += f"SNAP_SCALAR_REG {ss}, \"ss =\" \n"
 
-asm_main += prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
+asm_main += Prepare_Vec_uuvvrrss().prepare_vec_uuvvvrrss_3(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
                                 vec_uu1_rr1_vv1_ss1=vec_uu1_rr1_vv1_ss1,
                                 vec_4x_2p30m1=vec_4x_2p30m1,
                                 uu=uu, vv=vv, rr=rr, ss=ss, vec_uu_rr="v16", vec_vv_ss="v17")

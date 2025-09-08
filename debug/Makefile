@@ -12,7 +12,7 @@ PYTHON_CONVERTER = convert_failures_to_header.py
 LOG_FILE = more_failures.txt
 HEADER_FILE = failing_test_cases.h
 C_TEST_PROGRAM = test_failing_cases.c
-ASM_INVERSE = $(ASM_DIR)/inverse_4_a72_4000.s
+ASM_INVERSE = $(ASM_DIR)/inverse_4_a72.s
 SNAP_C = $(SRC_DIR)/snap.c
 SNAP_INC = $(INCLUDE_DIR)/snap.inc
 

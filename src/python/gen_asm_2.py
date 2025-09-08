@@ -1,6 +1,6 @@
 # Feature: Compare to asm_1, we save more divstep loop counts
 
-from genlib import *
+from python.components.genlib import *
 import subprocess
 import os
 
