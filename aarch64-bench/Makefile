@@ -50,6 +50,11 @@ endif
 
 all: $(TARGETS)
 
+# Special target for bench_mul (not included in bench_all)
+bench_mul: hal/hal.c bench_mul.c bignum_mul_p25519.S
+	@echo "Building bench_mul"
+	$(CC) $(CFLAGS) hal/hal.c bench_mul.c -x assembler-with-cpp bignum_mul_p25519.S -o bench_mul
+
 # Special target for bench_update (not included in bench_all)
 bench_update: hal/hal.c bench_update.c update_scalar.s update_vector.s
 	@echo "Building bench_update"
@@ -99,6 +104,7 @@ help:
 	@echo "Available targets:"
 	@echo "  all                              - Build all benchmark binaries"
 	@echo "  bench_update                     - Build bench_update binary (separate from bench_all)"
+	@echo "  bench_mul                        - Build bench_mul binary (separate from bench_all)"
 	@echo "  bench_innerloop                  - Build bench_innerloop binary (separate from bench_all)"
 	@echo "  bench_bignum_inv_p25519          - Build bench_bignum_inv_p25519 binary (separate from bench_all)"
 	@echo "  bench_bignum_inv_p25519_slothy   - Build bench_bignum_inv_p25519_slothy binary (separate from bench_all)"
@@ -125,4 +131,4 @@ help:
 	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGETS) bench_update bench_innerloop bench_bignum_inv_p25519 bench_bignum_inv_p25519_slothy *.d
+	-$(RM) -rf $(TARGETS) bench_update bench_mul bench_innerloop bench_bignum_inv_p25519 bench_bignum_inv_p25519_slothy *.d
