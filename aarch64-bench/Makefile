@@ -65,6 +65,11 @@ bench_innerloop: hal/hal.c bench_innerloop.c s2n_innerloop.s my_innerloop.s
 	@echo "Building bench_innerloop"
 	$(CC) $(CFLAGS) hal/hal.c bench_innerloop.c -x assembler-with-cpp s2n_innerloop.s my_innerloop.s -o bench_innerloop
 
+# Special target for bench_bignum_invmod (not included in bench_all)
+bench_bignum_invmod: hal/hal.c bench_bignum_invmod.c ../external/bignum_invmod.S
+	@echo "Building bench_bignum_invmod"
+	$(CC) $(CFLAGS) hal/hal.c bench_bignum_invmod.c -x assembler-with-cpp ../external/bignum_invmod.S -o bench_bignum_invmod
+
 # Special target for bench_bignum_inv_p25519 (not included in bench_all)
 bench_bignum_inv_p25519: hal/hal.c bench_bignum_inv_p25519.c ../external/bignum_inv_p25519.S
 	@echo "Building bench_bignum_inv_p25519"
@@ -107,6 +112,7 @@ help:
 	@echo "  bench_mul                        - Build bench_mul binary (separate from bench_all)"
 	@echo "  bench_innerloop                  - Build bench_innerloop binary (separate from bench_all)"
 	@echo "  bench_bignum_inv_p25519          - Build bench_bignum_inv_p25519 binary (separate from bench_all)"
+	@echo "  bench_bignum_invmod              - Build bench_bignum_invmod binary (separate from bench_all)"
 	@echo "  bench_bignum_inv_p25519_slothy   - Build bench_bignum_inv_p25519_slothy binary (separate from bench_all)"
 	@echo "  bench_all                        - Build and run all benchmarks with sudo"
 	@echo "  clean                            - Remove all built binaries and dependency files"
