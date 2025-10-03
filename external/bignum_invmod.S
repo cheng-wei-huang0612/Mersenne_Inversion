@@ -108,6 +108,8 @@ _bignum_modinv:
 
         // CFI_PUSH2(x19,x20)
         // CFI_PUSH2(x21,x22)
+        stp x19, x20, [sp, #-16]!
+        stp x21, x22, [sp, #-16]!
 
 
 
@@ -612,6 +614,10 @@ Lbignum_modinv_zfliploop:
         bhi     Lbignum_modinv_outerloop
 
 Lbignum_modinv_end:
+
+ldp x21, x22, [sp], #16
+ldp x19, x20, [sp], #16
+
 ret
 //         CFI_POP2(x21,x22)
 //         CFI_POP2(x19,x20)
