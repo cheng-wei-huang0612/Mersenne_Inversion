@@ -52,7 +52,7 @@ extern void bignum_modinv(uint64_t k, uint64_t* z, const uint64_t* a, const uint
 static int bench_scalar(void)
 {
   uint64_t a[4] = {0x1234567890abcdef, 0xfedcba0987654321, 0x1111222233334444, 0x5555666677778888};
-  uint64_t b[4] = {0x1234567890abcdef, 0xfedcba0987654321, 0x1111222233334444, 0x5555666677778888};
+  uint64_t b[4] = {0xffffffffffffffed, 0xffffffffffffffff, 0xffffffffffffffff, 0x7fffffffffffffff};
   uint64_t z[4] = {0};
   uint64_t t[12] = {0};
 
