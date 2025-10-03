@@ -1005,22 +1005,6 @@ and    v17.16b, v16.16b, v1.16b
 sshr   v7.2d, v16.2d, #30
 shl    v17.2d, v17.2d, #32
 orr    v6.16b, v6.16b, v17.16b
-umov w4, v3.s[0]
-umov w27, v3.s[1]
-add  x4, x4, x27, lsl #30
-umov w27, v4.s[0]
-add  x4, x4, x27, lsl #60
-add  x21, xzr, x27, lsr #4
-umov w27, v4.s[1]
-add  x21, x21, x27, lsl #26
-umov w5, v3.s[2]
-umov w27, v3.s[3]
-add  x5, x5, x27, lsl #30
-umov w27, v4.s[2]
-add  x5, x5, x27, lsl #60
-add  x22, xzr, x27, lsr #4
-umov w27, v4.s[3]
-add  x22, x22, x27, lsl #26
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
@@ -1234,6 +1218,22 @@ madd x14, x20, x14, x9
 mov x12, x10
 L_optloop_end_1:
 L_optloop_start_2:
+umov w4, v3.s[0]
+umov w27, v3.s[1]
+add  x4, x4, x27, lsl #30
+umov w27, v4.s[0]
+add  x4, x4, x27, lsl #60
+add  x21, xzr, x27, lsr #4
+umov w27, v4.s[1]
+add  x21, x21, x27, lsl #26
+umov w5, v3.s[2]
+umov w27, v3.s[3]
+add  x5, x5, x27, lsl #30
+umov w27, v4.s[2]
+add  x5, x5, x27, lsl #60
+add  x22, xzr, x27, lsr #4
+umov w27, v4.s[3]
+add  x22, x22, x27, lsl #26
 mov x9, #19
 dup v16.2d, x9
 // limb 0

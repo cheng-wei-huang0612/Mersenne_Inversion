@@ -309,6 +309,21 @@ asm_main += update_FG(vec_uu0_rr0_vv0_ss0=vec_uu0_rr0_vv0_ss0,
 
 
 
+\
+
+asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
+
+asm_main += divstepxtimes_2(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=20)
+
+asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
+asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
+asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
+asm_main += f"L_optloop_end_1:\n"
+
+asm_main += f"L_optloop_start_2:\n"
+
+
+
 
 
 
@@ -331,21 +346,6 @@ asm_main += f"umov %wregname{tmp0}, {vec_F2_F3_G2_G3}.s[3]\n"
 asm_main += f"add  {g_1}, {g_1}, {tmp0}, lsl #26\n"
 
 
-
-
-
-
-
-asm_main += init_FUV_GRS_2(FUV=FUV, GRS=GRS, f=f, g=g)
-
-asm_main += divstepxtimes_2(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", times=20)
-
-asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
-asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
-asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
-asm_main += f"L_optloop_end_1:\n"
-
-asm_main += f"L_optloop_start_2:\n"
 
 
 
