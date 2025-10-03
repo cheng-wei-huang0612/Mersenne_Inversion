@@ -137,4 +137,4 @@ help:
 	@echo ""
 
 clean:
-	-$(RM) -rf $(TARGETS) bench_update bench_mul bench_innerloop bench_bignum_inv_p25519 bench_bignum_inv_p25519_slothy *.d
+	-$(RM) -rf $(TARGETS) bench_update bench_mul bench_innerloop bench_bignum_inv_p25519 bench_bignum_inv_p25519_slothy bench_bignum_invmod *.d
