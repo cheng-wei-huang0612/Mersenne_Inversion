@@ -87,10 +87,16 @@ int main(void)
     mpz_t mpX, mpInvCorrect, mpInvGot;
     mpz_inits(mpX, mpInvCorrect, mpInvGot, NULL);
 
+    mpz_t mp_bound_2p256;
+    mpz_init(mp_bound_2p256);
+    mpz_set_ui(mp_bound_2p256, 1);
+    mpz_ui_pow_ui(mp_bound_2p256, 2, 256);
+    // gmp_printf("%Zd\n", mp_bound_2p256);
+
     for (unsigned long i = 0; i < NUM_OF_TEST; ++i) {
 
         /* 生成隨機 1 ≤ x < p */
-        do { mpz_urandomm(mpX, rstate, mpP); } while (mpz_sgn(mpX) == 0);
+        do { mpz_urandomm(mpX, rstate, mp_bound_2p256); } while (mpz_sgn(mpX) == 0);
 
         /* 參考逆元 (GMP) */
         if (!mpz_invert(mpInvCorrect, mpX, mpP)) {
