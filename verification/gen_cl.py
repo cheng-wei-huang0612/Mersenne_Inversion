@@ -8,6 +8,7 @@ SIZE_MAP = {"uint64": 64, "sint64": 64, "uint128": 128}
 uint64 = "uint64"
 sint64 = "sint64"
 uint128 = "uint128"
+bit = "bit"
 
 @dataclass
 class Var:
@@ -92,23 +93,31 @@ class PC:
 
 
 class Epred:
+    def __init__(self, *args):
+        self.epreds = []
+        for x in args:
+            if isinstance(x, Rpred):
+                print("not implemented")
+            if isinstance(x, list):
+                self.epreds.extend(x)
+            elif isinstance(x, Epred):
+                self.epreds.extend(x.epreds)
+            else:
+                self.epreds.append(x)
 
-    def __init__(self, *arg):
-        if len(arg) == 0:
-            self.epreds = []
-        else:
-            self.epreds = [i for i in arg]
-
-    def __str__(self):
+    def to_lines(self):
         if self.epreds == []:
-            return "    true"
+            return ["true"]
         else:
-            buffer = ""
+            buffer = []
             for i, epred in enumerate(self.epreds, 1):
                 is_last = (i == len(self.epreds))
-                sep = ",\n" if not is_last else ""
-                buffer += f"    {epred}{sep}\n"
+                sep = "," if not is_last else ""
+                buffer.append(f"{epred}{sep}")
             return buffer
+
+    def __str__(self):
+        return "\n".join(self.to_lines()) + "\n"
 
     def append(self, other):
         if isinstance(other, str):
@@ -117,27 +126,35 @@ class Epred:
             self.epreds += other.epreds
         else:
             print("not implemented")
+
     def pop(self, target):
         pass
 
 
 class Rpred:
-    def __init__(self, *arg):
-        if len(arg) == 0:
-            self.rpreds = []
-        else:
-            self.rpreds = [i for i in arg]
+    def __init__(self, *args):
+        self.rpreds = []
+        for x in args:
+            if isinstance(x, list):
+                self.rpreds.extend(x)
+            elif isinstance(x, Rpred):
+                self.rpreds.extend(x.rpreds)
+            else:
+                self.rpreds.append(x)
 
-    def __str__(self):
+    def to_lines(self):
         if self.rpreds == []:
-            return "    true"
+            return ["true"]
         else:
-            buffer = ""
+            buffer = []
             for i, epred in enumerate(self.rpreds, 1):
                 is_last = (i == len(self.rpreds))
-                sep = ",\n" if not is_last else ""
-                buffer += f"    {epred}{sep}"
+                sep = "," if not is_last else ""
+                buffer.append(f"{epred}{sep}")
             return buffer
+
+    def __str__(self):
+        return "\n".join(self.to_lines()) + "\n"
 
     def append(self, other):
         if isinstance(other, str):
@@ -146,6 +163,7 @@ class Rpred:
             self.rpreds += other.rpreds
         else:
             print("not implemented")
+
     def pop(self, target):
         pass
 
@@ -154,31 +172,39 @@ def signed_lt(var0, var1):
     return Rpred(f"{var0} <s {var1}")
 
 
-class Pred:
-    def __init__(self, epred = Epred(), rpred = Rpred()):
+def cl_meta_pred(epred = Epred(), rpred = Rpred(), 
+                 pre_char = "you didnot specify label",
+                 end_char = ";"):
+    assert isinstance(rpred, Rpred) and isinstance(epred, Epred)
+    epred_lines = epred.to_lines()
+    rpred_lines = rpred.to_lines()
 
-        self.epred = epred
-        self.rpred = rpred
+    ret_string = []
+    ret_string.append(pre_char)
 
-    def __str__(self):
-        return f"{self.epred}\n&&\n{self.rpred}"
+    for i in epred_lines:
+        ret_string.append(" "*4 + i)
+    ret_string.append("&&")
+    for i in rpred_lines:
+        ret_string.append(" "*4 + i)
+    ret_string.append(end_char + "\n")
 
+    return "\n".join(ret_string) + "\n"
 
-def cl_precondition(pred = Pred()):
-    return f"{{\n{pred}\n}}"
+def cl_cut(epred = Epred(), rpred = Rpred()):
+    return cl_meta_pred(epred, rpred, "cut", ";")
 
-def cl_postcondition(pred = Pred()):
-    return f"{{\n{pred}\n}}"
+def cl_assert(epred = Epred(), rpred = Rpred()):
+    return cl_meta_pred(epred, rpred, "assert", ";")
 
-def cl_cut(pred = Pred()):
-    return f"\ncut\n{pred}\n;\n"
+def cl_assume(epred = Epred(), rpred = Rpred()):
+    return cl_meta_pred(epred, rpred, "assume", ";")
 
-def cl_assert(pred = Pred()):
-    return f"\nassert\n{pred}\n;\n"
+def cl_precondition(epred = Epred(), rpred = Rpred()):
+    return cl_meta_pred(epred, rpred, ")={", "}")
 
-def cl_assume(pred = Pred()):
-    return f"\nassume\n{pred}\n;\n"
-
+def cl_postcondition(epred = Epred(), rpred = Rpred()):
+    return cl_meta_pred(epred, rpred, "{", "}")
 
 
 
