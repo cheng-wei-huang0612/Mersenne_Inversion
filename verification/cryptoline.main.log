@@ -296,3 +296,9 @@ OUTPUT FROM SINGULAR:
 // ** gs is no standard basis
 g_odd_1-1
 
+===== Verifying program safety =====
+=== Cut #0 ===
+== Number of safety conditions to be verified: 0 ==
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====

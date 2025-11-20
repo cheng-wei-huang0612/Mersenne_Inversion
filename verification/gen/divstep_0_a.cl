@@ -1,4 +1,3 @@
-
 proc divstep_0_a (
 sint64 fuv,
 sint64 grs,
@@ -14,7 +13,8 @@ sint64 s_0_0,
 sint64 u_0_1,
 sint64 v_0_1,
 sint64 r_0_1,
-sint64 s_0_1
+sint64 s_0_1,
+bit ne
 )={
     true
 &&
@@ -27,7 +27,8 @@ sint64 s_0_1
     const 64 0 <=s g_0_low60_0_low20_0,
     g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1)),
     fuv = (const 64 1) (mod (const 64 2)),
-    delta = (const 64 1),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 0)) <=s delta, delta <=s (const 64 (1 + 2*0)),
     u_0_0 = (const 64 (-(2**20))),
     v_0_0 = (const 64 (0)),
     r_0_0 = (const 64 (0)),
@@ -40,7 +41,7 @@ sint64 s_0_1
 // step0
 
 // premise a
-assume 
+assume
     g_0_low60_0_low20_0 = 0 (mod 2)
 &&
     g_0_low60_0_low20_0 = const 64 0 (mod (const 64 2))
@@ -54,6 +55,7 @@ mov x3 delta;
 (* tst	x8, #0x1                                    #! PC = 0xaaaaca660fa8 *)
 spl dc x8_lo x8 1;
 and ne@bit x8_lo 1@bit;
+
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca660fac *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca660fb0 *)
@@ -79,18 +81,17 @@ and ne@bit x8_target 1@bit;
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
+// premise a
 assert true &&
-    grs = (const 64 0) (mod (const 64 2)),
-
     x7 = fuv,
     x8 * (const 64 2) = grs,
     x3 = (const 64 2) + delta
 ;
 
+
 mov fuv x7;
 mov grs x8;
 mov delta x3;
-
 
 // According to premise a
 
@@ -101,14 +102,8 @@ mov v_0_1 v_0_0;
 asr g_0_low60_0_low20_1 g_0_low60_0_low20_0 1;
 asr r_0_1 r_0_0 1;
 asr s_0_1 s_0_0 1;
-
 assert
-    f_0_low60_0_low20_1 = f_0_low60_0_low20_0,
-    u_0_1 = u_0_0,
-    v_0_1 = v_0_0,
-    g_0_low60_0_low20_1 * 2 = g_0_low60_0_low20_0,
-    r_0_1 * 2 = r_0_0,
-    s_0_1 * 2 = s_0_0
+    true
 &&
     f_0_low60_0_low20_1 = f_0_low60_0_low20_0,
     u_0_1 = u_0_0,
@@ -129,7 +124,16 @@ assert
     f_0_low60_0_low20_1 <=s (const 64 ((2**20)-1)),
     (const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_1,
     g_0_low60_0_low20_1 <=s (const 64 ((2**20)-1)),
-    fuv = (const 64 1) (mod (const 64 2)),
-    (const 64 (1 + (-2) * 1)) <=s delta, delta <=s (const 64 (1 + 2*1))
+    (const 64 (1 + (-2) * 1)) <=s delta, delta <=s (const 64 (1 + 2*1)),
+    (const 64 (-(2**20))) <=s u_0_1, u_0_1 <=s (const 64 ((2**19))),
+    (const 64 (-(2**20))) <=s v_0_1, v_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)) )),
+    (const 64 ((2**(20-1))-(2**20))) <=s r_0_1, r_0_1 <=s (const 64 ((2**19))),
+    (const 64 ((2**(20-1))-(2**20))) <=s s_0_1, s_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)))),
+    (const 64 ((2**(20-1))-(2**19))) <=s (r_0_1 - u_0_1), (r_0_1 - u_0_1) <=s (const 64 ((2**20))),
+    (const 64 (-(2**19))) <=s (s_0_1 - v_0_1), (s_0_1 - v_0_1) <=s (const 64 ((2**20) - (2**(20 - 1)))),
+    u_0_1 = (const 64 0) (mod (const 64 (2**(20-1)))),
+    v_0_1 = (const 64 0) (mod (const 64 (2**(20-1)))),
+    r_0_1 = (const 64 0) (mod (const 64 (2**(20-1)))),
+    s_0_1 = (const 64 0) (mod (const 64 (2**(20-1))))
 }
 
