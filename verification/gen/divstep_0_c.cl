@@ -1,5 +1,5 @@
 
-proc divstep_0_a (
+proc divstep_0_c (
 sint64 fuv,
 sint64 grs,
 sint64 delta,
@@ -27,7 +27,7 @@ sint64 s_0_1
     const 64 0 <=s g_0_low60_0_low20_0,
     g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1)),
     fuv = (const 64 1) (mod (const 64 2)),
-    delta = (const 64 1),
+    delta = (const 64 1) (mod (const 64 2)),
     u_0_0 = (const 64 (-(2**20))),
     v_0_0 = (const 64 (0)),
     r_0_0 = (const 64 (0)),
@@ -39,11 +39,12 @@ sint64 s_0_1
 // divsteps
 // step0
 
-// premise a
+// premise c
 assume 
-    g_0_low60_0_low20_0 = 0 (mod 2)
+    g_0_low60_0_low20_0 = 1 (mod 2)
 &&
-    g_0_low60_0_low20_0 = const 64 0 (mod (const 64 2))
+    g_0_low60_0_low20_0 = const 64 1 (mod (const 64 2)),
+    delta >=s (const 64 0)
 ;
 
 
@@ -92,7 +93,7 @@ mov grs x8;
 mov delta x3;
 
 
-// According to premise a
+// According to premise c
 
 mov f_0_low60_0_low20_1 f_0_low60_0_low20_0;
 mov u_0_1 u_0_0;

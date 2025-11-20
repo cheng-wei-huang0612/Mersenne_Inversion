@@ -1,0 +1,298 @@
+===== Verifying program safety =====
+=== Cut #0 ===
+== Number of safety conditions to be verified: 0 ==
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #1: e_1 = f_1
+// Algebraic condition: e_1 = f_1
+// Try: #0 (pure equality)
+// Output file: /tmp/outputfgb_9b045a
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (f_1,e_1,d_1,b_1,a_1), lp;
+ideal gs = 0;
+poly p = e_1 - f_1;
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0093 seconds
+OUTPUT FROM SINGULAR:
+-f_1+e_1
+
+=== Cut #0 ===
+INPUT TO SMT Solver:
+; Verify: algebraic assertions
+; Track: default
+; Cut: #0
+; Algebraic assertion #0: a_1 = 0 /\ b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Algebraic condition: b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Output file: /tmp/outputfgb_05ac97
+(set-logic NIA)
+(define-fun-rec expn ((x Int) (n Int)) Int (ite (= n 0) 1 (* x (expn x (- n 1)))))
+(declare-fun a_1 () Int)
+(declare-fun b_1 () Int)
+(declare-fun c_1 () Int)
+(declare-fun d_1 () Int)
+(assert (and (<= (- 9223372036854775808) d_1) (<= d_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) c_1) (<= c_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) b_1) (<= b_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) a_1) (<= a_1 9223372036854775807)))
+(assert true)
+(assert (= (* (+ (expn a_1 2) (expn b_1 2)) (+ (expn c_1 2) (expn d_1 2))) 0))
+(assert (= c_1 1))
+(assert (not (= b_1 0)))
+(check-sat)
+Execution time of SMT Solver z3: 0.0158 seconds
+OUTPUT FROM SMT SOLVER:
+unsat
+
+=== Cut #0 ===
+INPUT TO SMT Solver:
+; Verify: algebraic assertions
+; Track: default
+; Cut: #0
+; Algebraic assertion #0: a_1 = 0 /\ b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Algebraic condition: a_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Output file: /tmp/outputfgb_e3cc67
+(set-logic NIA)
+(define-fun-rec expn ((x Int) (n Int)) Int (ite (= n 0) 1 (* x (expn x (- n 1)))))
+(declare-fun a_1 () Int)
+(declare-fun b_1 () Int)
+(declare-fun c_1 () Int)
+(declare-fun d_1 () Int)
+(assert (and (<= (- 9223372036854775808) d_1) (<= d_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) c_1) (<= c_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) b_1) (<= b_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) a_1) (<= a_1 9223372036854775807)))
+(assert true)
+(assert (= (* (+ (expn a_1 2) (expn b_1 2)) (+ (expn c_1 2) (expn d_1 2))) 0))
+(assert (= c_1 1))
+(assert (not (= a_1 0)))
+(check-sat)
+Execution time of SMT Solver z3: 0.0162 seconds
+OUTPUT FROM SMT SOLVER:
+unsat
+
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #1: e_1 = f_1
+// Algebraic condition: e_1 = f_1
+// Try: #1 (modular equality)
+// Output file: /tmp/outputfgb_0cf03f
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (f_1,e_1,d_1,b_1,a_1), lp;
+ideal gs = (a_1^2 + b_1^2) * (bigint(1)^2 + d_1^2),
+  bigint(2) * e_1 - bigint(2) * f_1;
+poly p = e_1 - f_1;
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0053 seconds
+OUTPUT FROM SINGULAR:
+// ** gs is no standard basis
+-f_1+e_1
+
+===== Verifying program safety =====
+=== Cut #0 ===
+== Number of safety conditions to be verified: 0 ==
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====
+=== Cut #0 ===
+INPUT TO SMT Solver:
+; Verify: algebraic assertions
+; Track: default
+; Cut: #0
+; Algebraic assertion #1: e_1 = f_1 prove with [algebra solver smt::"z3":nia]
+; Algebraic condition: e_1 = f_1 prove with [algebra solver smt::"z3":nia]
+; Output file: /tmp/outputfgb_13873a
+(set-logic NIA)
+(define-fun-rec expn ((x Int) (n Int)) Int (ite (= n 0) 1 (* x (expn x (- n 1)))))
+(declare-fun a_1 () Int)
+(declare-fun b_1 () Int)
+(declare-fun c_1 () Int)
+(declare-fun d_1 () Int)
+(declare-fun e_1 () Int)
+(declare-fun f_1 () Int)
+(assert (and (<= (- 9223372036854775808) f_1) (<= f_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) e_1) (<= e_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) d_1) (<= d_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) c_1) (<= c_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) b_1) (<= b_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) a_1) (<= a_1 9223372036854775807)))
+(assert true)
+(assert (= (* (+ (expn a_1 2) (expn b_1 2)) (+ (expn c_1 2) (expn d_1 2))) 0))
+(assert (= c_1 1))
+(assert (= (* 2 e_1) (* 2 f_1)))
+(assert (not (= e_1 f_1)))
+(check-sat)
+Execution time of SMT Solver z3: 0.0129 seconds
+OUTPUT FROM SMT SOLVER:
+unsat
+
+=== Cut #0 ===
+INPUT TO SMT Solver:
+; Verify: algebraic assertions
+; Track: default
+; Cut: #0
+; Algebraic assertion #0: a_1 = 0 /\ b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Algebraic condition: b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Output file: /tmp/outputfgb_fa6946
+(set-logic NIA)
+(define-fun-rec expn ((x Int) (n Int)) Int (ite (= n 0) 1 (* x (expn x (- n 1)))))
+(declare-fun a_1 () Int)
+(declare-fun b_1 () Int)
+(declare-fun c_1 () Int)
+(declare-fun d_1 () Int)
+(assert (and (<= (- 9223372036854775808) d_1) (<= d_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) c_1) (<= c_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) b_1) (<= b_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) a_1) (<= a_1 9223372036854775807)))
+(assert true)
+(assert (= (* (+ (expn a_1 2) (expn b_1 2)) (+ (expn c_1 2) (expn d_1 2))) 0))
+(assert (= c_1 1))
+(assert (not (= b_1 0)))
+(check-sat)
+Execution time of SMT Solver z3: 0.0148 seconds
+OUTPUT FROM SMT SOLVER:
+unsat
+
+=== Cut #0 ===
+INPUT TO SMT Solver:
+; Verify: algebraic assertions
+; Track: default
+; Cut: #0
+; Algebraic assertion #0: a_1 = 0 /\ b_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Algebraic condition: a_1 = 0 prove with [algebra solver smt::"z3":nia]
+; Output file: /tmp/outputfgb_3d39ce
+(set-logic NIA)
+(define-fun-rec expn ((x Int) (n Int)) Int (ite (= n 0) 1 (* x (expn x (- n 1)))))
+(declare-fun a_1 () Int)
+(declare-fun b_1 () Int)
+(declare-fun c_1 () Int)
+(declare-fun d_1 () Int)
+(assert (and (<= (- 9223372036854775808) d_1) (<= d_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) c_1) (<= c_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) b_1) (<= b_1 9223372036854775807)))
+(assert (and (<= (- 9223372036854775808) a_1) (<= a_1 9223372036854775807)))
+(assert true)
+(assert (= (* (+ (expn a_1 2) (expn b_1 2)) (+ (expn c_1 2) (expn d_1 2))) 0))
+(assert (= c_1 1))
+(assert (not (= a_1 0)))
+(check-sat)
+Execution time of SMT Solver z3: 0.0157 seconds
+OUTPUT FROM SMT SOLVER:
+unsat
+
+===== Verifying algebraic specifications =====
+===== Verifying program safety =====
+=== Cut #0 ===
+== Number of safety conditions to be verified: 0 ==
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====
+===== Verifying program safety =====
+=== Cut #0 ===
+== Number of safety conditions to be verified: 0 ==
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #0: g_odd_1 = 1
+// Algebraic condition: g_odd_1 = 1
+// Try: #0 (pure equality)
+// Output file: /tmp/outputfgb_bcb6ea
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (s_0_0_1,s_0_1_1,r_0_0_1,r_0_1_1,g_0_low60_0_low20_0_1,g_0_low60_0_low20_1_1,v_0_0_1,v_0_1_1,u_0_0_1,u_0_1_1,f_0_low60_0_low20_0_1,f_0_low60_0_low20_1_1,d_pos_1,g_odd_1), lp;
+ideal gs = 0;
+poly p = g_odd_1 - bigint(1);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0072 seconds
+OUTPUT FROM SINGULAR:
+g_odd_1-1
+
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #0: g_odd_1 = 1
+// Algebraic condition: g_odd_1 = 1
+// Try: #1 (modular equality)
+// Output file: /tmp/outputfgb_03eb5f
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (s_0_0_1,s_0_1_1,r_0_0_1,r_0_1_1,g_0_low60_0_low20_0_1,g_0_low60_0_low20_1_1,v_0_0_1,v_0_1_1,u_0_0_1,u_0_1_1,f_0_low60_0_low20_0_1,f_0_low60_0_low20_1_1,d_pos_1,g_odd_1), lp;
+ideal gs = g_odd_1 * (g_odd_1 - bigint(1)),
+  d_pos_1 * (d_pos_1 - bigint(1)),
+  (g_odd_1 - bigint(1))^2 + (f_0_low60_0_low20_1_1 - f_0_low60_0_low20_0_1)^2 + (u_0_1_1 - u_0_0_1)^2 + (v_0_1_1 - v_0_0_1)^2 + (g_0_low60_0_low20_1_1 - bigint(2) * g_0_low60_0_low20_0_1)^2 + (r_0_1_1 - bigint(2) * r_0_0_1)^2 + (s_0_1_1 - bigint(2) * s_0_0_1)^2;
+poly p = g_odd_1 - bigint(1);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0054 seconds
+OUTPUT FROM SINGULAR:
+// ** gs is no standard basis
+g_odd_1-1
+

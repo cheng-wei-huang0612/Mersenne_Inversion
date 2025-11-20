@@ -1,0 +1,1695 @@
+===== Verifying program safety =====
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: safety
+; Track: default
+; Cut: #0
+; Verify: safety (all in one query)
+; Output file: /tmp/outputqfbv_399a1d.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and true true) true) true) true) true) true) true) true) true) true) true) true) true) (not (= (bvor (bvand (bvand ((_ extract 63 63) x3_2) ((_ extract 63 63) #x0000000000000002)) (bvnot ((_ extract 63 63) (bvadd x3_2 #x0000000000000002)))) (bvand (bvand (bvnot ((_ extract 63 63) x3_2)) (bvnot ((_ extract 63 63) #x0000000000000002))) ((_ extract 63 63) (bvadd x3_2 #x0000000000000002)))) #b1))) true) true) true) true) true) (= ((_ extract 0 0) g_0_low60_0_low20_0_0) #b0)) (= ((_ extract 0 0) r_0_0_0) #b0)) (= ((_ extract 0 0) s_0_0_0) #b0)) true)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_b0d2df.smt2
+Execution time of boolector: 0.0043 seconds
+OUTPUT FROM boolector:
+unsat
+
+Execution of safety task: 0.0141 seconds
+===== Verifying range assertions =====
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #0: x3_3 = add 2@64 delta_0
+; Range condition: x3_3 = 2 + delta_0
+; Output file: /tmp/outputqfbv_121a6e.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert (not (= x3_3 (bvadd #x0000000000000002 delta_0))))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_7a9f79.smt2
+Execution time of boolector: 0.0036 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #2: x7_2 = fuv_0
+; Range condition: x7_2 = fuv_0
+; Output file: /tmp/outputqfbv_daf790.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert (not (= x7_2 fuv_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_f2b684.smt2
+Execution time of boolector: 0.0033 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #1: mul x8_3 2@64 = grs_0
+; Range condition: x8_3 * 2 = grs_0
+; Output file: /tmp/outputqfbv_014eae.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert (not (= (bvmul x8_3 #x0000000000000002) grs_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_3fc271.smt2
+Execution time of boolector: 0.0039 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #3: smod (sub (uext grs_0 1) (uext 0@64 1)) (uext 2@64 1) = 0@65
+; Range condition: ((grs_0@e1) - (0@e1)) smod (2@e1) = 0
+; Output file: /tmp/outputqfbv_9b049b.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert (not (= (bvsmod (bvsub ((_ zero_extend 1) grs_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_6bc157.smt2
+Execution time of boolector: 0.0036 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #4: mul s_0_1_1 2@64 = s_0_0_0
+; Range condition: s_0_1_1 * 2 = s_0_0_0
+; Output file: /tmp/outputqfbv_6ca148.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= (bvmul s_0_1_1 #x0000000000000002) s_0_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_c9930b.smt2
+Execution time of boolector: 0.0012 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #5: mul r_0_1_1 2@64 = r_0_0_0
+; Range condition: r_0_1_1 * 2 = r_0_0_0
+; Output file: /tmp/outputqfbv_94c2d5.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= (bvmul r_0_1_1 #x0000000000000002) r_0_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_aae27c.smt2
+Execution time of boolector: 0.0011 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #6: mul g_0_low60_0_low20_1_1 2@64 = g_0_low60_0_low20_0_0
+; Range condition: g_0_low60_0_low20_1_1 * 2 = g_0_low60_0_low20_0_0
+; Output file: /tmp/outputqfbv_59f774.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= (bvmul g_0_low60_0_low20_1_1 #x0000000000000002) g_0_low60_0_low20_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_91f34d.smt2
+Execution time of boolector: 0.0022 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #7: v_0_0_0 = v_0_0_0
+; Range condition: v_0_0_0 = v_0_0_0
+; Output file: /tmp/outputqfbv_90439b.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= v_0_0_0 v_0_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_d639d5.smt2
+Execution time of boolector: 0.0008 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #8: u_0_0_0 = u_0_0_0
+; Range condition: u_0_0_0 = u_0_0_0
+; Output file: /tmp/outputqfbv_e85876.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= u_0_0_0 u_0_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_9e321c.smt2
+Execution time of boolector: 0.0008 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range assertions
+; Track: default
+; Cut: #0
+; Range assertion #9: f_0_low60_0_low20_0_0 = f_0_low60_0_low20_0_0
+; Range condition: f_0_low60_0_low20_0_0 = f_0_low60_0_low20_0_0
+; Output file: /tmp/outputqfbv_739cc3.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert (not (= f_0_low60_0_low20_0_0 f_0_low60_0_low20_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_ec460b.smt2
+Execution time of boolector: 0.0007 seconds
+OUTPUT FROM boolector:
+unsat
+
+===== Verifying range specifications =====
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #4: (-1048575)@64 <=s f_0_low60_0_low20_0_0
+; Range condition: -1048575 <=s f_0_low60_0_low20_0_0
+; Output file: /tmp/outputqfbv_493524.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (bvsle #xFFFFFFFFFFF00001 f_0_low60_0_low20_0_0)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_b8aefd.smt2
+Execution time of boolector: 0.0008 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #2: x7_2 = add (add f_0_low60_0_low20_0_0 (mul u_0_0_0 2097152@64)) (mul v_0_0_0 4398046511104@64)
+; Range condition: x7_2 = (f_0_low60_0_low20_0_0 + (u_0_0_0 * 2097152)) + (v_0_0_0 * 4398046511104)
+; Output file: /tmp/outputqfbv_f6d817.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (= x7_2 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_a7da8c.smt2
+Execution time of boolector: 0.0019 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #3: x8_3 = add (add g_0_low60_0_low20_1_1 (mul r_0_1_1 2097152@64)) (mul s_0_1_1 4398046511104@64)
+; Range condition: x8_3 = (g_0_low60_0_low20_1_1 + (r_0_1_1 * 2097152)) + (s_0_1_1 * 4398046511104)
+; Output file: /tmp/outputqfbv_73f2a3.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (= x8_3 (bvadd (bvadd g_0_low60_0_low20_1_1 (bvmul r_0_1_1 #x0000000000200000)) (bvmul s_0_1_1 #x0000040000000000)))))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_85677a.smt2
+Execution time of boolector: 0.0019 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #1: add (mul r_0_1_1 f_0_low60_0_low20_0_0) (mul s_0_1_1 g_0_low60_0_low20_0_0) = mul g_0_low60_0_low20_1_1 (-1048576)@64
+; Range condition: (r_0_1_1 * f_0_low60_0_low20_0_0) + (s_0_1_1 * g_0_low60_0_low20_0_0) = g_0_low60_0_low20_1_1 * -1048576
+; Output file: /tmp/outputqfbv_3a6ae6.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (= (bvadd (bvmul r_0_1_1 f_0_low60_0_low20_0_0) (bvmul s_0_1_1 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_1_1 #xFFFFFFFFFFF00000))))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_8f6989.smt2
+Execution time of boolector: 0.0023 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #6: (-1048575)@64 <=s g_0_low60_0_low20_1_1
+; Range condition: -1048575 <=s g_0_low60_0_low20_1_1
+; Output file: /tmp/outputqfbv_f5f786.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (bvsle #xFFFFFFFFFFF00001 g_0_low60_0_low20_1_1)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_24cf98.smt2
+Execution time of boolector: 0.0015 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #7: g_0_low60_0_low20_1_1 <=s 1048575@64
+; Range condition: g_0_low60_0_low20_1_1 <=s 1048575
+; Output file: /tmp/outputqfbv_d76c85.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (bvsle g_0_low60_0_low20_1_1 #x00000000000FFFFF)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_094f70.smt2
+Execution time of boolector: 0.0016 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #8: smod (sub (uext x7_2 1) (uext 1@64 1)) (uext 2@64 1) = 0@65
+; Range condition: ((x7_2@e1) - (1@e1)) smod (2@e1) = 0
+; Output file: /tmp/outputqfbv_e7e11b.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (= (bvsmod (bvsub ((_ zero_extend 1) x7_2) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_07257e.smt2
+Execution time of boolector: 0.0020 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #9: (-1)@64 <=s x3_3
+; Range condition: -1 <=s x3_3
+; Output file: /tmp/outputqfbv_870cb4.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (bvsle #xFFFFFFFFFFFFFFFF x3_3)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_950025.smt2
+Execution time of boolector: 0.0016 seconds
+OUTPUT FROM boolector:
+unsat
+
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: range specifications
+; Track: default
+; Cut: #0
+; Range specification #10: x3_3 <=s 3@64
+; Range condition: x3_3 <=s 3
+; Output file: /tmp/outputqfbv_18d18e.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+(declare-fun x8_target_1 () (_ BitVec 1))
+(declare-fun x8_lo_2 () (_ BitVec 2))
+(declare-fun x8_lo_1 () (_ BitVec 1))
+(declare-fun x8_3 () (_ BitVec 64))
+(declare-fun x8_2 () (_ BitVec 64))
+(declare-fun x7_2 () (_ BitVec 64))
+(declare-fun x3_neg_1 () (_ BitVec 64))
+(declare-fun x3_3 () (_ BitVec 64))
+(declare-fun x3_2 () (_ BitVec 64))
+(declare-fun x10_neg_1 () (_ BitVec 64))
+(declare-fun x10_2 () (_ BitVec 64))
+(declare-fun x10_1 () (_ BitVec 64))
+(declare-fun v_0_0_0 () (_ BitVec 64))
+(declare-fun u_0_0_0 () (_ BitVec 64))
+(declare-fun s_0_1_1 () (_ BitVec 64))
+(declare-fun s_0_0_0 () (_ BitVec 64))
+(declare-fun r_0_1_1 () (_ BitVec 64))
+(declare-fun r_0_0_0 () (_ BitVec 64))
+(declare-fun ne_2 () (_ BitVec 1))
+(declare-fun ne_1 () (_ BitVec 1))
+(declare-fun grs_0 () (_ BitVec 64))
+(declare-fun ge_3 () (_ BitVec 1))
+(declare-fun ge_2 () (_ BitVec 1))
+(declare-fun ge_1 () (_ BitVec 1))
+(declare-fun g_0_low60_0_low20_1_1 () (_ BitVec 64))
+(declare-fun g_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun fuv_0 () (_ BitVec 64))
+(declare-fun f_0_low60_0_low20_0_0 () (_ BitVec 64))
+(declare-fun delta_0 () (_ BitVec 64))
+(declare-fun dc_8 () (_ BitVec 64))
+(declare-fun dc_7 () (_ BitVec 1))
+(declare-fun dc_6 () (_ BitVec 62))
+(declare-fun dc_5 () (_ BitVec 1))
+(declare-fun dc_4 () (_ BitVec 1))
+(declare-fun dc_3 () (_ BitVec 1))
+(declare-fun dc_2 () (_ BitVec 63))
+(declare-fun dc_1 () (_ BitVec 63))
+(assert (and (and (and (and (and (and (and (and (and (and (and (and (and (= s_0_0_0 #xFFFFFFFFFFF00000) (= r_0_0_0 #x0000000000000000)) (= v_0_0_0 #x0000000000000000)) (= u_0_0_0 #xFFFFFFFFFFF00000)) (= delta_0 #x0000000000000001)) (= (bvsmod (bvsub ((_ zero_extend 1) fuv_0) ((_ zero_extend 1) #x0000000000000001)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000)) (bvsle g_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 g_0_low60_0_low20_0_0)) (bvsle f_0_low60_0_low20_0_0 #x00000000000FFFFF)) (bvsle #x0000000000000000 f_0_low60_0_low20_0_0)) (= grs_0 (bvadd (bvadd g_0_low60_0_low20_0_0 (bvmul r_0_0_0 #x0000000000200000)) (bvmul s_0_0_0 #x0000040000000000)))) (= fuv_0 (bvadd (bvadd f_0_low60_0_low20_0_0 (bvmul u_0_0_0 #x0000000000200000)) (bvmul v_0_0_0 #x0000040000000000)))) (= (bvadd (bvmul r_0_0_0 f_0_low60_0_low20_0_0) (bvmul s_0_0_0 g_0_low60_0_low20_0_0)) (bvmul g_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))) (= (bvadd (bvmul u_0_0_0 f_0_low60_0_low20_0_0) (bvmul v_0_0_0 g_0_low60_0_low20_0_0)) (bvmul f_0_low60_0_low20_0_0 #xFFFFFFFFFFF00000))))
+(assert (= (bvsmod (bvsub ((_ zero_extend 1) g_0_low60_0_low20_0_0) ((_ zero_extend 1) #x0000000000000000)) ((_ zero_extend 1) #x0000000000000002)) #b00000000000000000000000000000000000000000000000000000000000000000))
+(assert (and (= dc_1 ((_ extract 63 1) grs_0)) (= x8_lo_1 ((_ extract 0 0) grs_0))))
+(assert (= ne_1 (bvand x8_lo_1 #b1)))
+(assert (= x10_1 (ite (= ne_1 #b1) fuv_0 #x0000000000000000)))
+(assert (and (= ge_1 ((_ extract 63 63) delta_0)) (= dc_2 ((_ extract 62 0) delta_0))))
+(assert (= ge_2 (bvnot ge_1)))
+(assert (= ge_3 (ite (= ne_1 #b1) ge_2 #b0)))
+(assert (and (= dc_3 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x3_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot delta_0))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x3_2 (ite (= ge_3 #b1) x3_neg_1 delta_0)))
+(assert (and (= dc_4 ((_ extract 64 64) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001))) (= x10_neg_1 ((_ extract 63 0) (bvadd (bvadd ((_ zero_extend 1) #x0000000000000000) ((_ zero_extend 1) (bvnot x10_1))) #b00000000000000000000000000000000000000000000000000000000000000001)))))
+(assert (= x10_2 (ite (= ge_3 #b1) x10_neg_1 x10_1)))
+(assert (= x7_2 (ite (= ge_3 #b1) grs_0 fuv_0)))
+(assert (and (= dc_5 ((_ extract 64 64) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2)))) (= x8_2 ((_ extract 63 0) (bvadd ((_ zero_extend 1) grs_0) ((_ zero_extend 1) x10_2))))))
+(assert (= x3_3 (bvadd x3_2 #x0000000000000002)))
+(assert (and (= dc_6 ((_ extract 63 2) x8_2)) (= x8_lo_2 ((_ extract 1 0) x8_2))))
+(assert (and (= x8_target_1 ((_ extract 1 1) x8_lo_2)) (= dc_7 ((_ extract 0 0) x8_lo_2))))
+(assert (= ne_2 (bvand x8_target_1 #b1)))
+(assert (and (= x8_3 ((_ sign_extend 1) ((_ extract 63 1) x8_2))) (= dc_8 ((_ zero_extend 63) ((_ extract 0 0) x8_2)))))
+(assert true)
+(assert (= g_0_low60_0_low20_1_1 (bvashr g_0_low60_0_low20_0_0 #x0000000000000001)))
+(assert (= r_0_1_1 (bvashr r_0_0_0 #x0000000000000001)))
+(assert (= s_0_1_1 (bvashr s_0_0_0 #x0000000000000001)))
+(assert true)
+(assert (not (bvsle x3_3 #x0000000000000003)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_2af64c.smt2
+Execution time of boolector: 0.0017 seconds
+OUTPUT FROM boolector:
+unsat
+
+===== Verifying algebraic assertions =====
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #3: g_0_low60_0_low20_1_1 * 2 = g_0_low60_0_low20_0_0
+// Algebraic condition: g_0_low60_0_low20_1_1 * 2 = g_0_low60_0_low20_0_0
+// Try: #0 (pure equality)
+// Output file: /tmp/outputfgb_156267
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (tmp29577669_3,g_0_low60_0_low20_1_1), lp;
+ideal gs = 0;
+poly p = g_0_low60_0_low20_1_1 * bigint(2) - tmp29577669_3 * bigint(2);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0042 seconds
+OUTPUT FROM SINGULAR:
+-2*tmp29577669_3+2*g_0_low60_0_low20_1_1
+
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #1: s_0_1_1 * 2 = s_0_0_0
+// Algebraic condition: s_0_1_1 * 2 = s_0_0_0
+// Try: #0 (pure equality)
+// Output file: /tmp/outputfgb_2c0888
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (s_0_1_1,tmp29577669_3,g_0_low60_0_low20_1_1), lp;
+ideal gs = 0;
+poly p = s_0_1_1 * bigint(2) - s_0_1_1 * bigint(2);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0044 seconds
+OUTPUT FROM SINGULAR:
+0
+
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #2: r_0_1_1 * 2 = r_0_0_0
+// Algebraic condition: r_0_1_1 * 2 = r_0_0_0
+// Try: #0 (pure equality)
+// Output file: /tmp/outputfgb_080963
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (r_0_1_1,tmp29577669_3,g_0_low60_0_low20_1_1), lp;
+ideal gs = 0;
+poly p = r_0_1_1 * bigint(2) - r_0_1_1 * bigint(2);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0045 seconds
+OUTPUT FROM SINGULAR:
+0
+
+=== Cut #0 ===
+INPUT TO SINGULAR:
+// Verify: algebraic assertions
+// Track: default
+// Cut: #0
+// Algebraic assertion #3: g_0_low60_0_low20_1_1 * 2 = g_0_low60_0_low20_0_0
+// Algebraic condition: g_0_low60_0_low20_1_1 * 2 = g_0_low60_0_low20_0_0
+// Try: #1 (modular equality)
+// Output file: /tmp/outputfgb_139bd2
+proc is_generator(poly p, ideal I) {
+  int idx;
+  for (idx=1; idx<=size(I); idx++) {
+    if (p == I[idx]) { return (0==0); }
+  }
+  return (0==1);
+}
+
+ring r = integer, (tmp29577669_3,g_0_low60_0_low20_1_1), lp;
+ideal gs = g_0_low60_0_low20_1_1 * bigint(2) - tmp29577669_3 * bigint(2);
+poly p = g_0_low60_0_low20_1_1 * bigint(2) - tmp29577669_3 * bigint(2);
+if (is_generator(p, gs) || reduce(p, gs) == 0) {
+  0;
+} else {
+  ideal I = groebner(gs);
+  reduce(p, I);
+}
+exit;
+
+Execution time of Singular: 0.0034 seconds
+OUTPUT FROM SINGULAR:
+0
+
+===== Verifying algebraic specifications =====

@@ -6,7 +6,7 @@ emit = ""
 
 
 i = 0
-case = "b"
+case = "a"
 
 
 vars = [
@@ -45,7 +45,7 @@ emit += cl_precondition(
 "const 64 0 <=s g_0_low60_0_low20_0",
 "g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1))",
 "fuv = (const 64 1) (mod (const 64 2))",
-"delta = (const 64 1) (mod (const 64 2))",
+"delta = (const 64 1)",
 "u_0_0 = (const 64 (-(2**20)))",
 "v_0_0 = (const 64 (0))",
 "r_0_0 = (const 64 (0))",
@@ -62,33 +62,33 @@ emit += f"""
 
 if case == "a":
     emit += f"""
-// premise {case}
-assume
-    g_0_low60_0_low20_0 = 0 (mod 2)
-&&
-    g_0_low60_0_low20_0 = const 64 0 (mod (const 64 2))
-;
-"""
+    // premise {case}
+    assume 
+        g_0_low60_0_low20_0 = 0 (mod 2)
+    &&
+        g_0_low60_0_low20_0 = const 64 0 (mod (const 64 2))
+    ;
+    """
 elif case == "b":
     emit += f"""
-// premise {case}
-assume
-    g_0_low60_0_low20_0 = 1 (mod 2)
-&&
-    g_0_low60_0_low20_0 = const 64 1 (mod (const 64 2)),
-    delta <s (const 64 0)
-;
-"""
+    // premise {case}
+    assume 
+        g_0_low60_0_low20_0 = 1 (mod 2)
+    &&
+        g_0_low60_0_low20_0 = const 64 1 (mod (const 64 2)),
+        delta <s 0
+    ;
+    """
 elif case == "c":
     emit += f"""
-// premise {case}
-assume
-    g_0_low60_0_low20_0 = 1 (mod 2)
-&&
-    g_0_low60_0_low20_0 = const 64 1 (mod (const 64 2)),
-    delta >=s (const 64 0)
-;
-"""
+    // premise {case}
+    assume 
+        g_0_low60_0_low20_0 = 1 (mod 2)
+    &&
+        g_0_low60_0_low20_0 = const 64 1 (mod (const 64 2)),
+        delta >=s 0
+    ;
+    """
 
 emit += f"""
 
@@ -123,97 +123,53 @@ spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
-"""
 
-
-if case == "a":
-    emit += f"""
-// premise {case}
 assert true &&
+    grs = (const 64 0) (mod (const 64 2)),
+
     x7 = fuv,
     x8 * (const 64 2) = grs,
     x3 = (const 64 2) + delta
 ;
-"""
-elif case == "b":
-    emit += f"""
-// premise {case}
-assert true &&
-    x7 = fuv,
-    x8 * (const 64 2) = grs + fuv,
-    x3 = (const 64 2) + delta
-;
-"""
-elif case == "c":
-    emit += f"""
-// premise {case}
-assert true &&
-    x7 = fuv,
-    x8 * (const 64 2) = grs - fuv,
-    x3 = (const 64 2) - delta
-"""
-
-emit += """
 
 mov fuv x7;
 mov grs x8;
 mov delta x3;
 """
 
-if case == "a":
-    emit += f"""
-    // According to premise {case}
 
-    mov f_0_low60_0_low20_1 f_0_low60_0_low20_0;
-    mov u_0_1 u_0_0;
-    mov v_0_1 v_0_0;
+emit += f"""
 
-    asr g_0_low60_0_low20_1 g_0_low60_0_low20_0 1;
-    asr r_0_1 r_0_0 1;
-    asr s_0_1 s_0_0 1;
-    """
+// According to premise {case}
 
-    emit += cl_assert(
-        Epred(),
-        Rpred([
-            "f_0_low60_0_low20_1 = f_0_low60_0_low20_0",
-            "u_0_1 = u_0_0",
-            "v_0_1 = v_0_0",
-            "g_0_low60_0_low20_1 * (const 64 2) = g_0_low60_0_low20_0",
-            "r_0_1 * (const 64 2) = r_0_0",
-            "s_0_1 * (const 64 2) = s_0_0",
-        ])
-    )
-elif case == "b":
-    emit += f"""
-    // According to premise {case}
+mov f_0_low60_0_low20_1 f_0_low60_0_low20_0;
+mov u_0_1 u_0_0;
+mov v_0_1 v_0_0;
 
-    mov f_0_low60_0_low20_1 f_0_low60_0_low20_0;
-    mov u_0_1 u_0_0;
-    mov v_0_1 v_0_0;
+asr g_0_low60_0_low20_1 g_0_low60_0_low20_0 1;
+asr r_0_1 r_0_0 1;
+asr s_0_1 s_0_0 1;
 
-    add g_0_low60_0_low20_1 g_0_low60_0_low20_0 f_0_low60_0_low20_0;
-    asr g_0_low60_0_low20_1 g_0_low60_0_low20_1 1;
-    add r_0_1 r_0_0 u_0_0;
-    asr r_0_1 r_0_1 1;
-    add s_0_1 s_0_0 v_0_0;
-    asr s_0_1 s_0_0 1;
-    """
+"""
 
-    emit += cl_assert(
-        Epred(),
-        Rpred([
-            "f_0_low60_0_low20_1 = f_0_low60_0_low20_0",
-            "u_0_1 = u_0_0",
-            "v_0_1 = v_0_0",
-            "g_0_low60_0_low20_1 * (const 64 2) = g_0_low60_0_low20_0 + f_0_low60_0_low20_0",
-            "r_0_1 * (const 64 2) = r_0_0 + u_0_0",
-            "s_0_1 * (const 64 2) = s_0_0 + v_0_0",
-        ])
-    )
-
-
-
+emit += cl_assert(
+    Epred([
+        "f_0_low60_0_low20_1 = f_0_low60_0_low20_0",
+        "u_0_1 = u_0_0",
+        "v_0_1 = v_0_0",
+        "g_0_low60_0_low20_1 * 2 = g_0_low60_0_low20_0",
+        "r_0_1 * 2 = r_0_0",
+        "s_0_1 * 2 = s_0_0",
+    ]),
+    Rpred([
+        "f_0_low60_0_low20_1 = f_0_low60_0_low20_0",
+        "u_0_1 = u_0_0",
+        "v_0_1 = v_0_0",
+        "g_0_low60_0_low20_1 * (const 64 2) = g_0_low60_0_low20_0",
+        "r_0_1 * (const 64 2) = r_0_0",
+        "s_0_1 * (const 64 2) = s_0_0",
+    ])
+)
 #
 # emit += cl_assert(
 #     Epred(
@@ -249,7 +205,7 @@ emit += cl_postcondition(
 "(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_1",
 "g_0_low60_0_low20_1 <=s (const 64 ((2**20)-1))",
 "fuv = (const 64 1) (mod (const 64 2))",
-# f"(const 64 (1 + (-2) * {i+1})) <=s delta, delta <=s (const 64 (1 + 2*{i+1}))",
+f"(const 64 (1 + (-2) * {i+1})) <=s delta, delta <=s (const 64 (1 + 2*{i+1}))",
 # "u_0_0 = (const 64 (-(2**20)))",
 # "v_0_0 = (const 64 (0))",
 # "r_0_0 = (const 64 (0))",
