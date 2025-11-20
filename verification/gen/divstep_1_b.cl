@@ -1,4 +1,4 @@
-proc divstep_1_b (
+proc divstep_01_b (
 sint64 fuv,
 sint64 grs,
 sint64 delta,
@@ -18,12 +18,15 @@ sint64 r_0_2,
 sint64 s_0_2,
 bit ne
 )={
-    true
+    u_0_1 * f_0_low60_0_low20_0 + v_0_1 * g_0_low60_0_low20_0 = f_0_low60_0_low20_1 * (-(2**20)),
+    r_0_1 * f_0_low60_0_low20_0 + s_0_1 * g_0_low60_0_low20_0 = g_0_low60_0_low20_1 * (-(2**20))
 &&
-    u_0_1 * f_0_low60_0_low20_0 + v_0_1 * g_0_low60_0_low20_0 = f_0_low60_0_low20_1 * (const 64 (-(2**20))),
-    r_0_1 * f_0_low60_0_low20_0 + s_0_1 * g_0_low60_0_low20_0 = g_0_low60_0_low20_1 * (const 64 (-(2**20))),
     fuv = f_0_low60_0_low20_1 + u_0_1 * (const 64 (2**21)) + v_0_1 * (const 64 (2**42)),
     grs = g_0_low60_0_low20_1 + r_0_1 * (const 64 (2**21)) + s_0_1 * (const 64 (2**42)),
+    const 64 0 <=s f_0_low60_0_low20_0,
+    f_0_low60_0_low20_0 <=s (const 64 ((2**20)-1)),
+    const 64 0 <=s g_0_low60_0_low20_0,
+    g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1)),
     const 64 0 <=s f_0_low60_0_low20_1,
     f_0_low60_0_low20_1 <=s (const 64 ((2**20)-1)),
     const 64 0 <=s g_0_low60_0_low20_1,
@@ -35,7 +38,7 @@ bit ne
     (const 64 (-(2**20))) <=s u_0_1, u_0_1 <=s (const 64 ((2**19))),
     (const 64 (-(2**20))) <=s v_0_1, v_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)) )),
     (const 64 ((2**(20-1))-(2**20))) <=s r_0_1, r_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)))),
-    (const 64 (-(2**20))) <=s s_0_1, s_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)))),
+    (const 64 ((2**(20-1))-(2**20))) <=s s_0_1, s_0_1 <=s (const 64 ((2**19) - (2**(20 - 1)))),
     (const 64 ((2**(20-1))-(2**19))) <=s (r_0_1 - u_0_1), (r_0_1 - u_0_1) <=s (const 64 ((2**20))),
     (const 64 (-(2**19))) <=s (s_0_1 - v_0_1), (s_0_1 - v_0_1) <=s (const 64 ((2**20) - (2**(20 - 1)))),
     u_0_1 = (const 64 0) (mod (const 64 (2**(20-1)))),
@@ -122,11 +125,21 @@ assert
     s_0_2 * (const 64 2) = s_0_1 + v_0_1
 ;
 
-{
-    true
+assume
+    f_0_low60_0_low20_2 = f_0_low60_0_low20_1,
+    u_0_2 = u_0_1,
+    v_0_2 = v_0_1,
+    g_0_low60_0_low20_2 * 2 = g_0_low60_0_low20_1 + f_0_low60_0_low20_1,
+    r_0_2 * 2 = r_0_1 + u_0_1,
+    s_0_2 * 2 = s_0_1 + v_0_1
 &&
-    u_0_2 * f_0_low60_0_low20_0 + v_0_2 * g_0_low60_0_low20_0 = f_0_low60_0_low20_2 * (const 64 (-(2**20))),
-    r_0_2 * f_0_low60_0_low20_0 + s_0_2 * g_0_low60_0_low20_0 = g_0_low60_0_low20_2 * (const 64 (-(2**20))),
+    true
+;
+
+{
+    u_0_2 * f_0_low60_0_low20_0 + v_0_2 * g_0_low60_0_low20_0 = f_0_low60_0_low20_2 * (-(2**20)) prove with [algebra solver smt:z3],
+    r_0_2 * f_0_low60_0_low20_0 + s_0_2 * g_0_low60_0_low20_0 = g_0_low60_0_low20_2 * (-(2**20)) prove with [algebra solver smt:z3]
+&&
     fuv = f_0_low60_0_low20_2 + u_0_2 * (const 64 (2**21)) + v_0_2 * (const 64 (2**42)),
     grs = g_0_low60_0_low20_2 + r_0_2 * (const 64 (2**21)) + s_0_2 * (const 64 (2**42)),
     (const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_2,

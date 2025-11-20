@@ -3,7 +3,7 @@ from gen_cl import *
 
 
 
-def divsep_gen(i, case):
+def divsep_gen(i, case, you_shall_not_pass = False):
     emit = ""
 
     vars = [
@@ -37,19 +37,19 @@ def divsep_gen(i, case):
     Var(bit, "ne"),
     ]
 
-    emit += f"proc divstep_{i}_{case} (\n"
+    emit += f"proc divstep_{i:02d}_{case} (\n"
 
     emit += cl_var_layout(vars, 1)
 
     rpred = Rpred(
-    f"u_0_{i} * f_0_low60_0_low20_0 + v_0_{i} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
-    f"r_0_{i} * f_0_low60_0_low20_0 + s_0_{i} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
+    # f"u_0_{i} * f_0_low60_0_low20_0 + v_0_{i} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
+    # f"r_0_{i} * f_0_low60_0_low20_0 + s_0_{i} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
     f"fuv = f_0_low60_0_low20_{i} + u_0_{i} * (const 64 (2**21)) + v_0_{i} * (const 64 (2**42))",
     f"grs = g_0_low60_0_low20_{i} + r_0_{i} * (const 64 (2**21)) + s_0_{i} * (const 64 (2**42))",
-    f"const 64 0 <=s f_0_low60_0_low20_{i}",
-    f"f_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
-    f"const 64 0 <=s g_0_low60_0_low20_{i}",
-    f"g_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
+    f"const 64 0 <=s f_0_low60_0_low20_0",
+    f"f_0_low60_0_low20_0 <=s (const 64 ((2**20)-1))",
+    f"const 64 0 <=s g_0_low60_0_low20_0",
+    f"g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1))",
         )
     if i == 0:
         rpred = Rpred(rpred,
@@ -57,6 +57,10 @@ def divsep_gen(i, case):
             )
     else:
         rpred = Rpred(rpred,
+        f"const 64 0 <=s f_0_low60_0_low20_{i}",
+        f"f_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
+        f"const 64 0 <=s g_0_low60_0_low20_{i}",
+        f"g_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
         f"fuv = (const 64 1) (mod (const 64 2))",
         f"grs = (uext ne 63) (mod (const 64 2))",
             )
@@ -81,7 +85,7 @@ def divsep_gen(i, case):
         f"(const 64 (-(2**20))) <=s u_0_{i}, u_0_{i} <=s (const 64 ((2**19)))",
         f"(const 64 (-(2**20))) <=s v_0_{i}, v_0_{i} <=s (const 64 ((2**19) - (2**(20 - {i})) ))",
         f"(const 64 ((2**(20-{i}))-(2**20))) <=s r_0_{i}, r_0_{i} <=s (const 64 ((2**19) - (2**(20 - {i}))))",
-        f"(const 64 (-(2**20))) <=s s_0_{i}, s_0_{i} <=s (const 64 ((2**19) - (2**(20 - {i}))))",
+        f"(const 64 ((2**(20-{i}))-(2**20))) <=s s_0_{i}, s_0_{i} <=s (const 64 ((2**19) - (2**(20 - {i}))))",
         f"(const 64 ((2**(20-{i}))-(2**19))) <=s (r_0_{i} - u_0_{i}), (r_0_{i} - u_0_{i}) <=s (const 64 ((2**20)))",
         f"(const 64 (-(2**19))) <=s (s_0_{i} - v_0_{i}), (s_0_{i} - v_0_{i}) <=s (const 64 ((2**20) - (2**(20 - {i}))))",
         f"u_0_{i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
@@ -92,7 +96,10 @@ def divsep_gen(i, case):
 
 
     emit += cl_precondition(
-        Epred(), 
+        Epred(
+    f"u_0_{i} * f_0_low60_0_low20_0 + v_0_{i} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i} * (-(2**20))",
+    f"r_0_{i} * f_0_low60_0_low20_0 + s_0_{i} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i} * (-(2**20))",
+        ), 
         rpred
     )
 
@@ -234,6 +241,18 @@ asr s_0_{i+1} s_0_{i} 1;
                 f"s_0_{i+1} * (const 64 2) = s_0_{i}",
             ])
         )
+
+        emit += cl_assume(
+            Epred([
+                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
+                f"u_0_{i+1} = u_0_{i}",
+                f"v_0_{i+1} = v_0_{i}",
+                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i}",
+                f"r_0_{i+1} * 2 = r_0_{i}",
+                f"s_0_{i+1} * 2 = s_0_{i}",
+            ]),
+            Rpred()
+        )
     elif case == "b":
         emit += f"""
 // According to premise {case}
@@ -260,6 +279,18 @@ asr s_0_{i+1} s_0_{i+1} 1;
                 f"r_0_{i+1} * (const 64 2) = r_0_{i} + u_0_{i}",
                 f"s_0_{i+1} * (const 64 2) = s_0_{i} + v_0_{i}",
             ])
+        )
+
+        emit += cl_assume(
+            Epred([
+                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
+                f"u_0_{i+1} = u_0_{i}",
+                f"v_0_{i+1} = v_0_{i}",
+                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i} + f_0_low60_0_low20_{i}",
+                f"r_0_{i+1} * 2 = r_0_{i} + u_0_{i}",
+                f"s_0_{i+1} * 2 = s_0_{i} + v_0_{i}",
+            ]),
+            Rpred()
         )
     elif case == "c":
         emit += f"""
@@ -289,11 +320,28 @@ asr s_0_{i+1} s_0_{i+1} 1;
             ])
         )
 
+        emit += cl_assume(
+            Epred([
+                f"f_0_low60_0_low20_{i+1} = g_0_low60_0_low20_{i}",
+                f"u_0_{i+1} = r_0_{i}",
+                f"v_0_{i+1} = s_0_{i}",
+                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i} - f_0_low60_0_low20_{i}",
+                f"r_0_{i+1} * 2 = r_0_{i} - u_0_{i}",
+                f"s_0_{i+1} * 2 = s_0_{i} - v_0_{i}",
+            ]),
+            Rpred()
+        )
+
+    post_rpred = Rpred()
+    if you_shall_not_pass:
+        post_rpred = Rpred("(const 64 0) = (const 64 1)")
+
     emit += cl_postcondition(
-        Epred(), 
-        Rpred(
-        f"u_0_{i+1} * f_0_low60_0_low20_0 + v_0_{i+1} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i+1} * (const 64 (-(2**20)))",
-        f"r_0_{i+1} * f_0_low60_0_low20_0 + s_0_{i+1} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i+1} * (const 64 (-(2**20)))",
+        Epred(
+            f"u_0_{i+1} * f_0_low60_0_low20_0 + v_0_{i+1} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
+            f"r_0_{i+1} * f_0_low60_0_low20_0 + s_0_{i+1} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
+        ), 
+        Rpred(post_rpred,
         f"fuv = f_0_low60_0_low20_{i+1} + u_0_{i+1} * (const 64 (2**21)) + v_0_{i+1} * (const 64 (2**42))",
         f"grs = g_0_low60_0_low20_{i+1} + r_0_{i+1} * (const 64 (2**21)) + s_0_{i+1} * (const 64 (2**42))",
         f"(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_{i+1}",
@@ -320,8 +368,18 @@ asr s_0_{i+1} s_0_{i+1} 1;
 
 
 
-for i in range(2):
+for i in range(20):
     for case in ["a", "b", "c"]:
         emit = divsep_gen(i,case)
         with open(f"gen/divstep_{i}_{case}.cl", "w") as f:
             f.write(emit)
+
+
+
+emit = ""
+with open(f"gen/divstep_0_20_forkcases.cl", "w") as f:
+    for i in range(20):
+        for case in ["a", "b", "c"]:
+            emit += divsep_gen(i, case)
+    f.write(emit)
+
