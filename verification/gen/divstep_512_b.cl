@@ -39,7 +39,7 @@ bit ne
 
 
 // divsteps
-// step40
+// step512
 
 // premise b
 assume

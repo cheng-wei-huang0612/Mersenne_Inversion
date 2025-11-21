@@ -58,7 +58,7 @@ bit ne
 
 
 // divsteps
-// step34
+// step506
 
 // premise c
 assume

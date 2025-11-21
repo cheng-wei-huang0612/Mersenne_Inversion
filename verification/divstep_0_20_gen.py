@@ -1,7 +1,7 @@
 from gen_cl import *
 
 
-def divsep_gen(i, j, k, case, you_shall_not_pass = False):
+def divstep_gen(i, j, k, case, you_shall_not_pass = False):
     emit = ""
 
     vars = [
@@ -131,7 +131,7 @@ def divsep_gen(i, j, k, case, you_shall_not_pass = False):
     emit += f"""
 
 // divsteps
-// step{20*j+i}
+// step{59*k + 20*j + i}
 """
     if case == "a":
         emit += f"""
@@ -408,7 +408,7 @@ for k in range(10):
     for j in range(3):
         for i in range(20 - (j>>1)):
             for case in ["a", "b", "c"]:
-                emit = divsep_gen(i,j,k,case)
+                emit = divstep_gen(i,j,k,case)
                 with open(f"gen/divstep_{59*k + 20*j + i:03d}_{case}.cl", "w") as f:
                     f.write(emit)
 
@@ -420,6 +420,14 @@ for k in range(10):
             emit = ""
             for i in range(20 - (j>>1)):
                 for case in ["a", "b", "c"]:
-                    emit += divsep_gen(i, j, k, case)
+                    emit += divstep_gen(i, j, k, case)
             f.write(emit)
 
+with open("gen/divstep_000_590_forkcases.cl", "w") as f:
+    emit = ""
+    for k in range(10):
+        for j in range(3):
+            for i in range(20 - (j >> 1)):
+                for case in ["a", "b", "c"]:
+                    emit += divstep_gen(i, j, k, case)
+    f.write(emit)

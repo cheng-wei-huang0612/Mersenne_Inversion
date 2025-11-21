@@ -58,7 +58,7 @@ bit ne
 
 
 // divsteps
-// step16
+// step488
 
 // premise a
 assume
