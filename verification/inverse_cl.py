@@ -446,8 +446,8 @@ mov g_low128_0 x5;
 mov g_low128_1 x22;
 mov delta x3;
 mov const_2p41a2p20 x6;
-
 """
+
 
 emit += """
 cut
@@ -557,6 +557,90 @@ cut
     ]
 ;
 """
+
+
+emit += cl_cut(
+    Epred(),
+    Rpred(
+        cl_rand(
+            [f"(const 32 0) <=s F_0_limb30_{i}, F_0_limb30_{i} <=s (const 32 ((2**30)-1))" for i in range(0,8) ],
+            f"(const 32 0) <=s F_0_limb30_8, F_0_limb30_8 <=s (const 32 ((2**15)-1))",
+            [f"(const 32 0) <=s G_0_limb30_{i}, G_0_limb30_{i} <=s (const 32 ((2**30)-1))" for i in range(0,8) ],
+            f"(const 32 0) <=s G_0_limb30_8, G_0_limb30_8 <=s (const 32 ((2**16)-1))",
+            [f"(const 32 0) <=s V_0_limb30_{i}, V_0_limb30_{i} <=s (const 32 ((2**30)-1))" for i in range(0,8) ],
+            f"(const 32 0) <=s V_0_limb30_8, V_0_limb30_8 <=s (const 32 ((2**16)-1))",
+            [f"(const 32 0) <=s S_0_limb30_{i}, S_0_limb30_{i} <=s (const 32 ((2**30)-1))" for i in range(0,8) ],
+            f"(const 32 0) <=s S_0_limb30_8, S_0_limb30_8 <=s (const 32 ((2**16)-1))",
+
+            """
+    slimbs 30 [
+        F_0_limb30_0, F_0_limb30_1, F_0_limb30_2, F_0_limb30_3,
+        F_0_limb30_4, F_0_limb30_5, F_0_limb30_6, F_0_limb30_7,
+        F_0_limb30_8
+    ]
+    =
+    (const 272 (2**255 - 19))
+            """,
+
+
+            """
+    slimbs 30 [
+        G_0_limb30_0, G_0_limb30_1, G_0_limb30_2, G_0_limb30_3,
+        G_0_limb30_4, G_0_limb30_5, G_0_limb30_6, G_0_limb30_7,
+        G_0_limb30_8
+    ]
+    =
+    uext (limbs 64 [op_x0, op_x1, op_x2, op_x3]) 16
+            """,
+            """
+    slimbs 30 [
+        V_0_limb30_0, V_0_limb30_1, V_0_limb30_2, V_0_limb30_3,
+        V_0_limb30_4, V_0_limb30_5, V_0_limb30_6, V_0_limb30_7,
+        V_0_limb30_8
+    ]
+    =
+    (const 272 (0))
+            """,
+            """
+    slimbs 30 [
+        S_0_limb30_0, S_0_limb30_1, S_0_limb30_2, S_0_limb30_3,
+        S_0_limb30_4, S_0_limb30_5, S_0_limb30_6, S_0_limb30_7,
+        S_0_limb30_8
+    ]
+    =
+    (const 272 (1))
+            """,
+
+            """
+    (uext f 192) = 
+    (const 256 ((2**255) - 19))
+    (mod (const 256 (2**60)))
+            """,
+
+            """
+    (uext g 192) = 
+    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+    (mod (const 256 (2**60)))
+            """,
+            """
+    delta = (const 64 1)
+            """,
+            """
+    (uext (limbs 64 [f_low128_0, f_low128_1]) 128) =
+    (const 256 ((2**255) - 19))
+    (mod (const 256 (2**128)))
+            """,
+            """
+    (uext (limbs 64 [g_low128_0, g_low128_1]) 128) =
+    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+    (mod (const 256 (2**128)))
+            """,
+            """
+    const_2p41a2p20 = (const 64 (2**41 + 2**20))
+            """,
+        )
+    )
+)
 
 emit += """
 // init_fuv_grs

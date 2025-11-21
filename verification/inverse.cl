@@ -313,7 +313,6 @@ mov g_low128_1 x22;
 mov delta x3;
 mov const_2p41a2p20 x6;
 
-
 cut
   true
   &&
@@ -420,6 +419,112 @@ cut
     const_2p41a2p20 = (const 64 (2**41 + 2**20))
     ]
 ;
+cut
+    true
+&&
+    and [
+        (const 32 0) <=s F_0_limb30_0, F_0_limb30_0 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_1, F_0_limb30_1 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_2, F_0_limb30_2 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_3, F_0_limb30_3 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_4, F_0_limb30_4 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_5, F_0_limb30_5 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_6, F_0_limb30_6 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_7, F_0_limb30_7 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s F_0_limb30_8, F_0_limb30_8 <=s (const 32 ((2**15)-1)),
+        (const 32 0) <=s G_0_limb30_0, G_0_limb30_0 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_1, G_0_limb30_1 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_2, G_0_limb30_2 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_3, G_0_limb30_3 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_4, G_0_limb30_4 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_5, G_0_limb30_5 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_6, G_0_limb30_6 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_7, G_0_limb30_7 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s G_0_limb30_8, G_0_limb30_8 <=s (const 32 ((2**16)-1)),
+        (const 32 0) <=s V_0_limb30_0, V_0_limb30_0 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_1, V_0_limb30_1 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_2, V_0_limb30_2 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_3, V_0_limb30_3 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_4, V_0_limb30_4 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_5, V_0_limb30_5 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_6, V_0_limb30_6 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_7, V_0_limb30_7 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s V_0_limb30_8, V_0_limb30_8 <=s (const 32 ((2**16)-1)),
+        (const 32 0) <=s S_0_limb30_0, S_0_limb30_0 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_1, S_0_limb30_1 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_2, S_0_limb30_2 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_3, S_0_limb30_3 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_4, S_0_limb30_4 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_5, S_0_limb30_5 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_6, S_0_limb30_6 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_7, S_0_limb30_7 <=s (const 32 ((2**30)-1)),
+        (const 32 0) <=s S_0_limb30_8, S_0_limb30_8 <=s (const 32 ((2**16)-1)),
+        
+    slimbs 30 [
+        F_0_limb30_0, F_0_limb30_1, F_0_limb30_2, F_0_limb30_3,
+        F_0_limb30_4, F_0_limb30_5, F_0_limb30_6, F_0_limb30_7,
+        F_0_limb30_8
+    ]
+    =
+    (const 272 (2**255 - 19))
+            ,
+        
+    slimbs 30 [
+        G_0_limb30_0, G_0_limb30_1, G_0_limb30_2, G_0_limb30_3,
+        G_0_limb30_4, G_0_limb30_5, G_0_limb30_6, G_0_limb30_7,
+        G_0_limb30_8
+    ]
+    =
+    uext (limbs 64 [op_x0, op_x1, op_x2, op_x3]) 16
+            ,
+        
+    slimbs 30 [
+        V_0_limb30_0, V_0_limb30_1, V_0_limb30_2, V_0_limb30_3,
+        V_0_limb30_4, V_0_limb30_5, V_0_limb30_6, V_0_limb30_7,
+        V_0_limb30_8
+    ]
+    =
+    (const 272 (0))
+            ,
+        
+    slimbs 30 [
+        S_0_limb30_0, S_0_limb30_1, S_0_limb30_2, S_0_limb30_3,
+        S_0_limb30_4, S_0_limb30_5, S_0_limb30_6, S_0_limb30_7,
+        S_0_limb30_8
+    ]
+    =
+    (const 272 (1))
+            ,
+        
+    (uext f 192) = 
+    (const 256 ((2**255) - 19))
+    (mod (const 256 (2**60)))
+            ,
+        
+    (uext g 192) = 
+    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+    (mod (const 256 (2**60)))
+            ,
+        
+    delta = (const 64 1)
+            ,
+        
+    (uext (limbs 64 [f_low128_0, f_low128_1]) 128) =
+    (const 256 ((2**255) - 19))
+    (mod (const 256 (2**128)))
+            ,
+        
+    (uext (limbs 64 [g_low128_0, g_low128_1]) 128) =
+    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+    (mod (const 256 (2**128)))
+            ,
+        
+    const_2p41a2p20 = (const 64 (2**41 + 2**20))
+            
+    ]
+
+;
+
 
 // init_fuv_grs
 mov x1 f;
@@ -3514,6 +3619,7 @@ assume
 &&
     true
 ;
+
 assert
     true
 &&
@@ -3526,6 +3632,7 @@ assert
     (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 (2**20 - 1)),
     and [(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 (2**20 - 1)) ] prove with [all cuts]
 ;
+
 assume
     (-(2**20)) <= u_0_20, u_0_20 <= (2**20 - 1),
     (-(2**20)) <= u_20_40, u_20_40 <= (2**20 - 1),
@@ -3538,12 +3645,14 @@ assume
 &&
     true
 ;
+
 assert
     and [(-(2**41)) <= u_0_40] prove with [algebra solver smt:z3],
     and [u_0_40 <= ((2**41))] prove with [algebra solver smt:z3]
 &&
     true
 ;
+
 
 // update_uuvvrrss
 (* mul	x9, x15, x11                                #! PC = 0xaaaaca6615e0 *)

@@ -329,3 +329,58 @@ def mov_x_to_v_u64(v0, lane, x0, pc):
     pc.increment_4bytes()
     return ret_string
 
+
+
+
+
+def cl_eand(*args):
+    epred = "and [\n"
+    for i in args:
+        assert not isinstance(i, Rpred)
+        epred += " "*8 + str(i)
+    epred += " "*4 + "]\n"
+    epred = Epred(epred)
+    return epred
+
+def cl_rand(*args):
+
+    buffer = []
+    for i in args:
+        if isinstance(i, list):
+            buffer.extend(i)
+        else:
+            buffer.append(i)
+
+
+    rpred = "and [\n"
+    for num, i in enumerate(buffer, 1):
+        assert not isinstance(i, Epred)
+
+        end_char = "" if num == len(buffer) else ","
+        end_char += "\n" if isinstance(i, str) else ""
+        rpred += " "*8 + str(i) + end_char
+    rpred += " "*4 + "]\n"
+    rpred = Rpred(rpred)
+    return rpred
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    emit = ""
+
+    epred = cl_eand(Epred("1"), Epred("2"))
+
+    emit += cl_cut(
+        epred,
+        Rpred()
+    )
+
+
+
+    print(emit)

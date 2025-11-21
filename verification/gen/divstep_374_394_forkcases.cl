@@ -75,10 +75,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -232,10 +234,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -392,10 +396,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -566,10 +572,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -738,10 +746,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -913,10 +923,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1087,10 +1099,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1259,10 +1273,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1434,10 +1450,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1608,10 +1626,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1780,10 +1800,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -1955,10 +1977,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2129,10 +2153,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2301,10 +2327,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2476,10 +2504,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2650,10 +2680,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2822,10 +2854,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -2997,10 +3031,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -3171,10 +3207,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -3343,10 +3381,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -3518,10 +3558,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -3692,10 +3734,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -3864,10 +3908,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4039,10 +4085,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4213,10 +4261,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4385,10 +4435,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4560,10 +4612,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4734,10 +4788,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -4906,10 +4962,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5081,10 +5139,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5255,10 +5315,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5427,10 +5489,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5602,10 +5666,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5776,10 +5842,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -5948,10 +6016,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6123,10 +6193,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6297,10 +6369,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6469,10 +6543,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6644,10 +6720,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6818,10 +6896,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -6990,10 +7070,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -7165,10 +7247,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -7339,10 +7423,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -7511,10 +7597,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -7686,10 +7774,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -7860,10 +7950,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8032,10 +8124,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8207,10 +8301,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8381,10 +8477,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8553,10 +8651,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8728,10 +8828,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -8902,10 +9004,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9074,10 +9178,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9249,10 +9355,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9423,10 +9531,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9595,10 +9705,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9770,10 +9882,12 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
+
 (* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -9944,10 +10058,7 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
-spl dc x8_lo x8 2;
-spl x8_target dc x8_lo 1;
-and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -10116,10 +10227,7 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
-spl dc x8_lo x8 2;
-spl x8_target dc x8_lo 1;
-and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
@@ -10291,10 +10399,7 @@ cmov x7 ge x8 x7;	// ge = tcont;
 adds dc x8 x8 x10;
 (* add	x3, x3, #0x2                                #! PC = 0xaaaaca660fc4 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca660fc8 *)
-spl dc x8_lo x8 2;
-spl x8_target dc x8_lo 1;
-and ne@bit x8_target 1@bit;
+
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca660fcc *)
 split x8 dc x8 1;
 
