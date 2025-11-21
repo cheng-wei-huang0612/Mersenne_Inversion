@@ -1,66 +1,77 @@
 from gen_cl import *
 
 
-
-
-def divsep_gen(i, case, you_shall_not_pass = False):
+def divsep_gen(i, j, k, case, you_shall_not_pass = False):
     emit = ""
 
     vars = [
     Var(sint64, "fuv"),
     Var(sint64, "grs"),
-    Var(sint64, "delta"),
-    Var(sint64, f"f_0_low60_0_low20_0"),
-    Var(sint64, f"g_0_low60_0_low20_0"),]
+    Var(sint64, "delta"),]
 
-    if i == 0:
-        vars += [
-        Var(sint64, f"f_0_low60_0_low20_{i+1}"),
-        Var(sint64, f"g_0_low60_0_low20_{i+1}"),]
-    else:
-        vars += [
-        Var(sint64, f"f_0_low60_0_low20_{i}"),
-        Var(sint64, f"g_0_low60_0_low20_{i}"),
-        Var(sint64, f"f_0_low60_0_low20_{i+1}"),
-        Var(sint64, f"g_0_low60_0_low20_{i+1}"),
-        ]
+
+    negative = False
+    if (k + j) % 2 == 1:
+        negative = True
+
+    neg_prefix = ""
+    if (k + j) % 2 == 1:
+        neg_prefix = "neg_"
+
 
     vars += [
-    Var(sint64, f"u_0_{i}"),
-    Var(sint64, f"v_0_{i}"),
-    Var(sint64, f"r_0_{i}"),
-    Var(sint64, f"s_0_{i}"),
-    Var(sint64, f"u_0_{i+1}"),
-    Var(sint64, f"v_0_{i+1}"),
-    Var(sint64, f"r_0_{i+1}"),
-    Var(sint64, f"s_0_{i+1}"),
+    Var(sint64, f"{neg_prefix}f_0_low60_{20*j}_low20_0"),
+    Var(sint64, f"{neg_prefix}g_0_low60_{20*j}_low20_0"),]
+    if i == 0:
+        vars += [
+        Var(sint64, f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1}"),
+        Var(sint64, f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1}"),]
+    else:
+        vars += [
+        Var(sint64, f"{neg_prefix}f_0_low60_{20*j}_low20_{i}"),
+        Var(sint64, f"{neg_prefix}g_0_low60_{20*j}_low20_{i}"),
+        Var(sint64, f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1}"),
+        Var(sint64, f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1}"),
+        ]
+
+
+    vars += [
+    Var(sint64, f"u_{20*j}_{20*j + i}"),
+    Var(sint64, f"v_{20*j}_{20*j + i}"),
+    Var(sint64, f"r_{20*j}_{20*j + i}"),
+    Var(sint64, f"s_{20*j}_{20*j + i}"),
+    Var(sint64, f"u_{20*j}_{20*j + i+1}"),
+    Var(sint64, f"v_{20*j}_{20*j + i+1}"),
+    Var(sint64, f"r_{20*j}_{20*j + i+1}"),
+    Var(sint64, f"s_{20*j}_{20*j + i+1}"),
     Var(bit, "ne"),
     ]
 
-    emit += f"proc divstep_{i:03d}_{case} (\n"
+    emit += f"proc divstep_{20*j + i:03d}_{case} (\n"
 
     emit += cl_var_layout(vars, 1)
 
     rpred = Rpred(
-    f"u_0_{i} * f_0_low60_0_low20_0 + v_0_{i} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
-    f"r_0_{i} * f_0_low60_0_low20_0 + s_0_{i} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i} * (const 64 (-(2**20)))",
-    f"fuv = f_0_low60_0_low20_{i} + u_0_{i} * (const 64 (2**21)) + v_0_{i} * (const 64 (2**42))",
-    f"grs = g_0_low60_0_low20_{i} + r_0_{i} * (const 64 (2**21)) + s_0_{i} * (const 64 (2**42))",
-    f"const 64 0 <=s f_0_low60_0_low20_0",
-    f"f_0_low60_0_low20_0 <=s (const 64 ((2**20)-1))",
-    f"const 64 0 <=s g_0_low60_0_low20_0",
-    f"g_0_low60_0_low20_0 <=s (const 64 ((2**20)-1))",
+    f"u_{20*j}_{20*j + i} * {neg_prefix}f_0_low60_{20*j}_low20_0 + v_{20*j}_{20*j + i} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}f_0_low60_{20*j}_low20_{i} * (const 64 (-(2**20)))",
+    f"r_{20*j}_{20*j + i} * {neg_prefix}f_0_low60_{20*j}_low20_0 + s_{20*j}_{20*j + i} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}g_0_low60_{20*j}_low20_{i} * (const 64 (-(2**20)))",
+    f"fuv = {neg_prefix}f_0_low60_{20*j}_low20_{i} + u_{20*j}_{20*j + i} * (const 64 (2**21)) + v_{20*j}_{20*j + i} * (const 64 (2**42))",
+    f"grs = {neg_prefix}g_0_low60_{20*j}_low20_{i} + r_{20*j}_{20*j + i} * (const 64 (2**21)) + s_{20*j}_{20*j + i} * (const 64 (2**42))",
+    f"const 64 0 <=s {neg_prefix}f_0_low60_{20*j}_low20_0",
+    f"{neg_prefix}f_0_low60_{20*j}_low20_0 <=s (const 64 ((2**20)-1))",
+    f"const 64 0 <=s {neg_prefix}g_0_low60_{20*j}_low20_0",
+    f"{neg_prefix}g_0_low60_{20*j}_low20_0 <=s (const 64 ((2**20)-1))",
         )
+
     if i == 0:
         rpred = Rpred(rpred,
         f"fuv = (const 64 1) (mod (const 64 2))",
             )
     else:
         rpred = Rpred(rpred,
-        f"const 64 0 <=s f_0_low60_0_low20_{i}",
-        f"f_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
-        f"const 64 0 <=s g_0_low60_0_low20_{i}",
-        f"g_0_low60_0_low20_{i} <=s (const 64 ((2**20)-1))",
+        f"const 64 0 <=s {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+        f"{neg_prefix}f_0_low60_{20*j}_low20_{i} <=s (const 64 ((2**20)-1))",
+        f"const 64 0 <=s {neg_prefix}g_0_low60_{20*j}_low20_{i}",
+        f"{neg_prefix}g_0_low60_{20*j}_low20_{i} <=s (const 64 ((2**20)-1))",
         f"fuv = (const 64 1) (mod (const 64 2))",
         f"grs = (uext ne 63) (mod (const 64 2))",
             )
@@ -68,16 +79,16 @@ def divsep_gen(i, case, you_shall_not_pass = False):
 
     rpred = Rpred(rpred,
     f"delta = (const 64 1) (mod (const 64 2))",
-    f"(const 64 (1 + (-2) * {i})) <=s delta, delta <=s (const 64 (1 + 2*{i}))",
+    f"(const 64 (1 + (-2) * {20*j+i})) <=s delta, delta <=s (const 64 (1 + 2*{20*j+i}))",
         )
 
     if i == 0:
         rpred = Rpred(
         rpred,
-        "u_0_0 = (const 64 (-(2**20)))",
-        "v_0_0 = (const 64 (0))",
-        "r_0_0 = (const 64 (0))",
-        "s_0_0 = (const 64 (-(2**20)))",
+        f"u_{20*j}_{20*j+i} = (const 64 (-(2**20)))",
+        f"v_{20*j}_{20*j+i} = (const 64 (0))",
+        f"r_{20*j}_{20*j+i} = (const 64 (0))",
+        f"s_{20*j}_{20*j+i} = (const 64 (-(2**20)))",
         )
     else:
         rpred = Rpred(
@@ -88,67 +99,67 @@ def divsep_gen(i, case, you_shall_not_pass = False):
         # f"(const 64 ((2**(20-{i}))-(2**20))) <=s s_0_{i}, s_0_{i} <=s (const 64 ((2**19) - (2**(20 - {i}))))",
         # f"(const 64 ((2**(20-{i}))-(2**19))) <=s (r_0_{i} - u_0_{i}), (r_0_{i} - u_0_{i}) <=s (const 64 ((2**20)))",
         # f"(const 64 (-(2**19))) <=s (s_0_{i} - v_0_{i}), (s_0_{i} - v_0_{i}) <=s (const 64 ((2**20) - (2**(20 - {i}))))",
-        f"(const 64 (-(2**20))) <=s u_0_{i}, u_0_{i} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s v_0_{i}, v_0_{i} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s r_0_{i}, r_0_{i} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s s_0_{i}, s_0_{i} <=s (const 64 ((2**20)))",
-        f"u_0_{i} + v_0_{i} <=s (const 64 (2**20))",
-        f"u_0_{i} - v_0_{i} <=s (const 64 (2**20))",
-        f"(const 64 0) - u_0_{i} + v_0_{i} <=s (const 64 (2**20))",
-        f"(const 64 0) - u_0_{i} - v_0_{i} <=s (const 64 (2**20))",
-        f"r_0_{i} + s_0_{i} <=s (const 64 (2**20))",
-        f"r_0_{i} - s_0_{i} <=s (const 64 (2**20))",
-        f"(const 64 0) - r_0_{i} + s_0_{i} <=s (const 64 (2**20))",
-        f"(const 64 0) - r_0_{i} - s_0_{i} <=s (const 64 (2**20))",
-        f"u_0_{i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
-        f"v_0_{i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
-        f"r_0_{i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
-        f"s_0_{i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
+        f"(const 64 (-(2**20))) <=s u_{20*j}_{20*j + i}, u_{20*j}_{20*j + i} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s v_{20*j}_{20*j + i}, v_{20*j}_{20*j + i} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s r_{20*j}_{20*j + i}, r_{20*j}_{20*j + i} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s s_{20*j}_{20*j + i}, s_{20*j}_{20*j + i} <=s (const 64 ((2**20)))",
+        f"u_{20*j}_{20*j + i} + v_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"u_{20*j}_{20*j + i} - v_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"(const 64 0) - u_{20*j}_{20*j + i} + v_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"(const 64 0) - u_{20*j}_{20*j + i} - v_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"r_{20*j}_{20*j + i} + s_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"r_{20*j}_{20*j + i} - s_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"(const 64 0) - r_{20*j}_{20*j + i} + s_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"(const 64 0) - r_{20*j}_{20*j + i} - s_{20*j}_{20*j + i} <=s (const 64 (2**20))",
+        f"u_{20*j}_{20*j + i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
+        f"v_{20*j}_{20*j + i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
+        f"r_{20*j}_{20*j + i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
+        f"s_{20*j}_{20*j + i} = (const 64 0) (mod (const 64 (2**(20-{i}))))",
         )
 
 
     emit += cl_precondition(
         Epred(
-    f"u_0_{i} * f_0_low60_0_low20_0 + v_0_{i} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i} * (-(2**20))",
-    f"r_0_{i} * f_0_low60_0_low20_0 + s_0_{i} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i} * (-(2**20))",
+    f"u_{20*j}_{20*j + i} * {neg_prefix}f_0_low60_{20*j}_low20_0 + v_{20*j}_{20*j + i} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}f_0_low60_{20*j}_low20_{i} * (-(2**20))",
+    f"r_{20*j}_{20*j + i} * {neg_prefix}f_0_low60_{20*j}_low20_0 + s_{20*j}_{20*j + i} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}g_0_low60_{20*j}_low20_{i} * (-(2**20))",
         ), 
         rpred
     )
 
 
+
     emit += f"""
 
 // divsteps
-// step{i}
+// step{20*j+i}
 """
-
     if case == "a":
         emit += f"""
 // premise {case}
 assume
-    g_0_low60_0_low20_{i} = 0 (mod 2)
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = 0 (mod 2)
 &&
-    g_0_low60_0_low20_{i} = const 64 0 (mod (const 64 2))
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = const 64 0 (mod (const 64 2))
 ;
 """
     elif case == "b":
         emit += f"""
 // premise {case}
 assume
-    g_0_low60_0_low20_{i} = 1 (mod 2)
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = 1 (mod 2)
 &&
-    g_0_low60_0_low20_{i} = const 64 1 (mod (const 64 2)),
-    delta <s (const 64 0)
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = const 64 1 (mod (const 64 2)),
+delta <s (const 64 0)
 ;
 """
     elif case == "c":
         emit += f"""
 // premise {case}
 assume
-    g_0_low60_0_low20_{i} = 1 (mod 2)
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = 1 (mod 2)
 &&
-    g_0_low60_0_low20_{i} = const 64 1 (mod (const 64 2)),
-    delta >=s (const 64 0)
+{neg_prefix}g_0_low60_{20*j}_low20_{i} = const 64 1 (mod (const 64 2)),
+delta >=s (const 64 0)
 ;
 """
 
@@ -233,35 +244,35 @@ mov delta x3;
         emit += f"""
 // According to premise {case}
 
-mov f_0_low60_0_low20_{i+1} f_0_low60_0_low20_{i};
-mov u_0_{i+1} u_0_{i};
-mov v_0_{i+1} v_0_{i};
+mov {neg_prefix}f_0_low60_{20*j}_low20_{i+1} {neg_prefix}f_0_low60_{20*j}_low20_{i};
+mov u_{20*j}_{20*j + i+1} u_{20*j}_{20*j + i};
+mov v_{20*j}_{20*j + i+1} v_{20*j}_{20*j + i};
 
-asr g_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i} 1;
-asr r_0_{i+1} r_0_{i} 1;
-asr s_0_{i+1} s_0_{i} 1;
+asr {neg_prefix}g_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i} 1;
+asr r_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i} 1;
+asr s_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i} 1;
 """
 
         emit += cl_assert(
             Epred(),
             Rpred([
-                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = u_0_{i}",
-                f"v_0_{i+1} = v_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * (const 64 2) = g_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * (const 64 2) = r_0_{i}",
-                f"s_0_{i+1} * (const 64 2) = s_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = u_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = v_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * (const 64 2) = {neg_prefix}g_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * (const 64 2) = r_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * (const 64 2) = s_{20*j}_{20*j + i}",
             ])
         )
 
         emit += cl_assume(
             Epred([
-                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = u_0_{i}",
-                f"v_0_{i+1} = v_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * 2 = r_0_{i}",
-                f"s_0_{i+1} * 2 = s_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = u_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = v_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * 2 = {neg_prefix}g_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * 2 = r_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * 2 = s_{20*j}_{20*j + i}",
             ]),
             Rpred()
         )
@@ -269,38 +280,38 @@ asr s_0_{i+1} s_0_{i} 1;
         emit += f"""
 // According to premise {case}
 
-mov f_0_low60_0_low20_{i+1} f_0_low60_0_low20_{i};
-mov u_0_{i+1} u_0_{i};
-mov v_0_{i+1} v_0_{i};
+mov {neg_prefix}f_0_low60_{20*j}_low20_{i+1} {neg_prefix}f_0_low60_{20*j}_low20_{i};
+mov u_{20*j}_{20*j + i+1} u_{20*j}_{20*j + i};
+mov v_{20*j}_{20*j + i+1} v_{20*j}_{20*j + i};
 
-add g_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i} f_0_low60_0_low20_{i};
-asr g_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i+1} 1;
-add r_0_{i+1} r_0_{i} u_0_{i};
-asr r_0_{i+1} r_0_{i+1} 1;
-add s_0_{i+1} s_0_{i} v_0_{i};
-asr s_0_{i+1} s_0_{i+1} 1;
+add {neg_prefix}g_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i} {neg_prefix}f_0_low60_{20*j}_low20_{i};
+asr {neg_prefix}g_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i+1} 1;
+add r_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i} u_{20*j}_{20*j + i};
+asr r_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i+1} 1;
+add s_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i} v_{20*j}_{20*j + i};
+asr s_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i+1} 1;
 """
 
         emit += cl_assert(
             Epred(),
             Rpred([
-                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = u_0_{i}",
-                f"v_0_{i+1} = v_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * (const 64 2) = g_0_low60_0_low20_{i} + f_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * (const 64 2) = r_0_{i} + u_0_{i}",
-                f"s_0_{i+1} * (const 64 2) = s_0_{i} + v_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = u_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = v_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * (const 64 2) = {neg_prefix}g_0_low60_{20*j}_low20_{i} + {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * (const 64 2) = r_{20*j}_{20*j + i} + u_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * (const 64 2) = s_{20*j}_{20*j + i} + v_{20*j}_{20*j + i}",
             ])
         )
 
         emit += cl_assume(
             Epred([
-                f"f_0_low60_0_low20_{i+1} = f_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = u_0_{i}",
-                f"v_0_{i+1} = v_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i} + f_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * 2 = r_0_{i} + u_0_{i}",
-                f"s_0_{i+1} * 2 = s_0_{i} + v_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = u_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = v_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * 2 = {neg_prefix}g_0_low60_{20*j}_low20_{i} + {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * 2 = r_{20*j}_{20*j + i} + u_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * 2 = s_{20*j}_{20*j + i} + v_{20*j}_{20*j + i}",
             ]),
             Rpred()
         )
@@ -308,38 +319,38 @@ asr s_0_{i+1} s_0_{i+1} 1;
         emit += f"""
 // According to premise {case}
 
-mov f_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i};
-mov u_0_{i+1} r_0_{i};
-mov v_0_{i+1} s_0_{i};
+mov {neg_prefix}f_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i};
+mov u_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i};
+mov v_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i};
 
-subs dc g_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i} f_0_low60_0_low20_{i};
-asr g_0_low60_0_low20_{i+1} g_0_low60_0_low20_{i+1} 1;
-subs dc r_0_{i+1} r_0_{i} u_0_{i};
-asr r_0_{i+1} r_0_{i+1} 1;
-subs dc s_0_{i+1} s_0_{i} v_0_{i};
-asr s_0_{i+1} s_0_{i+1} 1;
+subs dc {neg_prefix}g_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i} {neg_prefix}f_0_low60_{20*j}_low20_{i};
+asr {neg_prefix}g_0_low60_{20*j}_low20_{i+1} {neg_prefix}g_0_low60_{20*j}_low20_{i+1} 1;
+subs dc r_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i} u_{20*j}_{20*j + i};
+asr r_{20*j}_{20*j + i+1} r_{20*j}_{20*j + i+1} 1;
+subs dc s_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i} v_{20*j}_{20*j + i};
+asr s_{20*j}_{20*j + i+1} s_{20*j}_{20*j + i+1} 1;
 """
 
         emit += cl_assert(
             Epred(),
             Rpred([
-                f"f_0_low60_0_low20_{i+1} = g_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = r_0_{i}",
-                f"v_0_{i+1} = s_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * (const 64 2) = g_0_low60_0_low20_{i} - f_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * (const 64 2) = r_0_{i} - u_0_{i}",
-                f"s_0_{i+1} * (const 64 2) = s_0_{i} - v_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}g_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = r_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = s_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * (const 64 2) = {neg_prefix}g_0_low60_{20*j}_low20_{i} - {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * (const 64 2) = r_{20*j}_{20*j + i} - u_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * (const 64 2) = s_{20*j}_{20*j + i} - v_{20*j}_{20*j + i}",
             ])
         )
 
         emit += cl_assume(
             Epred([
-                f"f_0_low60_0_low20_{i+1} = g_0_low60_0_low20_{i}",
-                f"u_0_{i+1} = r_0_{i}",
-                f"v_0_{i+1} = s_0_{i}",
-                f"g_0_low60_0_low20_{i+1} * 2 = g_0_low60_0_low20_{i} - f_0_low60_0_low20_{i}",
-                f"r_0_{i+1} * 2 = r_0_{i} - u_0_{i}",
-                f"s_0_{i+1} * 2 = s_0_{i} - v_0_{i}",
+                f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} = {neg_prefix}g_0_low60_{20*j}_low20_{i}",
+                f"u_{20*j}_{20*j + i+1} = r_{20*j}_{20*j + i}",
+                f"v_{20*j}_{20*j + i+1} = s_{20*j}_{20*j + i}",
+                f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} * 2 = {neg_prefix}g_0_low60_{20*j}_low20_{i} - {neg_prefix}f_0_low60_{20*j}_low20_{i}",
+                f"r_{20*j}_{20*j + i+1} * 2 = r_{20*j}_{20*j + i} - u_{20*j}_{20*j + i}",
+                f"s_{20*j}_{20*j + i+1} * 2 = s_{20*j}_{20*j + i} - v_{20*j}_{20*j + i}",
             ]),
             Rpred()
         )
@@ -350,17 +361,17 @@ asr s_0_{i+1} s_0_{i+1} 1;
 
     emit += cl_postcondition(
         Epred(
-            f"u_0_{i+1} * f_0_low60_0_low20_0 + v_0_{i+1} * g_0_low60_0_low20_0 = f_0_low60_0_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
-            f"r_0_{i+1} * f_0_low60_0_low20_0 + s_0_{i+1} * g_0_low60_0_low20_0 = g_0_low60_0_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
+            f"u_{20*j}_{20*j + i+1} * {neg_prefix}f_0_low60_{20*j}_low20_0 + v_{20*j}_{20*j + i+1} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}f_0_low60_{20*j}_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
+            f"r_{20*j}_{20*j + i+1} * {neg_prefix}f_0_low60_{20*j}_low20_0 + s_{20*j}_{20*j + i+1} * {neg_prefix}g_0_low60_{20*j}_low20_0 = {neg_prefix}g_0_low60_{20*j}_low20_{i+1} * (-(2**20)) prove with [algebra solver smt:z3]",
         ), 
         Rpred(post_rpred,
-        f"fuv = f_0_low60_0_low20_{i+1} + u_0_{i+1} * (const 64 (2**21)) + v_0_{i+1} * (const 64 (2**42))",
-        f"grs = g_0_low60_0_low20_{i+1} + r_0_{i+1} * (const 64 (2**21)) + s_0_{i+1} * (const 64 (2**42))",
-        f"(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_{i+1}",
-        f"f_0_low60_0_low20_{i+1} <=s (const 64 ((2**20)-1))",
-        f"(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_{i+1}",
-        f"g_0_low60_0_low20_{i+1} <=s (const 64 ((2**20)-1))",
-        f"(const 64 (1 + (-2) * {i+1})) <=s delta, delta <=s (const 64 (1 + 2*{i+1}))",
+        f"fuv = {neg_prefix}f_0_low60_{20*j}_low20_{i+1} + u_{20*j}_{20*j + i+1} * (const 64 (2**21)) + v_{20*j}_{20*j + i+1} * (const 64 (2**42))",
+        f"grs = {neg_prefix}g_0_low60_{20*j}_low20_{i+1} + r_{20*j}_{20*j + i+1} * (const 64 (2**21)) + s_{20*j}_{20*j + i+1} * (const 64 (2**42))",
+        f"(const 64 (-(2**20)+1)) <=s {neg_prefix}f_0_low60_{20*j}_low20_{i+1}",
+        f"{neg_prefix}f_0_low60_{20*j}_low20_{i+1} <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20)+1)) <=s {neg_prefix}g_0_low60_{20*j}_low20_{i+1}",
+        f"{neg_prefix}g_0_low60_{20*j}_low20_{i+1} <=s (const 64 ((2**20)-1))",
+        f"(const 64 (1 + (-2) * {20*j + i+1})) <=s delta, delta <=s (const 64 (1 + 2*{20*j + i+1}))",
         # f"(const 64 (-(2**20))) <=s u_0_{i+1}, u_0_{i+1} <=s (const 64 ((2**19)))",
         # f"(const 64 (-(2**20))) <=s v_0_{i+1}, v_0_{i+1} <=s (const 64 ((2**19) - (2**(20 - {i+1})) ))",
         # f"(const 64 ((2**(20-{i+1}))-(2**20))) <=s r_0_{i+1}, r_0_{i+1} <=s (const 64 ((2**19)))",
@@ -369,23 +380,23 @@ asr s_0_{i+1} s_0_{i+1} 1;
         # f"(const 64 (-(2**19))) <=s (s_0_{i+1} - v_0_{i+1}), (s_0_{i+1} - v_0_{i+1}) <=s (const 64 ((2**20) - (2**(20 - {i+1}))))",
 
 
-        f"(const 64 (-(2**20))) <=s u_0_{i+1}, u_0_{i+1} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s v_0_{i+1}, v_0_{i+1} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s r_0_{i+1}, r_0_{i+1} <=s (const 64 ((2**20)))",
-        f"(const 64 (-(2**20))) <=s s_0_{i+1}, s_0_{i+1} <=s (const 64 ((2**20)))",
-        f"u_0_{i+1} + v_0_{i+1} <=s (const 64 (2**20))",
-        f"u_0_{i+1} - v_0_{i+1} <=s (const 64 (2**20))",
-        f"(const 64 0) - u_0_{i+1} + v_0_{i+1} <=s (const 64 (2**20))",
-        f"(const 64 0) - u_0_{i+1} - v_0_{i+1} <=s (const 64 (2**20))",
-        f"r_0_{i+1} + s_0_{i+1} <=s (const 64 (2**20))",
-        f"r_0_{i+1} - s_0_{i+1} <=s (const 64 (2**20))",
-        f"(const 64 0) - r_0_{i+1} + s_0_{i+1} <=s (const 64 (2**20))",
-        f"(const 64 0) - r_0_{i+1} - s_0_{i+1} <=s (const 64 (2**20))",
+        f"(const 64 (-(2**20))) <=s u_{20*j}_{20*j + i+1}, u_{20*j}_{20*j + i+1} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s v_{20*j}_{20*j + i+1}, v_{20*j}_{20*j + i+1} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s r_{20*j}_{20*j + i+1}, r_{20*j}_{20*j + i+1} <=s (const 64 ((2**20)))",
+        f"(const 64 (-(2**20))) <=s s_{20*j}_{20*j + i+1}, s_{20*j}_{20*j + i+1} <=s (const 64 ((2**20)))",
+        f"u_{20*j}_{20*j + i+1} + v_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"u_{20*j}_{20*j + i+1} - v_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"(const 64 0) - u_{20*j}_{20*j + i+1} + v_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"(const 64 0) - u_{20*j}_{20*j + i+1} - v_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"r_{20*j}_{20*j + i+1} + s_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"r_{20*j}_{20*j + i+1} - s_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"(const 64 0) - r_{20*j}_{20*j + i+1} + s_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
+        f"(const 64 0) - r_{20*j}_{20*j + i+1} - s_{20*j}_{20*j + i+1} <=s (const 64 (2**20))",
 
-        f"u_0_{i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
-        f"v_0_{i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
-        f"r_0_{i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
-        f"s_0_{i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
+        f"u_{20*j}_{20*j + i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
+        f"v_{20*j}_{20*j + i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
+        f"r_{20*j}_{20*j + i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
+        f"s_{20*j}_{20*j + i+1} = (const 64 0) (mod (const 64 (2**(20-{i+1}))))",
         )
     )
 
@@ -393,19 +404,22 @@ asr s_0_{i+1} s_0_{i+1} 1;
 
 
 
+for k in range(1):
+    for j in range(3):
+        for i in range(20 - (j>>1)):
+            for case in ["a", "b", "c"]:
+                emit = divsep_gen(i,j,k,case)
+                with open(f"gen/divstep_{20*j + i:03d}_{case}.cl", "w") as f:
+                    f.write(emit)
 
-for i in range(20):
-    for case in ["a", "b", "c"]:
-        emit = divsep_gen(i,case)
-        with open(f"gen/divstep_{i}_{case}.cl", "w") as f:
+
+
+for k in range(1):
+    for j in range(3):
+        with open(f"gen/divstep_{20*j:03d}_{20*(j+1):03d}_forkcases.cl", "w") as f:
+            emit = ""
+            for i in range(20 - (j>>1)):
+                for case in ["a", "b", "c"]:
+                    emit += divsep_gen(i, j, k, case)
             f.write(emit)
-
-
-
-emit = ""
-with open(f"gen/divstep_0_20_forkcases.cl", "w") as f:
-    for i in range(20):
-        for case in ["a", "b", "c"]:
-            emit += divsep_gen(i, case)
-    f.write(emit)
 
