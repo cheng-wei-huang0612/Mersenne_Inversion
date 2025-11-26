@@ -1023,92 +1023,6 @@ asr x2, x10, #20
 mov x1, x9
 Lend:
 L_optloop_start_1:
-mov x9, #19
-dup v16.2d, x9
-// limb 0
-smull  v17.2d, v13.2s, v8.s[0]
-smlal2 v17.2d, v13.4s, v8.s[2]
-mul v19.4s, v17.4s, v15.4s
-and v19.16b, v19.16b, v1.16b
-uzp1 v19.4s, v19.4s, v19.4s
-smlsl v17.2d, v19.2s, v16.s[0]
-sshr   v17.2d, v17.2d, #30
-// limb 1
-smlal  v17.2d, v14.2s, v8.s[0]
-smlal2 v17.2d, v14.4s, v8.s[2]
-smlal  v17.2d, v13.2s, v8.s[1]
-smlal2 v17.2d, v13.4s, v8.s[3]
-mul    v20.4s, v17.4s, v15.4s
-and    v20.16b, v20.16b, v1.16b
-uzp1   v20.4s, v20.4s, v20.4s
-smlsl  v17.2d, v20.2s, v16.s[0]
-sshr   v17.2d, v17.2d, #30
-// limb 2
-smlal  v17.2d, v14.2s, v8.s[1]
-smlal2 v17.2d, v14.4s, v8.s[3]
-smlal  v17.2d, v13.2s, v9.s[0]
-smlal2 v17.2d, v13.4s, v9.s[2]
-and    v8.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-// limb 3
-smlal  v17.2d, v14.2s, v9.s[0]
-smlal2 v17.2d, v14.4s, v9.s[2]
-smlal  v17.2d, v13.2s, v9.s[1]
-smlal2 v17.2d, v13.4s, v9.s[3]
-and    v18.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-sli    v8.2d, v18.2d, #32
-// limb 4
-smlal  v17.2d, v14.2s, v9.s[1]
-smlal2 v17.2d, v14.4s, v9.s[3]
-smlal  v17.2d, v13.2s, v10.s[0]
-smlal2 v17.2d, v13.4s, v10.s[2]
-and    v9.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-// limb 5
-smlal  v17.2d, v14.2s, v10.s[0]
-smlal2 v17.2d, v14.4s, v10.s[2]
-smlal  v17.2d, v13.2s, v10.s[1]
-smlal2 v17.2d, v13.4s, v10.s[3]
-and    v18.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-sli    v9.2d, v18.2d, #32
-// limb 6
-smlal  v17.2d, v14.2s, v10.s[1]
-smlal2 v17.2d, v14.4s, v10.s[3]
-smlal  v17.2d, v13.2s, v11.s[0]
-smlal2 v17.2d, v13.4s, v11.s[2]
-and    v10.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-// limb 7
-smlal  v17.2d, v14.2s, v11.s[0]
-smlal2 v17.2d, v14.4s, v11.s[2]
-smlal  v17.2d, v13.2s, v11.s[1]
-smlal2 v17.2d, v13.4s, v11.s[3]
-and    v18.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-sli    v10.2d, v18.2d, #32
-// limb 8
-smlal  v17.2d, v14.2s, v11.s[1]
-smlal2 v17.2d, v14.4s, v11.s[3]
-smlal  v17.2d, v13.2s, v12.s[0]
-smlal2 v17.2d, v13.4s, v12.s[2]
-ushll  v19.2d, v19.2s, #15
-add    v17.2d, v17.2d, v19.2d
-and    v11.16b, v17.16b, v1.16b
-sshr   v17.2d, v17.2d, #30
-// limb 9
-smlal  v17.2d, v14.2s, v12.s[0]
-smlal2 v17.2d, v14.4s, v12.s[2]
-ushll  v20.2d, v20.2s, #15
-add    v17.2d, v17.2d, v20.2d
-and    v18.16b, v17.16b, v1.16b
-sshr   v12.2d, v17.2d, #30
-sli    v11.2d, v18.2d, #32
-sshr   v18.2d, v12.2d, #15
-shl    v17.2d, v18.2d, #15
-sub    v12.2d, v12.2d, v17.2d
-mla    v8.4s, v18.4s, v16.4s
 umov w4, v3.s[0]
 umov w27, v3.s[1]
 add  x4, x4, x27, lsl #30
@@ -1338,36 +1252,92 @@ madd x14, x20, x14, x9
 mov x12, x10
 L_optloop_end_1:
 L_optloop_start_2:
-dup    v17.4s, v1.s[0]
-mvn    v17.16b, v17.16b
-sshr   v18.4s,  v8.4s, #30
-shl    v18.2d,  v18.2d, #32
-add    v8.4s, v8.4s, v18.4s
-sshr   v18.2d, v8.2d, #30
-ushr   v18.2d, v18.2d, #32
-add    v9.4s, v9.4s, v18.4s
-bic    v8.16b, v8.16b, v17.16b
-sshr   v18.4s,  v9.4s, #30
-shl    v18.2d,  v18.2d, #32
-add    v9.4s, v9.4s, v18.4s
-sshr   v18.2d, v9.2d, #30
-ushr   v18.2d, v18.2d, #32
-add    v10.4s, v10.4s, v18.4s
-bic    v9.16b, v9.16b, v17.16b
-sshr   v18.4s,  v10.4s, #30
-shl    v18.2d,  v18.2d, #32
-add    v10.4s, v10.4s, v18.4s
-sshr   v18.2d, v10.2d, #30
-ushr   v18.2d, v18.2d, #32
-add    v11.4s, v11.4s, v18.4s
-bic    v10.16b, v10.16b, v17.16b
-sshr   v18.4s,  v11.4s, #30
-shl    v18.2d,  v18.2d, #32
-add    v11.4s, v11.4s, v18.4s
-sshr   v18.2d, v11.2d, #30
-ushr   v18.2d, v18.2d, #32
-add    v12.4s, v12.4s, v18.4s
-bic    v11.16b, v11.16b, v17.16b
+mov x9, #19
+dup v16.2d, x9
+// limb 0
+smull  v17.2d, v13.2s, v8.s[0]
+smlal2 v17.2d, v13.4s, v8.s[2]
+mul v19.4s, v17.4s, v15.4s
+and v19.16b, v19.16b, v1.16b
+uzp1 v19.4s, v19.4s, v19.4s
+smlsl v17.2d, v19.2s, v16.s[0]
+sshr   v17.2d, v17.2d, #30
+// limb 1
+smlal  v17.2d, v14.2s, v8.s[0]
+smlal2 v17.2d, v14.4s, v8.s[2]
+smlal  v17.2d, v13.2s, v8.s[1]
+smlal2 v17.2d, v13.4s, v8.s[3]
+mul    v20.4s, v17.4s, v15.4s
+and    v20.16b, v20.16b, v1.16b
+uzp1   v20.4s, v20.4s, v20.4s
+smlsl  v17.2d, v20.2s, v16.s[0]
+sshr   v17.2d, v17.2d, #30
+// limb 2
+smlal  v17.2d, v14.2s, v8.s[1]
+smlal2 v17.2d, v14.4s, v8.s[3]
+smlal  v17.2d, v13.2s, v9.s[0]
+smlal2 v17.2d, v13.4s, v9.s[2]
+and    v8.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+// limb 3
+smlal  v17.2d, v14.2s, v9.s[0]
+smlal2 v17.2d, v14.4s, v9.s[2]
+smlal  v17.2d, v13.2s, v9.s[1]
+smlal2 v17.2d, v13.4s, v9.s[3]
+and    v18.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+sli    v8.2d, v18.2d, #32
+// limb 4
+smlal  v17.2d, v14.2s, v9.s[1]
+smlal2 v17.2d, v14.4s, v9.s[3]
+smlal  v17.2d, v13.2s, v10.s[0]
+smlal2 v17.2d, v13.4s, v10.s[2]
+and    v9.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+// limb 5
+smlal  v17.2d, v14.2s, v10.s[0]
+smlal2 v17.2d, v14.4s, v10.s[2]
+smlal  v17.2d, v13.2s, v10.s[1]
+smlal2 v17.2d, v13.4s, v10.s[3]
+and    v18.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+sli    v9.2d, v18.2d, #32
+// limb 6
+smlal  v17.2d, v14.2s, v10.s[1]
+smlal2 v17.2d, v14.4s, v10.s[3]
+smlal  v17.2d, v13.2s, v11.s[0]
+smlal2 v17.2d, v13.4s, v11.s[2]
+and    v10.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+// limb 7
+smlal  v17.2d, v14.2s, v11.s[0]
+smlal2 v17.2d, v14.4s, v11.s[2]
+smlal  v17.2d, v13.2s, v11.s[1]
+smlal2 v17.2d, v13.4s, v11.s[3]
+and    v18.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+sli    v10.2d, v18.2d, #32
+// limb 8
+smlal  v17.2d, v14.2s, v11.s[1]
+smlal2 v17.2d, v14.4s, v11.s[3]
+smlal  v17.2d, v13.2s, v12.s[0]
+smlal2 v17.2d, v13.4s, v12.s[2]
+ushll  v19.2d, v19.2s, #15
+add    v17.2d, v17.2d, v19.2d
+and    v11.16b, v17.16b, v1.16b
+sshr   v17.2d, v17.2d, #30
+// limb 9
+smlal  v17.2d, v14.2s, v12.s[0]
+smlal2 v17.2d, v14.4s, v12.s[2]
+ushll  v20.2d, v20.2s, #15
+add    v17.2d, v17.2d, v20.2d
+and    v18.16b, v17.16b, v1.16b
+sshr   v12.2d, v17.2d, #30
+sli    v11.2d, v18.2d, #32
+sshr   v18.2d, v12.2d, #15
+shl    v17.2d, v18.2d, #15
+sub    v12.2d, v12.2d, v17.2d
+mla    v8.4s, v18.4s, v16.4s
 and x7, x1, #1048575
 and x8, x2, #1048575
 orr x7, x7, #0xFFFFFE0000000000
