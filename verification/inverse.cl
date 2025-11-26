@@ -242,9 +242,11 @@ mov x21 0xffffffffffffffff@uint64;
 
 (* mov	x1, x4                                      #! PC = 0xaaaaca660f78 *)
 mov x1 x4;
+cast x1@sint64 x1;
 
 (* mov	x2, x5                                      #! PC = 0xaaaaca660f7c *)
 mov x2 x5;
+cast x2@sint64 x2;
 
 (* mov	x3, #0x1                   	// #1           #! PC = 0xaaaaca660f80 *)
 mov x3 0x1@sint64;
@@ -304,121 +306,14 @@ mov V_0_limb30_8 v12_sint32_0;
 mov S_0_limb30_8 v12_sint32_2;
 
 
-mov f x1;
-mov g x2;
+mov f_0_low60_0 x1;
+mov g_0_low60_0 x2;
 mov f_low128_0 x4;
 mov f_low128_1 x21;
 mov g_low128_0 x5;
 mov g_low128_1 x22;
 mov delta x3;
 mov const_2p41a2p20 x6;
-
-cut
-  true
-  &&
-    and [
-    (const 32 0) <=s F_0_limb30_0, F_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_1, F_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_2, F_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_3, F_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_4, F_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_5, F_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_6, F_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_7, F_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_8, F_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    (const 32 0) <=s G_0_limb30_0, G_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_1, G_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_2, G_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_3, G_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_4, G_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_5, G_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_6, G_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_7, G_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_8, G_0_limb30_8 <=s (const 32 ((2**16)-1)),
-
-    (const 32 0) <=s V_0_limb30_0, V_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_1, V_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_2, V_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_3, V_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_4, V_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_5, V_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_6, V_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_7, V_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_8, V_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    (const 32 0) <=s S_0_limb30_0, S_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_1, S_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_2, S_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_3, S_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_4, S_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_5, S_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_6, S_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_7, S_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_8, S_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    slimbs 30 [
-        F_0_limb30_0, F_0_limb30_1, F_0_limb30_2, F_0_limb30_3,
-        F_0_limb30_4, F_0_limb30_5, F_0_limb30_6, F_0_limb30_7,
-        F_0_limb30_8
-    ]
-    =
-    (const 272 (2**255 - 19))
-    ,
-
-    slimbs 30 [
-        G_0_limb30_0, G_0_limb30_1, G_0_limb30_2, G_0_limb30_3,
-        G_0_limb30_4, G_0_limb30_5, G_0_limb30_6, G_0_limb30_7,
-        G_0_limb30_8
-    ]
-    =
-    uext (limbs 64 [op_x0, op_x1, op_x2, op_x3]) 16
-    ,
-    slimbs 30 [
-        V_0_limb30_0, V_0_limb30_1, V_0_limb30_2, V_0_limb30_3,
-        V_0_limb30_4, V_0_limb30_5, V_0_limb30_6, V_0_limb30_7,
-        V_0_limb30_8
-    ]
-    =
-    (const 272 (0))
-    ,
-
-    slimbs 30 [
-        S_0_limb30_0, S_0_limb30_1, S_0_limb30_2, S_0_limb30_3,
-        S_0_limb30_4, S_0_limb30_5, S_0_limb30_6, S_0_limb30_7,
-        S_0_limb30_8
-    ]
-    =
-    (const 272 (1))
-    ,
-
-
-    (uext f 192) = 
-    (const 256 ((2**255) - 19))
-    (mod (const 256 (2**60)))
-    ,
-
-    (uext g 192) = 
-    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
-    (mod (const 256 (2**60)))
-    ,
-
-    delta = (const 64 1)
-    ,
-
-    (uext (limbs 64 [f_low128_0, f_low128_1]) 128) =
-    (const 256 ((2**255) - 19))
-    (mod (const 256 (2**128)))
-    ,
-
-    (uext (limbs 64 [g_low128_0, g_low128_1]) 128) =
-    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
-    (mod (const 256 (2**128)))
-    ,
-
-    const_2p41a2p20 = (const 64 (2**41 + 2**20))
-    ]
-;
 cut
     true
 &&
@@ -496,12 +391,12 @@ cut
     (const 272 (1))
             ,
         
-    (uext f 192) = 
+    (uext f_0_low60_0 192) = 
     (const 256 ((2**255) - 19))
     (mod (const 256 (2**60)))
             ,
         
-    (uext g 192) = 
+    (uext g_0_low60_0 192) = 
     (limbs 64 [op_x0, op_x1, op_x2, op_x3])
     (mod (const 256 (2**60)))
             ,
@@ -527,8 +422,6 @@ cut
 
 
 // init_fuv_grs
-mov x1 f;
-mov x2 g;
 
 (* and	x7, x1, #0xfffff                            #! PC = 0xaaaaca660f98 *)
 and x7@sint64 x1 0xfffff@uint64;
@@ -544,8 +437,8 @@ or x8@sint64 x8 0xc000000000000000@uint64;
 
 mov fuv x7;
 mov grs x8;
-and f_0_low60_0_low20_0@sint64 f (2**20 - 1)@sint64;
-and g_0_low60_0_low20_0@sint64 g (2**20 - 1)@sint64;
+and f_0_low60_0_low20_0@sint64 f_0_low60_0 (2**20 - 1)@sint64;
+and g_0_low60_0_low20_0@sint64 g_0_low60_0 (2**20 - 1)@sint64;
 mov u_0_20 (-(2**20))@sint64;
 mov v_0_20 ( 0)@sint64;
 mov r_0_20 ( 0)@sint64;
@@ -572,10 +465,6 @@ const_2p41a2p20 = (const 64 (2**20 + 2**41))
 
 // divsteps
 // step0
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* tst	x8, #0x1                                    #! PC = 0xaaaaca660fa8 *)
 spl dc x8_lo x8 1;
@@ -640,10 +529,6 @@ mov delta x3;
 // divsteps
 // step1
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca660fd0 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca660fd4 *)
@@ -704,10 +589,6 @@ mov delta x3;
 
 // divsteps
 // step2
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca660ff4 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -770,10 +651,6 @@ mov delta x3;
 // divsteps
 // step3
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661018 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66101c *)
@@ -834,10 +711,6 @@ mov delta x3;
 
 // divsteps
 // step4
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66103c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -900,10 +773,6 @@ mov delta x3;
 // divsteps
 // step5
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661060 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661064 *)
@@ -964,10 +833,6 @@ mov delta x3;
 
 // divsteps
 // step6
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661084 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1030,10 +895,6 @@ mov delta x3;
 // divsteps
 // step7
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6610a8 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6610ac *)
@@ -1094,10 +955,6 @@ mov delta x3;
 
 // divsteps
 // step8
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6610cc *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1160,10 +1017,6 @@ mov delta x3;
 // divsteps
 // step9
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6610f0 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6610f4 *)
@@ -1224,10 +1077,6 @@ mov delta x3;
 
 // divsteps
 // step10
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661114 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1290,10 +1139,6 @@ mov delta x3;
 // divsteps
 // step11
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661138 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66113c *)
@@ -1354,10 +1199,6 @@ mov delta x3;
 
 // divsteps
 // step12
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66115c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1420,10 +1261,6 @@ mov delta x3;
 // divsteps
 // step13
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661180 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661184 *)
@@ -1484,10 +1321,6 @@ mov delta x3;
 
 // divsteps
 // step14
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6611a4 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1550,10 +1383,6 @@ mov delta x3;
 // divsteps
 // step15
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6611c8 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6611cc *)
@@ -1614,10 +1443,6 @@ mov delta x3;
 
 // divsteps
 // step16
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6611ec *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1680,10 +1505,6 @@ mov delta x3;
 // divsteps
 // step17
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661210 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661214 *)
@@ -1745,10 +1566,6 @@ mov delta x3;
 // divsteps
 // step18
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661234 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661238 *)
@@ -1809,10 +1626,6 @@ mov delta x3;
 
 // divsteps
 // step19
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661258 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1877,69 +1690,74 @@ nondet s_0_20@sint64;
 
 // from lemma we have
 assume
-u_0_20 * f_0_low60_0_low20_0 + v_0_20 * g_0_low60_0_low20_0 = f_0_low60_0_low20_20 * (-(2**20)),
-r_0_20 * f_0_low60_0_low20_0 + s_0_20 * g_0_low60_0_low20_0 = g_0_low60_0_low20_20 * (-(2**20))
+    u_0_20 * f_0_low60_0_low20_0 + v_0_20 * g_0_low60_0_low20_0 = f_0_low60_0_low20_0 * (-(2**20)),
+    r_0_20 * f_0_low60_0_low20_0 + s_0_20 * g_0_low60_0_low20_0 = g_0_low60_0_low20_0 * (-(2**20))
 &&
-fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
-grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
-fuv = (const 64 1) (mod (const 64 2)),
-(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
-f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
-g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-
-
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
-
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1))
+    fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
+    grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
+    fuv = (const 64 1) (mod (const 64 2)),
+    (const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
+    f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
+    g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+    (const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
+    u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    r_0_20 - s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20))
 ;
 
-nondet f_0_low60_0@sint64;
-nondet g_0_low60_0@sint64;
+
 nondet f_0_low60_20@sint64;
 nondet g_0_low60_20@sint64;
-mov f_0_low60_0 f;
-mov g_0_low60_0 g;
 
 // by the theory of jumpdivstep, we have
 assume
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
 &&
-f_0_low60_20 = (const 64 1) (mod (const 64 2))
+    f_0_low60_20 = (const 64 1) (mod (const 64 2))
 ;
 
 cut
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
 &&
-fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
-grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
-(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
-f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
-g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-f_0_low60_20 = (const 64 1) (mod (const 64 2)),
-
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
-
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
+    fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
+    grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
+    f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
+    g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
+    f_0_low60_20 = (const 64 1) (mod (const 64 2)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+    (const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
+    u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    r_0_20 - s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20)),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41))
 ;
 
-// extraction
-mov x6 const_2p41a2p20;
-mov x7 fuv;
-mov x8 grs;
 
+// extraction
 
 
 (* add	x12, x7, x6                                 #! PC = 0xaaaaafca0c08 *)
@@ -1982,42 +1800,38 @@ mov u_0_20 x11;
 mov v_0_20 x12;
 mov r_0_20 x13;
 mov s_0_20 x14;
-
 cut
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
 &&
-f_0_low60_20 = (const 64 1) (mod (const 64 2)),
-
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
-
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
+    f_0_low60_20 = (const 64 1) (mod (const 64 2)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+    (const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
+    u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20)),
+    r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    r_0_20 - s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20)),
+    (const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20)),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41))
 ;
+
 
 // update_fg
 
-mov x1 f_0_low60_0;
-mov x2 g_0_low60_0;
-// we only care about the low 60 bits, casting is required since the syntax of cryptoline
-cast x1@sint64 x1;
-cast x2@sint64 x2;
-
-mov x11 u_0_20;
-mov x12 v_0_20;
-mov x13 r_0_20;
-mov x14 s_0_20;
-nondet dcH@sint64;
 
 (* mul	x9, x11, x1                                 #! PC = 0xaaaaafca0c30 *)
 mull dcH x9 x11 x1;
 (* madd	x9, x12, x2, x9                            #! PC = 0xaaaaafca0c34 *)
 mull dcH tmp x2 x12;
 adds dc x9 x9 tmp;
+
 assert 
 x9 = 0 (mod (2**20)),
 x9 = (-1) * ((2**20)) * f_0_low60_20 (mod (2**64))
@@ -2025,15 +1839,9 @@ x9 = (-1) * ((2**20)) * f_0_low60_20 (mod (2**64))
 assume true &&
 x9 = (const 64 0) (mod (const 64 (2**20))),
 x9 = (const 64 (-1)) * (const 64 (2**20)) * f_0_low60_20;
+
 (* asr	x9, x9, #20                                 #! PC = 0xaaaaafca0c38 *)
 split x9 dc x9 20;
-
-
-assert true && x9 * (const 64 (2**20)) = (const 64 (-1)) * (const 64 (2**20)) * f_0_low60_20;
-assert true && x9 = (const 64 (-1)) * f_0_low60_20 (mod (const 64 (2**44)));
-
-
-
 (* mul	x10, x13, x1                                #! PC = 0xaaaaafca0c3c *)
 mull dcH x10 x13 x1;
 (* madd	x10, x14, x2, x10                          #! PC = 0xaaaaafca0c40 *)
@@ -2048,13 +1856,8 @@ assume true &&
 x10 = (const 64 0) (mod (const 64 (2**20))),
 x10 = (const 64 (-1)) * (const 64 (2**20)) * g_0_low60_20;
 
-
 (* asr	x2, x10, #20                                #! PC = 0xaaaaafca0c44 *)
 split x2 dc x10 20;
-
-assert true && x2 * (const 64 (2**20)) = (const 64 (-1)) * (const 64 (2**20)) * g_0_low60_20;
-assert true && x2 = (const 64 (-1)) * g_0_low60_20 (mod (const 64 (2**44)));
-
 (* mov	x1, x9                                      #! PC = 0xaaaaafca0c48 *)
 mov x1 x9;
 
@@ -2106,13 +1909,29 @@ r_20_40 = (const 64 (0)),
 s_20_40 = (const 64 (-(2**20))),
 const_2p41a2p20 = (const 64 (2**20 + 2**41))
 ;
+cut
+    u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20)),
+    r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))
+&&
+    fuv = neg_f_0_low60_20_low20_0 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
+    grs = neg_g_0_low60_20_low20_0 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_0,
+    neg_f_0_low60_20_low20_0 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_0,
+    neg_g_0_low60_20_low20_0 <=s (const 64 ((2**20)-1)),
+    fuv = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+    delta = (const 64 1) (mod (const 64 2)),
+    u_20_40 = (const 64 (-(2**20))),
+    v_20_40 = (const 64 (0)),
+    r_20_40 = (const 64 (0)),
+    s_20_40 = (const 64 (-(2**20))),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41))
+;
+
 
 // divsteps
-// step0
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
+// step20
 
 (* tst	x8, #0x1                                    #! PC = 0xaaaaca6612cc *)
 spl dc x8_lo x8 1;
@@ -2175,35 +1994,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step1
+// step22
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6612f4 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6615e8 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6612f8 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6615ec *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6612fc *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6615f0 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661300 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6615f4 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661304 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6615f8 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661308 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6615fc *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66130c *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661600 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661310 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661604 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661314 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661608 *)
 split x8 dc x8 1;
 
 
@@ -2240,35 +2055,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step2
+// step23
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661318 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66160c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66131c *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661610 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661320 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661614 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661324 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661618 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661328 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66161c *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca66132c *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661620 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661330 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661624 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661334 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661628 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661338 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66162c *)
 split x8 dc x8 1;
 
 
@@ -2305,35 +2116,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step3
+// step24
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66133c *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661630 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661340 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661634 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661344 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661638 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661348 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca66163c *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66134c *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661640 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661350 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661644 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661354 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661648 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661358 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca66164c *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66135c *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661650 *)
 split x8 dc x8 1;
 
 
@@ -2370,35 +2177,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step4
+// step25
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661360 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661654 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661364 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661658 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661368 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66165c *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca66136c *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661660 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661370 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661664 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661374 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661668 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661378 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66166c *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca66137c *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661670 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661380 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661674 *)
 split x8 dc x8 1;
 
 
@@ -2435,35 +2238,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step5
+// step26
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661384 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661678 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661388 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66167c *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66138c *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661680 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661390 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661684 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661394 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661688 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661398 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca66168c *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66139c *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661690 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca6613a0 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661694 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6613a4 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661698 *)
 split x8 dc x8 1;
 
 
@@ -2500,35 +2299,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step6
+// step27
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6613a8 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66169c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6613ac *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6616a0 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6613b0 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6616a4 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6613b4 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6616a8 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6613b8 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6616ac *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca6613bc *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6616b0 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6613c0 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6616b4 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca6613c4 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6616b8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6613c8 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6616bc *)
 split x8 dc x8 1;
 
 
@@ -2565,35 +2360,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step7
+// step28
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6613cc *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6616c0 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6613d0 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6616c4 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6613d4 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6616c8 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6613d8 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6616cc *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6613dc *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6616d0 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca6613e0 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6616d4 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6613e4 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6616d8 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca6613e8 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6616dc *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6613ec *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6616e0 *)
 split x8 dc x8 1;
 
 
@@ -2630,35 +2421,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step8
+// step29
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6613f0 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6616e4 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6613f4 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6616e8 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6613f8 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6616ec *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6613fc *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6616f0 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661400 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6616f4 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661404 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6616f8 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661408 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6616fc *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca66140c *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661700 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661410 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661704 *)
 split x8 dc x8 1;
 
 
@@ -2695,35 +2482,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step9
+// step30
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661414 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661708 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661418 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66170c *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66141c *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661710 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661420 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661714 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661424 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661718 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661428 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca66171c *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66142c *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661720 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661430 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661724 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661434 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661728 *)
 split x8 dc x8 1;
 
 
@@ -2760,35 +2543,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step10
+// step31
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661438 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66172c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66143c *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661730 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661440 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661734 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661444 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661738 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661448 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66173c *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca66144c *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661740 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661450 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661744 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661454 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661748 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661458 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66174c *)
 split x8 dc x8 1;
 
 
@@ -2825,35 +2604,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step11
+// step32
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66145c *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661750 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661460 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661754 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661464 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661758 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661468 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca66175c *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66146c *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661760 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661470 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661764 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661474 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661768 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661478 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca66176c *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66147c *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661770 *)
 split x8 dc x8 1;
 
 
@@ -2890,35 +2665,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step12
+// step33
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661480 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661774 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661484 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661778 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661488 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66177c *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca66148c *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661780 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661490 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661784 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661494 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661788 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661498 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66178c *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca66149c *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661790 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6614a0 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661794 *)
 split x8 dc x8 1;
 
 
@@ -2955,35 +2726,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step13
+// step34
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6614a4 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661798 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6614a8 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66179c *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6614ac *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6617a0 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6614b0 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6617a4 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6614b4 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6617a8 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca6614b8 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6617ac *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6614bc *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6617b0 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca6614c0 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6617b4 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6614c4 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6617b8 *)
 split x8 dc x8 1;
 
 
@@ -3020,35 +2787,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step14
+// step35
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6614c8 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6617bc *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6614cc *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6617c0 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6614d0 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6617c4 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6614d4 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6617c8 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6614d8 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6617cc *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca6614dc *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6617d0 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6614e0 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6617d4 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca6614e4 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6617d8 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6614e8 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6617dc *)
 split x8 dc x8 1;
 
 
@@ -3085,35 +2848,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step15
+// step36
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6614ec *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6617e0 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6614f0 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6617e4 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6614f4 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6617e8 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6614f8 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6617ec *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6614fc *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6617f0 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661500 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6617f4 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661504 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6617f8 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661508 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6617fc *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66150c *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661800 *)
 split x8 dc x8 1;
 
 
@@ -3150,35 +2909,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step16
+// step37
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661510 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661804 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661514 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661808 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661518 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66180c *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca66151c *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661810 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661520 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661814 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661524 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661818 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661528 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66181c *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca66152c *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661820 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661530 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661824 *)
 split x8 dc x8 1;
 
 
@@ -3215,100 +2970,31 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step17
+// step38
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661534 *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661828 *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661538 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66182c *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca66153c *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661830 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661540 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661834 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661544 *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661838 *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661548 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca66183c *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca66154c *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661840 *)
 add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661550 *)
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661844 *)
 spl dc x8_lo x8 2;
 spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661554 *)
-split x8 dc x8 1;
-
-
-assert true &&
-or [
-    and [
-        grs = (const 64 0) (mod (const 64 2)),
-
-        x7 = fuv,
-        x8 * (const 64 2) = grs,
-        x3 = (const 64 2) + delta
-    ],
-    and [
-        grs = (const 64 1) (mod (const 64 2)),
-        delta <s (const 64 0),
-
-        x7 = fuv,
-        x8 * (const 64 2) = grs + fuv,
-        x3 = (const 64 2) + delta
-    ],
-    and [
-        grs = (const 64 1) (mod (const 64 2)),
-        delta >=s (const 64 0),
-
-        x7 = grs,
-        x8 * (const 64 2) = grs - fuv,
-        x3 = (const 64 2) - delta
-    ]
-]
-;
-
-mov fuv x7;
-mov grs x8;
-mov delta x3;
-
-// divsteps
-// step18
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661558 *)
-cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca66155c *)
-spl ge dc x3 63;
-not ge@bit ge;
-cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661560 *)
-subs dc x3_neg 0@sint64 x3;
-cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661564 *)
-subs dc x10_neg 0@sint64 x10;
-cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661568 *)
-cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca66156c *)
-adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661570 *)
-add x3 x3 0x2@sint64;
-(* tst	x8, #0x2                                    #! PC = 0xaaaaca661574 *)
-spl dc x8_lo x8 2;
-spl x8_target dc x8_lo 1;
-and ne@bit x8_target 1@bit;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661578 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661848 *)
 split x8 dc x8 1;
 
 
@@ -3346,10 +3032,6 @@ mov delta x3;
 
 // divsteps
 // step19
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66157c *)
 cmov x10 ne x7 0@sint64;	// ne = any;

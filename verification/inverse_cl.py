@@ -361,11 +361,13 @@ mov x21 0xffffffffffffffff@uint64;
 emit += """
 (* mov	x1, x4                                      #! PC = 0xaaaaca660f78 *)
 mov x1 x4;
+cast x1@sint64 x1;
 """
 
 emit += """
 (* mov	x2, x5                                      #! PC = 0xaaaaca660f7c *)
 mov x2 x5;
+cast x2@sint64 x2;
 """
 
 emit += """
@@ -438,8 +440,8 @@ mov V_0_limb30_8 v12_sint32_0;
 mov S_0_limb30_8 v12_sint32_2;
 
 
-mov f x1;
-mov g x2;
+mov f_0_low60_0 x1;
+mov g_0_low60_0 x2;
 mov f_low128_0 x4;
 mov f_low128_1 x21;
 mov g_low128_0 x5;
@@ -448,115 +450,6 @@ mov delta x3;
 mov const_2p41a2p20 x6;
 """
 
-
-emit += """
-cut
-  true
-  &&
-    and [
-    (const 32 0) <=s F_0_limb30_0, F_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_1, F_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_2, F_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_3, F_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_4, F_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_5, F_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_6, F_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_7, F_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s F_0_limb30_8, F_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    (const 32 0) <=s G_0_limb30_0, G_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_1, G_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_2, G_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_3, G_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_4, G_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_5, G_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_6, G_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_7, G_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s G_0_limb30_8, G_0_limb30_8 <=s (const 32 ((2**16)-1)),
-
-    (const 32 0) <=s V_0_limb30_0, V_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_1, V_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_2, V_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_3, V_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_4, V_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_5, V_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_6, V_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_7, V_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s V_0_limb30_8, V_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    (const 32 0) <=s S_0_limb30_0, S_0_limb30_0 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_1, S_0_limb30_1 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_2, S_0_limb30_2 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_3, S_0_limb30_3 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_4, S_0_limb30_4 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_5, S_0_limb30_5 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_6, S_0_limb30_6 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_7, S_0_limb30_7 <=s (const 32 ((2**30)-1)),
-    (const 32 0) <=s S_0_limb30_8, S_0_limb30_8 <=s (const 32 ((2**15)-1)),
-
-    slimbs 30 [
-        F_0_limb30_0, F_0_limb30_1, F_0_limb30_2, F_0_limb30_3,
-        F_0_limb30_4, F_0_limb30_5, F_0_limb30_6, F_0_limb30_7,
-        F_0_limb30_8
-    ]
-    =
-    (const 272 (2**255 - 19))
-    ,
-
-    slimbs 30 [
-        G_0_limb30_0, G_0_limb30_1, G_0_limb30_2, G_0_limb30_3,
-        G_0_limb30_4, G_0_limb30_5, G_0_limb30_6, G_0_limb30_7,
-        G_0_limb30_8
-    ]
-    =
-    uext (limbs 64 [op_x0, op_x1, op_x2, op_x3]) 16
-    ,
-    slimbs 30 [
-        V_0_limb30_0, V_0_limb30_1, V_0_limb30_2, V_0_limb30_3,
-        V_0_limb30_4, V_0_limb30_5, V_0_limb30_6, V_0_limb30_7,
-        V_0_limb30_8
-    ]
-    =
-    (const 272 (0))
-    ,
-
-    slimbs 30 [
-        S_0_limb30_0, S_0_limb30_1, S_0_limb30_2, S_0_limb30_3,
-        S_0_limb30_4, S_0_limb30_5, S_0_limb30_6, S_0_limb30_7,
-        S_0_limb30_8
-    ]
-    =
-    (const 272 (1))
-    ,
-
-
-    (uext f 192) = 
-    (const 256 ((2**255) - 19))
-    (mod (const 256 (2**60)))
-    ,
-
-    (uext g 192) = 
-    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
-    (mod (const 256 (2**60)))
-    ,
-
-    delta = (const 64 1)
-    ,
-
-    (uext (limbs 64 [f_low128_0, f_low128_1]) 128) =
-    (const 256 ((2**255) - 19))
-    (mod (const 256 (2**128)))
-    ,
-
-    (uext (limbs 64 [g_low128_0, g_low128_1]) 128) =
-    (limbs 64 [op_x0, op_x1, op_x2, op_x3])
-    (mod (const 256 (2**128)))
-    ,
-
-    const_2p41a2p20 = (const 64 (2**41 + 2**20))
-    ]
-;
-"""
 
 
 emit += cl_cut(
@@ -612,13 +505,13 @@ emit += cl_cut(
             """,
 
             """
-    (uext f 192) = 
+    (uext f_0_low60_0 192) = 
     (const 256 ((2**255) - 19))
     (mod (const 256 (2**60)))
             """,
 
             """
-    (uext g 192) = 
+    (uext g_0_low60_0 192) = 
     (limbs 64 [op_x0, op_x1, op_x2, op_x3])
     (mod (const 256 (2**60)))
             """,
@@ -644,8 +537,6 @@ emit += cl_cut(
 
 emit += """
 // init_fuv_grs
-mov x1 f;
-mov x2 g;
 """
 
 emit += """
@@ -672,8 +563,8 @@ or x8@sint64 x8 0xc000000000000000@uint64;
 emit += """
 mov fuv x7;
 mov grs x8;
-and f_0_low60_0_low20_0@sint64 f (2**20 - 1)@sint64;
-and g_0_low60_0_low20_0@sint64 g (2**20 - 1)@sint64;
+and f_0_low60_0_low20_0@sint64 f_0_low60_0 (2**20 - 1)@sint64;
+and g_0_low60_0_low20_0@sint64 g_0_low60_0 (2**20 - 1)@sint64;
 mov u_0_20 (-(2**20))@sint64;
 mov v_0_20 ( 0)@sint64;
 mov r_0_20 ( 0)@sint64;
@@ -705,10 +596,6 @@ const_2p41a2p20 = (const 64 (2**20 + 2**41))
 emit += """
 // divsteps
 // step0
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* tst	x8, #0x1                                    #! PC = 0xaaaaca660fa8 *)
 spl dc x8_lo x8 1;
@@ -779,10 +666,6 @@ for i in range(18):
 // divsteps
 // step{i+1}
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = {hex(pc_base)} *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = {hex(pc_base + 4)} *)
@@ -849,10 +732,6 @@ emit += f"""
 // divsteps
 // step{i+1}
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = {hex(pc_base)} *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = {hex(pc_base + 4)} *)
@@ -917,77 +796,96 @@ nondet r_0_20@sint64;
 nondet s_0_20@sint64;
 
 // from lemma we have
-assume
-u_0_20 * f_0_low60_0_low20_0 + v_0_20 * g_0_low60_0_low20_0 = f_0_low60_0_low20_20 * (-(2**20)),
-r_0_20 * f_0_low60_0_low20_0 + s_0_20 * g_0_low60_0_low20_0 = g_0_low60_0_low20_20 * (-(2**20))
-&&
-fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
-grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
-fuv = (const 64 1) (mod (const 64 2)),
-(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
-f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
-g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-
-
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
-
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1))
-;
 """
+emit += cl_assume(
+    Epred(
+        f"u_0_20 * f_0_low60_0_low20_0 + v_0_20 * g_0_low60_0_low20_0 = f_0_low60_0_low20_0 * (-(2**20))",
+        f"r_0_20 * f_0_low60_0_low20_0 + s_0_20 * g_0_low60_0_low20_0 = g_0_low60_0_low20_0 * (-(2**20))"
+    ),
+    Rpred(
+        f"fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42))",
+        f"grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42))",
+
+        f"fuv = (const 64 1) (mod (const 64 2))",
+
+        f"(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20",
+        f"f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20",
+        f"g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1))",
+
+        f"delta = (const 64 1) (mod (const 64 2))",
+        f"(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20))",
+
+        f"(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1))",
+        f"u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 - s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20))",
+    )
+
+)
 
 
 emit += """
-nondet f_0_low60_0@sint64;
-nondet g_0_low60_0@sint64;
 nondet f_0_low60_20@sint64;
 nondet g_0_low60_20@sint64;
-mov f_0_low60_0 f;
-mov g_0_low60_0 g;
 
 // by the theory of jumpdivstep, we have
-assume
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
-&&
-f_0_low60_20 = (const 64 1) (mod (const 64 2))
-;
 """
+emit += cl_assume(
+    Epred(
+        f"u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20))",
+        f"r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))",
+    ),
+    Rpred(
+        f"f_0_low60_20 = (const 64 1) (mod (const 64 2))",
+    )
+)
 
-emit += """
-cut
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
-&&
-fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42)),
-grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42)),
-(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20,
-f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20,
-g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1)),
-f_0_low60_20 = (const 64 1) (mod (const 64 2)),
 
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+emit += cl_cut(
+    Epred(
+        f"u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20))",
+        f"r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))"
+    ),
+    Rpred(
+        f"fuv = f_0_low60_0_low20_20 + u_0_20 * (const 64 (2**21)) + v_0_20 * (const 64 (2**42))",
+        f"grs = g_0_low60_0_low20_20 + r_0_20 * (const 64 (2**21)) + s_0_20 * (const 64 (2**42))",
+        f"(const 64 (-(2**20)+1)) <=s f_0_low60_0_low20_20",
+        f"f_0_low60_0_low20_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20)+1)) <=s g_0_low60_0_low20_20",
+        f"g_0_low60_0_low20_20 <=s (const 64 ((2**20)-1))",
+        f"f_0_low60_20 = (const 64 1) (mod (const 64 2))",
 
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
-;
-"""
+        f"delta = (const 64 1) (mod (const 64 2))",
+        f"(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20))",
+
+        f"(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1))",
+        f"u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 - s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20))",
+        f"const_2p41a2p20 = (const 64 (2**20 + 2**41))",
+    )
+
+)
 
 emit += """
 // extraction
-mov x6 const_2p41a2p20;
-mov x7 fuv;
-mov x8 grs;
-
 
 
 (* add	x12, x7, x6                                 #! PC = 0xaaaaafca0c08 *)
@@ -1032,45 +930,46 @@ mov r_0_20 x13;
 mov s_0_20 x14;
 """
 
-emit += """
-cut
-u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
-r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
-&&
-f_0_low60_20 = (const 64 1) (mod (const 64 2)),
 
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
+emit += cl_cut(
+    Epred(
+        f"u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20))",
+        f"r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))"
+    ),
+    Rpred(
+        f"f_0_low60_20 = (const 64 1) (mod (const 64 2))",
 
-(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1)),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
-;
-"""
+        f"delta = (const 64 1) (mod (const 64 2))",
+        f"(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20))",
+
+        f"(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20)-1))",
+        f"(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20)-1))",
+        f"u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"r_0_20 - s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20))",
+        f"(const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20))",
+
+        f"const_2p41a2p20 = (const 64 (2**20 + 2**41))",
+    )
+)
 
 
 emit += """
 // update_fg
 
-mov x1 f_0_low60_0;
-mov x2 g_0_low60_0;
-// we only care about the low 60 bits, casting is required since the syntax of cryptoline
-cast x1@sint64 x1;
-cast x2@sint64 x2;
-
-mov x11 u_0_20;
-mov x12 v_0_20;
-mov x13 r_0_20;
-mov x14 s_0_20;
-nondet dcH@sint64;
 
 (* mul	x9, x11, x1                                 #! PC = 0xaaaaafca0c30 *)
 mull dcH x9 x11 x1;
 (* madd	x9, x12, x2, x9                            #! PC = 0xaaaaafca0c34 *)
 mull dcH tmp x2 x12;
 adds dc x9 x9 tmp;
+
 assert 
 x9 = 0 (mod (2**20)),
 x9 = (-1) * ((2**20)) * f_0_low60_20 (mod (2**64))
@@ -1078,15 +977,9 @@ x9 = (-1) * ((2**20)) * f_0_low60_20 (mod (2**64))
 assume true &&
 x9 = (const 64 0) (mod (const 64 (2**20))),
 x9 = (const 64 (-1)) * (const 64 (2**20)) * f_0_low60_20;
+
 (* asr	x9, x9, #20                                 #! PC = 0xaaaaafca0c38 *)
 split x9 dc x9 20;
-
-
-assert true && x9 * (const 64 (2**20)) = (const 64 (-1)) * (const 64 (2**20)) * f_0_low60_20;
-assert true && x9 = (const 64 (-1)) * f_0_low60_20 (mod (const 64 (2**44)));
-
-
-
 (* mul	x10, x13, x1                                #! PC = 0xaaaaafca0c3c *)
 mull dcH x10 x13 x1;
 (* madd	x10, x14, x2, x10                          #! PC = 0xaaaaafca0c40 *)
@@ -1101,13 +994,8 @@ assume true &&
 x10 = (const 64 0) (mod (const 64 (2**20))),
 x10 = (const 64 (-1)) * (const 64 (2**20)) * g_0_low60_20;
 
-
 (* asr	x2, x10, #20                                #! PC = 0xaaaaafca0c44 *)
 split x2 dc x10 20;
-
-assert true && x2 * (const 64 (2**20)) = (const 64 (-1)) * (const 64 (2**20)) * g_0_low60_20;
-assert true && x2 = (const 64 (-1)) * g_0_low60_20 (mod (const 64 (2**44)));
-
 (* mov	x1, x9                                      #! PC = 0xaaaaafca0c48 *)
 mov x1 x9;
 
@@ -1176,14 +1064,35 @@ const_2p41a2p20 = (const 64 (2**20 + 2**41))
 ;
 """
 
+emit += cl_cut(
+    Epred(
+f"u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20))",
+f"r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))",
+    ),
+    Rpred(
+f"fuv = neg_f_0_low60_20_low20_0 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42))",
+f"grs = neg_g_0_low60_20_low20_0 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42))",
+f"(const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_0",
+f"neg_f_0_low60_20_low20_0 <=s (const 64 ((2**20)-1))",
+f"(const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_0",
+f"neg_g_0_low60_20_low20_0 <=s (const 64 ((2**20)-1))",
+f"fuv = (const 64 1) (mod (const 64 2))",
+f"(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20))",
+f"delta = (const 64 1) (mod (const 64 2))",
+f"u_20_40 = (const 64 (-(2**20)))",
+f"v_20_40 = (const 64 (0))",
+f"r_20_40 = (const 64 (0))",
+f"s_20_40 = (const 64 (-(2**20)))",
+f"const_2p41a2p20 = (const 64 (2**20 + 2**41))",
+    )
+)
+
+
 pc = 0xaaaaca6612cc
+i = 20
 emit += f"""
 // divsteps
-// step0
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
+// step{i}
 
 (* tst	x8, #0x1                                    #! PC = {hex(pc)} *)
 spl dc x8_lo x8 1;
@@ -1247,16 +1156,12 @@ mov delta x3;
 """
 
 pc += 40
-for i in range(18):
+for i in range(21,38):
     pc_base = pc + i* 4 * 9
     # print(hex(pc_base))
     emit += f"""
 // divsteps
 // step{i+1}
-
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
 
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = {hex(pc_base)} *)
 cmov x10 ne x7 0@sint64;	// ne = any;
@@ -1324,10 +1229,6 @@ emit += f"""
 // divsteps
 // step{i+1}
 
-mov x7 fuv;
-mov x8 grs;
-mov x3 delta;
-
 (* csel	x10, x7, xzr, ne	// ne = any               #! PC = {hex(pc_base)} *)
 cmov x10 ne x7 0@sint64;	// ne = any;
 (* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = {hex(pc_base + 4)} *)
@@ -1392,19 +1293,27 @@ nondet r_20_40@sint64;
 nondet s_20_40@sint64;
 
 // from lemma we have
+"""
+
+emit += cl_assume(
+    Epred(
+
+    )
+)
+"""
 assume
 u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_20 * (-(2**20)),
 r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_20 * (-(2**20))
 &&
 fuv = neg_f_0_low60_20_low20_20 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
 grs = neg_g_0_low60_20_low20_20 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
-fuv = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*40)) <=s delta, delta <=s (const 64 (1 + 2 * 40)),
-
 (const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_20,
 neg_f_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
 (const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_20,
 neg_g_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
+(const 64 (1 + (-2)*40)) <=s delta, delta <=s (const 64 (1 + 2 * 40)),
+fuv = (const 64 1) (mod (const 64 2)),
+
 
 
 (const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20)-1)),
