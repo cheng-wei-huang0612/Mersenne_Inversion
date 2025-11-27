@@ -1,0 +1,117 @@
+{
+  "0683cb53f1be54c0": {
+    "bench_name": "bench_inverse_2_a76_4871",
+    "cycle": 5322.0,
+    "path": "opt/inverse_2_a76_4871.s"
+  },
+  "0e2cffd175ea5824": {
+    "bench_name": "bench_inverse_3",
+    "cycle": 6763.0,
+    "path": "asm/inverse_3.s"
+  },
+  "18620551e927e9f8": {
+    "bench_name": "bench_inverse_1_a76",
+    "cycle": 5504.0,
+    "path": "opt/inverse_1_a76.s"
+  },
+  "206110ec7c8c2dd7": {
+    "bench_name": "bench_inverse_1_a72",
+    "cycle": 5493.0,
+    "path": "opt/inverse_1_a72.s"
+  },
+  "27cf0a224778e15a": {
+    "bench_name": "bench_inverse_3_a72",
+    "cycle": 5402.0,
+    "path": "opt/inverse_3_a72.s"
+  },
+  "2858b8285d46e2ce": {
+    "bench_name": "bench_inverse_4_a72",
+    "cycle": 4502.0,
+    "path": "opt/inverse_4_a72.s"
+  },
+  "53f1c84aed2ce97b": {
+    "bench_name": "bench_inverse_4_a72_3950",
+    "cycle": 4672.0,
+    "path": "opt/inverse_4_a72_3950.s"
+  },
+  "5492aee0982796ae": {
+    "bench_name": "bench_inverse_4_a72_4100",
+    "cycle": 4684.0,
+    "path": "opt/inverse_4_a72_4100.s"
+  },
+  "563b9ecc48f42ad2": {
+    "bench_name": "bench_inverse_4",
+    "cycle": 6123.0,
+    "path": "asm/inverse_4.s"
+  },
+  "5ad15998f7ffe840": {
+    "bench_name": "bench_inverse_4_generic",
+    "cycle": 6631.0,
+    "path": "asm/inverse_4_generic.s"
+  },
+  "76ab2dcfdafcfa84": {
+    "bench_name": "bench_inverse_2_a72_4786",
+    "cycle": 5268.0,
+    "path": "opt/inverse_2_a72_4786.s"
+  },
+  "76f0301d108ae1a3": {
+    "bench_name": "bench_inverse_2_1_a76",
+    "cycle": 5482.0,
+    "path": "opt/inverse_2_1_a76.s"
+  },
+  "874435c0bf30c0fe": {
+    "bench_name": "bench_inverse_4_a72_4350",
+    "cycle": 5245.0,
+    "path": "opt/inverse_4_a72_4350.s"
+  },
+  "9e39c55c341ddd07": {
+    "bench_name": "bench_inverse_2_a72_4794",
+    "cycle": 5303.0,
+    "path": "opt/inverse_2_a72_4794.s"
+  },
+  "a5ee29568c62f814": {
+    "bench_name": "bench_inverse_2_1_a72",
+    "cycle": 5456.0,
+    "path": "opt/inverse_2_1_a72.s"
+  },
+  "a754f1e19a09d8d9": {
+    "bench_name": "bench_inverse_2_a76",
+    "cycle": 5245.0,
+    "path": "opt/inverse_2_a76.s"
+  },
+  "a82fddce3adb26b7": {
+    "bench_name": "bench_inverse_4_a72_4200",
+    "cycle": 4514.0,
+    "path": "opt/inverse_4_a72_4200.s"
+  },
+  "af3098560f40d622": {
+    "bench_name": "bench_inverse_2",
+    "cycle": 6597.0,
+    "path": "asm/inverse_2.s"
+  },
+  "b95b66bb9a77e141": {
+    "bench_name": "bench_inverse_2_a72",
+    "cycle": 5266.0,
+    "path": "opt/inverse_2_a72.s"
+  },
+  "d151d6a2232fcaca": {
+    "bench_name": "bench_inverse_4_a72_4000",
+    "cycle": 4606.0,
+    "path": "opt/inverse_4_a72_4000.s"
+  },
+  "d55efe798b814b97": {
+    "bench_name": "bench_inverse_2_1",
+    "cycle": 6613.0,
+    "path": "asm/inverse_2_1.s"
+  },
+  "d60e6e3287dd4033": {
+    "bench_name": "bench_inverse_4_generic_a72",
+    "cycle": 4569.0,
+    "path": "opt/inverse_4_generic_a72.s"
+  },
+  "de435254fab30415": {
+    "bench_name": "bench_inverse_1",
+    "cycle": 6761.0,
+    "path": "asm/inverse_1.s"
+  }
+}
