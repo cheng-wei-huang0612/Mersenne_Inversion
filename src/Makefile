@@ -25,6 +25,7 @@ GENERATED_ASM2 = $(ASM_DIR)/inverse_2.s
 GENERATED_ASM2_1 = $(ASM_DIR)/inverse_2_1.s
 GENERATED_ASM3 = $(ASM_DIR)/inverse_3.s
 GENERATED_ASM4 = $(ASM_DIR)/inverse_4.s
+GENERATED_ASM4_60 = $(ASM_DIR)/inverse_4_60.s
 OPTIMIZED_ASM_A72 = $(OPT_DIR)/inverse_1_a72.s
 OPTIMIZED_ASM_A76 = $(OPT_DIR)/inverse_1_a76.s
 OPTIMIZED_ASM2_A72 = $(OPT_DIR)/inverse_2_a72.s
@@ -47,6 +48,7 @@ DRIVER2_BIN = driver2
 DRIVER2_1_BIN = driver2_1
 DRIVER3_BIN = driver3
 DRIVER4_BIN = driver4
+DRIVER4_60_BIN = driver4_60
 DRIVER_A72_BIN = driver_a72
 DRIVER_A76_BIN = driver_a76
 DRIVER2_A72_BIN = driver2_a72
@@ -65,6 +67,7 @@ RANDOM_TEST2_BIN = random_test2
 RANDOM_TEST2_1_BIN = random_test2_1
 RANDOM_TEST3_BIN = random_test3
 RANDOM_TEST4_BIN = random_test4
+RANDOM_TEST4_60_BIN = random_test4_60
 RANDOM_TEST_A72_BIN = random_test_a72
 RANDOM_TEST_A76_BIN = random_test_a76
 RANDOM_TEST2_A72_BIN = random_test2_a72
@@ -257,6 +260,12 @@ random_test4: $(RANDOM_TEST4_BIN)
 
 $(RANDOM_TEST4_BIN): $(RANDOM_TEST_C) $(GENERATED_ASM4)
 	gcc $(CFLAGS) $(RANDOM_TEST_C) $(GENERATED_ASM4) snap.c $(LDFLAGS) -o $@
+
+# Build random test program with version 4_60
+random_test4_60: $(RANDOM_TEST4_60_BIN)
+
+$(RANDOM_TEST4_60_BIN): $(RANDOM_TEST_C) $(GENERATED_ASM4_60)
+	gcc $(CFLAGS) $(RANDOM_TEST_C) $(GENERATED_ASM4_60) snap.c $(LDFLAGS) -o $@
 
 # Build random test program with A72 optimized version
 random_test_a72: $(RANDOM_TEST_A72_BIN)
