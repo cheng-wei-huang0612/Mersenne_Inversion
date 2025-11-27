@@ -1,8 +1,8 @@
 # scripts/cli/update_opt_readme.py
 from __future__ import annotations
 
-from pathlib import Path
 import json
+from pathlib import Path
 
 from scripts.registry.kernel_db import SRC_ROOT, get_conn, init_db, README_PATH
 
@@ -11,23 +11,27 @@ END = "<!-- END_KERNEL_TABLE -->"
 
 RESULTS_DIR = SRC_ROOT / "results"
 A72_JSON = RESULTS_DIR / "a72_bench.json"
+A76_JSON = RESULTS_DIR / "a76_bench.json"
+
+
+def load_json(path: Path) -> dict[str, dict]:
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {str(k): v for k, v in data.items()}
 
 
 def load_a72_results() -> dict[str, dict]:
-    """
-    從 results/a72_bench.json 抓出 UID -> {cycle, ...} 的 mapping。
-    """
-    if not A72_JSON.exists():
-        return {}
-    data = json.loads(A72_JSON.read_text(encoding="utf-8"))
-    # key 是 UID (short_hash)
-    return {str(k): v for k, v in data.items()}
+    return load_json(A72_JSON)
+
+
+def load_a76_results() -> dict[str, dict]:
+    return load_json(A76_JSON)
 
 
 def fetch_kernels():
     """
-    目前直接列出 kernels 裡所有 row（handwritten + opt），
-    你要的話也可以 WHERE opt=1 只看 opt。
+    目前列出所有 kernels；如果只想看 opt 可以改成 WHERE opt=1。
     """
     init_db()
     conn = get_conn()
@@ -52,7 +56,7 @@ def fmt(x):
     return str(x)
 
 
-def make_table(rows, a72_results):
+def make_table(rows, a72_results, a76_results):
     lines = []
     lines.append(
         "| UID(hash) | path | opt? | SLOTHY_spec | "
@@ -68,18 +72,22 @@ def make_table(rows, a72_results):
     for r in rows:
         uid = r["short_hash"]
         opt_mark = "✅" if r["opt"] else ""
+
         a72 = a72_results.get(uid, {})
+        a76 = a76_results.get(uid, {})
+
         c72 = a72.get("cycle")
+        c76 = a76.get("cycle")
 
         line = (
             f"| `{uid}` "
             f"| `{r['path']}` "
             f"| {opt_mark} "
             f"| {r['slothy_spec']} "
-            f"| {fmt(c72)} "             # A72 cycle 來自 JSON
-            f"| {fmt(None)} "            # 其他平台先留空，之後再填
-            f"| {fmt(None)} "
-            f"| {fmt(None)} "
+            f"| {fmt(c72)} "
+            f"| {fmt(c76)} "
+            f"| {fmt(None)} "  # m1_fire 之後要再接自己的 JSON
+            f"| {fmt(None)} "  # m1_cold 同上
             f"| {fmt(None)} "
             f"| {fmt(None)} "
             f"| {fmt(None)} "
@@ -98,7 +106,8 @@ def update_readme():
 
     rows = fetch_kernels()
     a72_results = load_a72_results()
-    table_md = make_table(rows, a72_results)
+    a76_results = load_a76_results()
+    table_md = make_table(rows, a72_results, a76_results)
 
     before, rest = content.split(BEGIN, 1)
     _, after = rest.split(END, 1)
