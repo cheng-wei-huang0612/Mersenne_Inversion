@@ -35,4 +35,9 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
-aarch64-bench/bench_*
+aarch64-bench/bench_*.*
+!aarch64-bench/bench_*.c
+src/driver1
+src/driver2
+src/driver2_1
+src/driver3
