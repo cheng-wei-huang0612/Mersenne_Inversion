@@ -86,7 +86,7 @@ static int bench(void)
 
   // 機器可 parse 的 summary 行（給 Python 用）
   // 格式：summary_cycle = <uint64_t>
-  printf("summary_cycle = %" PRIu64 "\n", median_cycles);
+  printf("summary_cycle = %" PRIu64 "\n", cycles_ntt[NTESTS >> 1] / NITERATIONS);
 
   return 0;
 }
