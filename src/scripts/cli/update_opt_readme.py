@@ -70,6 +70,7 @@ def make_table(rows, a72_results, a76_results):
     )
 
     for r in rows:
+        print("writing", r['path'])
         uid = r["short_hash"]
         opt_mark = "✅" if r["opt"] else ""
 
