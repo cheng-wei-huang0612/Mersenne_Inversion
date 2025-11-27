@@ -1250,8 +1250,6 @@ madd x10,  x16, x14, x9
 mul x9, x17, x12
 madd x14, x20, x14, x9
 mov x12, x10
-L_optloop_end_1:
-L_optloop_start_2:
 mov x9, #19
 dup v16.2d, x9
 // limb 0
@@ -1533,7 +1531,7 @@ madd x10,  x16, x14, x9
 mul x9, x17, x12
 madd x14, x20, x14, x9
 mov x12, x10
-L_optloop_end_2:
+L_optloop_end_1:
 subs x19, x19, #1
 cbnz x19, Lbig_loop
 ins v16.d[0], x11

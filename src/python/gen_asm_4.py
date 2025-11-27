@@ -344,9 +344,6 @@ asm_main += divstepxtimes_2(FUV=FUV, GRS=GRS, delta=delta, m1="x9",ff="x10", tim
 asm_main += extraction(FUV=FUV, GRS=GRS, u=u, v=v, r=r, s=s, const_2p41a2p20=const_2p41a2p20)
 asm_main += update_fg_trunc(f=f, g=g, u=u, v=v, r=r, s=s, tmp1="x9", tmp2="x10")
 asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod="x9", tmp="x10")
-asm_main += f"L_optloop_end_1:\n"
-
-asm_main += f"L_optloop_start_2:\n"
 
 
 
@@ -406,7 +403,7 @@ asm_main += update_uuvvrrss(uu=uu, vv=vv, rr=rr, ss=ss, u=u, v=v, r=r, s=s, prod
 
 
 
-asm_main += f"L_optloop_end_2:\n"
+asm_main += f"L_optloop_end_1:\n"
 
 
 asm_main += f"subs {COUNTER}, {COUNTER}, #1\n"
