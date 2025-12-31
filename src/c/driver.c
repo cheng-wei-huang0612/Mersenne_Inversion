@@ -39,11 +39,18 @@ int main(int argc, char const *argv[])
     mpz_t mpX, mpInv;
     mpz_init(mpX);
     mpz_init(mpInv);
+    mpz_t mpP, mpCorrectInv;
+    mpz_init(mpP);
+    mpz_init(mpCorrectInv);
+    mpz_ui_pow_ui(mpP, 2, 255);
+    mpz_sub_ui(mpP, mpP, 19);
 
 
     //mpz_set_str(mpX, "20214871201774049636868342709964433550308093914181089952380808474176500195135", 10);
     //mpz_set_str(mpX, "18446744073709551617", 10);
     mpz_set_str(mpX, "6129982163463555433433388108601236734474956488734408704", 10);
+    mpz_set_str(mpX, "0",10);
+    mpz_add(mpX, mpX, mpP);
     // mpz_set_str(mpX, "38305559724211951161727329354596991034635343649772960093117784332570715266771", 10);
     gmp_printf("x = %Zd\n", mpX);
 
@@ -55,11 +62,6 @@ int main(int argc, char const *argv[])
 
 
 
-    mpz_t mpP, mpCorrectInv;
-    mpz_init(mpP);
-    mpz_init(mpCorrectInv);
-    mpz_ui_pow_ui(mpP, 2, 255);
-    mpz_sub_ui(mpP, mpP, 19);
     
     mpz_invert(mpCorrectInv, mpX, mpP);
     

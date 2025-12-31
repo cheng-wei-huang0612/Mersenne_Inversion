@@ -18,7 +18,7 @@
 #define NUM_OF_TEST 1000000U         /* 可用 -DNUM_OF_TEST=... 覆寫 */
 #endif
 #ifndef SEED
-#define SEED 1234           /* 可用 -DSEED=... 覆寫 */
+#define SEED 12345           /* 可用 -DSEED=... 覆寫 */
 #endif
 #define MAX_ATTEMPTS 5              /* 1 次 + 4 次重試 */
 

@@ -3031,27 +3031,27 @@ mov grs x8;
 mov delta x3;
 
 // divsteps
-// step19
+// step39
 
-(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66157c *)
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66184c *)
 cmov x10 ne x7 0@sint64;	// ne = any;
-(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661580 *)
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661850 *)
 spl ge dc x3 63;
 not ge@bit ge;
 cmov ge ne ge 0@bit;	// ne = any;
-(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661584 *)
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661854 *)
 subs dc x3_neg 0@sint64 x3;
 cmov x3 ge x3_neg x3;	// ge = tcont;
-(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661588 *)
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661858 *)
 subs dc x10_neg 0@sint64 x10;
 cmov x10 ge x10_neg x10;	// ge = tcont;
-(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66158c *)
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66185c *)
 cmov x7 ge x8 x7;	// ge = tcont;
-(* add	x8, x8, x10                                 #! PC = 0xaaaaca661590 *)
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661860 *)
 adds dc x8 x8 x10;
-(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661594 *)
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661864 *)
 add x3 x3 0x2@sint64;
-(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661598 *)
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661868 *)
 split x8 dc x8 1;
 
 
@@ -3096,75 +3096,82 @@ nondet s_20_40@sint64;
 
 // from lemma we have
 assume
-u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_20 * (-(2**20)),
-r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_20 * (-(2**20))
+    u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_20 * (-(2**20)),
+    r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_20 * (-(2**20))
 &&
-fuv = neg_f_0_low60_20_low20_20 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
-grs = neg_g_0_low60_20_low20_20 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
-fuv = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*40)) <=s delta, delta <=s (const 64 (1 + 2 * 40)),
-
-(const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_20,
-neg_f_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_20,
-neg_g_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
-
-
-(const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20)-1))
+    fuv = neg_f_0_low60_20_low20_20 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
+    grs = neg_g_0_low60_20_low20_20 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_20,
+    neg_f_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_20,
+    neg_g_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 40)) <=s delta, delta <=s (const 64 (1 + 2*40)),
+    (const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20))),
+    u_20_40 + v_20_40 <=s (const 64 (2**20)),
+    u_20_40 - v_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - u_20_40 + v_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - u_20_40 - v_20_40 <=s (const 64 (2**20)),
+    r_20_40 + s_20_40 <=s (const 64 (2**20)),
+    r_20_40 - s_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - r_20_40 + s_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - r_20_40 - s_20_40 <=s (const 64 (2**20)),
+    u_20_40 = (const 64 0) (mod (const 64 (2**(20-20)))),
+    v_20_40 = (const 64 0) (mod (const 64 (2**(20-20)))),
+    r_20_40 = (const 64 0) (mod (const 64 (2**(20-20)))),
+    s_20_40 = (const 64 0) (mod (const 64 (2**(20-20))))
 ;
+
 
 nondet neg_f_0_low60_40@sint64;
 nondet neg_g_0_low60_40@sint64;
-nondet f_0_low60_20@sint64;
-nondet g_0_low60_20@sint64;
 nondet f_0_low60_40@sint64;
 nondet g_0_low60_40@sint64;
-
-// by the theory of jumpdivstep, we have
 assume
-u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
-r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
-u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
-r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20))
+    u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
+    r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
+    u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+    r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20))
 &&
-neg_f_0_low60_40 = (const 64 1) (mod (const 64 2))
+    neg_f_0_low60_40 = (const 64 1) (mod (const 64 2))
 ;
 
 cut
-u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
-r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
-u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
-r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20))
+    u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
+    r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
+    u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+    r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20))
 &&
-fuv = neg_f_0_low60_20_low20_20 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
-grs = neg_g_0_low60_20_low20_20 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
-
-(const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_20,
-neg_f_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_20,
-neg_g_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
-
-neg_f_0_low60_40 = (const 64 1) (mod (const 64 2)),
-
-delta = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*40)) <=s delta, delta <=s (const 64 (1 + 2 * 40)),
-
-(const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20)-1)),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
+    // asd,
+    fuv = neg_f_0_low60_20_low20_20 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
+    grs = neg_g_0_low60_20_low20_20 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_20,
+    neg_f_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_20,
+    neg_g_0_low60_20_low20_20 <=s (const 64 ((2**20)-1)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 40)) <=s delta, delta <=s (const 64 (1 + 2*40)),
+    (const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20)-1)),
+    u_20_40 + v_20_40 <=s (const 64 (2**20)),
+    u_20_40 - v_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - u_20_40 + v_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - u_20_40 - v_20_40 <=s (const 64 (2**20)),
+    r_20_40 + s_20_40 <=s (const 64 (2**20)),
+    r_20_40 - s_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - r_20_40 + s_20_40 <=s (const 64 (2**20)),
+    (const 64 0) - r_20_40 - s_20_40 <=s (const 64 (2**20)),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41)),
+    neg_f_0_low60_40 = (const 64 1) (mod (const 64 2))
 ;
 
+
 // extraction
-mov x6 const_2p41a2p20;
-mov x7 fuv;
-mov x8 grs;
-
-
 
 (* add	x16, x7, x6                                 #! PC = 0xaaaaca66159c *)
 add x16 x7 x6;
@@ -3367,4 +3374,13 @@ mov u_0_40 x11;
 mov v_0_40 x12;
 mov r_0_40 x13;
 mov s_0_40 x14;
+
+cut
+    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40 (mod (2**64)),
+    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40 (mod (2**64)),
+    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40 (mod (2**64)),
+    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40 (mod (2**64))
+&&
+true
+;
 

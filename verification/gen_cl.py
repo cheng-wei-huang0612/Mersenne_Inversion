@@ -220,15 +220,16 @@ def cl_var_layout(vars, var_per_line=4):
 
 
 def cl_line_comment(comment: str):
-    return f"\n// {comment}\n"
+    return f"// {comment}"
 def cl_block_comment(comment: str):
-    return f"\n(* {comment} *)\n"
+    return f"(* {comment} *)"
 
 def cl_proc_head(proc_name = "main"):
-    return f"proc {proc_name} (\n" 
+    return f"proc {proc_name} (\n"
 
 def cl_proc_tail():
     return f") ="
+
 
 def cl_newline():
     return "\n\n"
@@ -241,6 +242,7 @@ def output_string(emit):
             s += "\n"
         lines.append(s)
     return "".join(lines)
+
 
 
 
