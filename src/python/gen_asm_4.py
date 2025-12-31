@@ -556,7 +556,7 @@ asm_main += f"add  {Vlimb64_3}, {Vlimb64_3}, {Vlimb30_8}, LSL #48\n"
 
 asm_main += f"smov {signF}, {vec_F0_F1_G0_G1}.s[0]\n"
 asm_main += f"lsl {signF}, {signF}, #34\n"
-asm_main += f"asr {signF}, {signF}, #35\n"
+asm_main += f"asr {signF}, {signF}, #63\n"
 
 
 
