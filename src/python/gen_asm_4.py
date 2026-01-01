@@ -31,28 +31,6 @@ vec_uu0_rr0_vv0_ss0 = "v13"
 vec_uu1_rr1_vv1_ss1 = "v14"
 vec_4x_M =  "v15"
 
-
-asm_main += initialization_2(ptr_x = ptr_x, 
-                           tmp_x = "x2",
-                           vec_2x_2p30m1 = vec_2x_2p30m1,
-                            vec_F0_F1_G0_G1 = vec_F0_F1_G0_G1,
-                            vec_F2_F3_G2_G3 = vec_F2_F3_G2_G3,
-                            vec_F4_F5_G4_G5 = vec_F4_F5_G4_G5,
-                            vec_F6_F7_G6_G7 = vec_F6_F7_G6_G7,
-                            vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9,
-                            vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1,
-                            vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3,
-                            vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5,
-                            vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
-                            vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9)
-
-
-
-
-asm_main += f"uzp1 {vec_4x_2p30m1}.4s, {vec_2x_2p30m1}.4s, {vec_2x_2p30m1}.4s\n"
-
-
-
 f = "x1"
 g = "x2"
 delta = "x3"
@@ -77,21 +55,25 @@ r = "x17"
 s = "x20"
 
 
-asm_main += f"ldp {g_0}, {g_1}, [{ptr_x}]\n"
-asm_main += f"mov {f_0}, #-19\n"
-asm_main += f"mov {f_1}, #-1\n"
-
-asm_main += f"mov {f}, {f_0}\n"
-asm_main += f"mov {g}, {g_0}\n"
-
-asm_main += f"mov {delta}, #1\n"
-
-
-asm_main += f"movz {const_2p41a2p20}, #512, LSL #32\n"
-asm_main += f"add  {const_2p41a2p20}, {const_2p41a2p20}, #1048576\n"
-asm_main += f"movz  x7, #10347, LSL #16\n"
-asm_main += f"movk  x7, #51739\n"
-asm_main += f"dup  {vec_4x_M}.4s, w7\n"
+asm_main += initialization_3(ptr_x = ptr_x, 
+                           tmp_x = "x2",
+                             f = f, g = g, delta = delta,
+                             f_0 = f_0, f_1 = f_1,
+                             g_0 = g_0, g_1 = g_1,
+                             const_2p41a2p20 = const_2p41a2p20,
+                           vec_2x_2p30m1 = vec_2x_2p30m1,
+                           vec_4x_2p30m1 = vec_4x_2p30m1,
+                             vec_4x_M = vec_4x_M,
+                            vec_F0_F1_G0_G1 = vec_F0_F1_G0_G1,
+                            vec_F2_F3_G2_G3 = vec_F2_F3_G2_G3,
+                            vec_F4_F5_G4_G5 = vec_F4_F5_G4_G5,
+                            vec_F6_F7_G6_G7 = vec_F6_F7_G6_G7,
+                            vec_F8_F9_G8_G9 = vec_F8_F9_G8_G9,
+                            vec_V0_V1_S0_S1 = vec_V0_V1_S0_S1,
+                            vec_V2_V3_S2_S3 = vec_V2_V3_S2_S3,
+                            vec_V4_V5_S4_S5 = vec_V4_V5_S4_S5,
+                            vec_V6_V7_S6_S7 = vec_V6_V7_S6_S7,
+                            vec_V8_V9_S8_S9 = vec_V8_V9_S8_S9)
 
 
 

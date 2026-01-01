@@ -14,7 +14,26 @@ stp q8, q9, [sp, #-32]!
 stp q10, q11, [sp, #-32]!
 stp q12, q13, [sp, #-32]!
 stp q14, q15, [sp, #-32]!
-ldp q5, q6, [x1]
+ldp x5, x22, [x1]
+ldp x4, x21, [x1, #16]
+mov x2, #19
+lsr x3, x21, #63
+madd x3, x2, x3, x2
+adds x5, x5, x3
+adcs x22, x22, xzr
+adcs x4, x4, xzr
+orr  x21, x21, #0x8000000000000000
+adcs x21, x21, xzr
+csel x3, x2, xzr, cc
+subs x5, x5, x3
+sbcs x22, x22, xzr
+sbcs x4, x4, xzr
+sbc  x21, x21, xzr
+and  x21, x21, #~0x8000000000000000
+mov v5.d[0], x5
+mov v5.d[1], x22
+mov v6.d[0], x4
+mov v6.d[1], x21
 movi v4.2d, #-1
 mov x2, #-1
 lsr x2, x2, #1
@@ -60,7 +79,6 @@ movi v10.2d, #0
 movi v11.2d, #0
 movi v12.2d, #0
 uzp1 v2.4s, v1.4s, v1.4s
-ldp x5, x22, [x1]
 mov x4, #-19
 mov x21, #-1
 mov x1, x4
@@ -2600,7 +2618,7 @@ add  x12, x12, x16, LSL #18
 add  x12, x12, x17, LSL #48
 smov x19, v3.s[0]
 lsl x19, x19, #34
-asr x19, x19, #35
+asr x19, x19, #63
 eor x9, x9, x19
 eor x10, x10, x19
 eor x11, x11, x19
