@@ -301,8 +301,6 @@ def initialization_3(ptr_x,
     asm_script += f"sbc  {op_x3}, {op_x3}, xzr\n"
     asm_script += f"and  {op_x3}, {op_x3}, #~0x8000000000000000\n"
 
-    # asm_script += f"stp  {op_x0}, {op_x1}, [{ptr_x}]\n"
-    # asm_script += f"stp  {op_x2}, {op_x3}, [{ptr_x}, #16]\n"
 
     vec_p0_p3 = vec_F0_F1_G0_G1
     vec_p2_p1 = vec_F2_F3_G2_G3
@@ -341,9 +339,6 @@ def initialization_3(ptr_x,
     asm_script += f"ushr {vec_buffer}.2d, {vec_p0_x0}.2d, #30\n"
     asm_script += f"and {vec_buffer}.16b, {vec_buffer}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sli {vec_F0_F1_G0_G1}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"orr {vec_F0_F1_G0_G1}.16b, {vec_F0_F1_G0_G1}.16b, {vec_buffer}.16b\n"
-
 
 
 
@@ -356,8 +351,6 @@ def initialization_3(ptr_x,
     asm_script += f"ushr {vec_buffer}.2d, {vec_p1_x1}.2d, #26\n"
     asm_script += f"and {vec_buffer}.16b, {vec_buffer}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sli {vec_F2_F3_G2_G3}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"orr {vec_F2_F3_G2_G3}.16b, {vec_F2_F3_G2_G3}.16b, {vec_buffer}.16b\n"
 
     asm_script += f"ushr {vec_F4_F5_G4_G5}.2d, {vec_p1_x1}.2d, #56\n"
     asm_script += f"shl {vec_buffer}.2d, {vec_p2_x2}.2d, #8\n"
@@ -368,8 +361,6 @@ def initialization_3(ptr_x,
     asm_script += f"sli {vec_F4_F5_G4_G5}.2d, {vec_buffer}.2d, #32\n"
 
 
-    # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"orr {vec_F4_F5_G4_G5}.16b, {vec_F4_F5_G4_G5}.16b, {vec_buffer}.16b\n"
 
     asm_script += f"ushr {vec_F6_F7_G6_G7}.2d, {vec_p2_x2}.2d, #52\n"
     asm_script += f"shl {vec_buffer}.2d, {vec_p3_x3}.2d, #12\n"
@@ -378,8 +369,6 @@ def initialization_3(ptr_x,
     asm_script += f"ushr {vec_buffer}.2d, {vec_p3_x3}.2d, #18\n"
     asm_script += f"and {vec_buffer}.16b, {vec_buffer}.16b, {vec_2x_2p30m1}.16b\n"
     asm_script += f"sli {vec_F6_F7_G6_G7}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"shl {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
-    # asm_script += f"orr {vec_F6_F7_G6_G7}.16b, {vec_F6_F7_G6_G7}.16b, {vec_buffer}.16b\n"
 
     asm_script += f"ushr {vec_F8_F9_G8_G9}.2d, {vec_p3_x3}.2d, #48\n"
 
@@ -397,7 +386,6 @@ def initialization_3(ptr_x,
 
 
     asm_script += f"uzp1 {vec_4x_2p30m1}.4s, {vec_2x_2p30m1}.4s, {vec_2x_2p30m1}.4s\n"
-    # asm_script += f"ldp {g_0}, {g_1}, [{ptr_x}]\n"
     asm_script += f"mov {f_0}, #-19\n"
     asm_script += f"mov {f_1}, #-1\n"
 
