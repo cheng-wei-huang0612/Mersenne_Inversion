@@ -416,21 +416,21 @@ for k in range(10):
         for i in range(20 - (j>>1)):
             for case in ["a", "b", "c"]:
                 emit = divstep_gen(i,j,k,case)
-                with open(f"gen/divstep_{59*k + 20*j + i:03d}_{case}.cl", "w") as f:
+                with open(f"divsteps_cl/divstep_{59*k + 20*j + i:03d}_{case}.cl", "w") as f:
                     f.write(emit)
 
 
 
 for k in range(10):
     for j in range(3):
-        with open(f"gen/divstep_{59*k + 20*j:03d}_{59*k + 20*(j+1) - (j>>1):03d}_forkcases.cl", "w") as f:
+        with open(f"divsteps_cl/divstep_{59*k + 20*j:03d}_{59*k + 20*(j+1) - (j>>1):03d}_forkcases.cl", "w") as f:
             emit = ""
             for i in range(20 - (j>>1)):
                 for case in ["a", "b", "c"]:
                     emit += divstep_gen(i, j, k, case)
             f.write(emit)
 
-with open("gen/divstep_000_590_forkcases.cl", "w") as f:
+with open("divsteps_cl/divstep_000_590_forkcases.cl", "w") as f:
     emit = ""
     for k in range(10):
         for j in range(3):

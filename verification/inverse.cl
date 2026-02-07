@@ -1,3 +1,321 @@
+
+proc update_uuvvrrss (
+    u_0_20@sint64,
+    v_0_20@sint64,
+    r_0_20@sint64,
+    s_0_20@sint64,
+    u_20_40@sint64,
+    v_20_40@sint64,
+    r_20_40@sint64,
+    s_20_40@sint64;
+    u_0_40@sint64,
+    v_0_40@sint64,
+    r_0_40@sint64,
+    s_0_40@sint64
+) = 
+{
+
+#     (-(2**20)) <= u_0_20, u_0_20 <= (2**20 - 1),
+#     (-(2**20)) <= u_20_40, u_20_40 <= (2**20 - 1),
+#     (-(2**20)) <= v_0_20, v_0_20 <= (2**20 - 1),
+#     (-(2**20)) <= v_20_40, v_20_40 <= (2**20 - 1),
+#     (-(2**20)) <= r_0_20, r_0_20 <= (2**20 - 1),
+#     (-(2**20)) <= r_20_40, r_20_40 <= (2**20 - 1),
+#     (-(2**20)) <= s_0_20, s_0_20 <= (2**20 - 1),
+#     (-(2**20)) <= s_20_40, s_20_40 <= (2**20 - 1),
+#
+# u_20_40 + v_20_40 <= (2**20),
+# u_20_40 - v_20_40 <= (2**20),
+#  - u_20_40 + v_20_40 <= (2**20),
+#  - u_20_40 - v_20_40 <= (2**20),
+# r_20_40 + s_20_40 <= (2**20),
+# r_20_40 - s_20_40 <= (2**20),
+#  - r_20_40 + s_20_40 <= (2**20),
+#  - r_20_40 - s_20_40 <= (2**20),
+# u_0_20 + v_0_20 <= (2**20),
+# u_0_20 - v_0_20 <= (2**20),
+#  - u_0_20 + v_0_20 <= (2**20),
+#  - u_0_20 - v_0_20 <= (2**20),
+# r_0_20 + s_0_20 <= (2**20),
+# r_0_20 - s_0_20 <= (2**20),
+#  - r_0_20 + s_0_20 <= (2**20),
+#  - r_0_20 - s_0_20 <= (2**20)
+  true
+        &&
+
+(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20) - 1)),
+(const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20) - 1)),
+u_20_40 + v_20_40 <=s (const 64 (2**20)),
+u_20_40 - v_20_40 <=s (const 64 (2**20)),
+(const 64 0) - u_20_40 + v_20_40 <=s (const 64 (2**20)),
+(const 64 0) - u_20_40 - v_20_40 <=s (const 64 (2**20)),
+r_20_40 + s_20_40 <=s (const 64 (2**20)),
+r_20_40 - s_20_40 <=s (const 64 (2**20)),
+(const 64 0) - r_20_40 + s_20_40 <=s (const 64 (2**20)),
+(const 64 0) - r_20_40 - s_20_40 <=s (const 64 (2**20)),
+u_0_20 + v_0_20 <=s (const 64 (2**20)),
+u_0_20 - v_0_20 <=s (const 64 (2**20)),
+(const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20)),
+(const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20)),
+r_0_20 + s_0_20 <=s (const 64 (2**20)),
+r_0_20 - s_0_20 <=s (const 64 (2**20)),
+(const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20)),
+(const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20))
+}
+
+
+
+
+mov x11 u_0_20;
+mov x12 v_0_20;
+mov x13 r_0_20;
+mov x14 s_0_20;
+mov x15 u_20_40;
+mov x16 v_20_40;
+mov x17 r_20_40;
+mov x20 s_20_40;
+
+
+
+// update_uuvvrrss
+(* mul	x9, x15, x11                                #! PC = 0xaaaaca6615e0 *)
+smul x9 x15 x11;
+(* madd	x10, x16, x13, x9                          #! PC = 0xaaaaca6615e4 *)
+smul tmp x13 x16;
+sadd x10 x9 tmp;
+(* mul	x9, x17, x11                                #! PC = 0xaaaaca6615e8 *)
+smul x9 x17 x11;
+(* madd	x13, x20, x13, x9                          #! PC = 0xaaaaca6615ec *)
+smul tmp x13 x20;
+sadd x13 x9 tmp;
+(* mov	x11, x10                                    #! PC = 0xaaaaca6615f0 *)
+mov x11 x10;
+(* mul	x9, x15, x12                                #! PC = 0xaaaaca6615f4 *)
+smul x9 x15 x12;
+(* madd	x10, x16, x14, x9                          #! PC = 0xaaaaca6615f8 *)
+smul tmp x14 x16;
+sadd x10 x9 tmp;
+(* mul	x9, x17, x12                                #! PC = 0xaaaaca6615fc *)
+smul x9 x17 x12;
+(* madd	x14, x20, x14, x9                          #! PC = 0xaaaaca661600 *)
+smul tmp x14 x20;
+sadd x14 x9 tmp;
+(* mov	x12, x10                                    #! PC = 0xaaaaca661604 *)
+mov x12 x10;
+
+mov u_0_40 x11;
+mov v_0_40 x12;
+mov r_0_40 x13;
+mov s_0_40 x14;
+
+
+assert
+    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+    && true
+;
+
+assert true &&
+    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+;
+
+// By theorem from matrix norm, we have
+assume true &&
+u_0_40 + v_0_40 <=s (const 64 (2**40)),
+u_0_40 - v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+r_0_40 + s_0_40 <=s (const 64 (2**40)),
+r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1));
+
+{
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+    &&
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40,
+u_0_40 + v_0_40 <=s (const 64 (2**40)),
+u_0_40 - v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+r_0_40 + s_0_40 <=s (const 64 (2**40)),
+r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1))
+}
+
+
+proc update_uuvvrrss_2 (
+    u_0_40@sint64,
+    v_0_40@sint64,
+    r_0_40@sint64,
+    s_0_40@sint64,
+    u_40_59@sint64,
+    v_40_59@sint64,
+    r_40_59@sint64,
+    s_40_59@sint64;
+    u_0_59@sint64,
+    v_0_59@sint64,
+    r_0_59@sint64,
+    s_0_59@sint64
+) = 
+{
+  true
+        &&
+
+    (const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1)),
+
+    (const 64 (-(2**20))) <=s u_40_59, u_40_59 <=s (const 64 ((2**20) - 1)),
+    (const 64 (-(2**20))) <=s v_40_59, v_40_59 <=s (const 64 ((2**20) - 1)),
+    (const 64 (-(2**20))) <=s r_40_59, r_40_59 <=s (const 64 ((2**20) - 1)),
+    (const 64 (-(2**20))) <=s s_40_59, s_40_59 <=s (const 64 ((2**20) - 1)),
+    u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    u_0_40 + v_0_40 <=s (const 64 (2**40)),
+    u_0_40 - v_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+    r_0_40 + s_0_40 <=s (const 64 (2**40)),
+    r_0_40 - s_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40))
+
+}
+
+
+
+
+mov x11 u_0_40;
+mov x12 v_0_40;
+mov x13 r_0_40;
+mov x14 s_0_40;
+mov x15 u_40_59;
+mov x16 v_40_59;
+mov x17 r_40_59;
+mov x20 s_40_59;
+
+
+
+// update_uuvvrrss
+(* mul	x9, x15, x11                                #! PC = 0xaaaaca6615e0 *)
+smul x9 x15 x11;
+(* madd	x10, x16, x13, x9                          #! PC = 0xaaaaca6615e4 *)
+smul tmp x13 x16;
+sadd x10 x9 tmp;
+(* mul	x9, x17, x11                                #! PC = 0xaaaaca6615e8 *)
+smul x9 x17 x11;
+(* madd	x13, x20, x13, x9                          #! PC = 0xaaaaca6615ec *)
+smul tmp x13 x20;
+sadd x13 x9 tmp;
+(* mov	x11, x10                                    #! PC = 0xaaaaca6615f0 *)
+mov x11 x10;
+(* mul	x9, x15, x12                                #! PC = 0xaaaaca6615f4 *)
+smul x9 x15 x12;
+(* madd	x10, x16, x14, x9                          #! PC = 0xaaaaca6615f8 *)
+smul tmp x14 x16;
+sadd x10 x9 tmp;
+(* mul	x9, x17, x12                                #! PC = 0xaaaaca6615fc *)
+smul x9 x17 x12;
+(* madd	x14, x20, x14, x9                          #! PC = 0xaaaaca661600 *)
+smul tmp x14 x20;
+sadd x14 x9 tmp;
+(* mov	x12, x10                                    #! PC = 0xaaaaca661604 *)
+mov x12 x10;
+
+mov u_0_59 x11;
+mov v_0_59 x12;
+mov r_0_59 x13;
+mov s_0_59 x14;
+
+
+assert
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59
+    && true
+;
+
+assert true &&
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59
+;
+
+// By theorem from matrix norm, we have
+assume true &&
+u_0_59 + v_0_59 <=s (const 64 (2**60)),
+u_0_59 - v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 + v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 - v_0_59 <=s (const 64 (2**60)),
+r_0_59 + s_0_59 <=s (const 64 (2**60)),
+r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 + s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 (-(2**60))) <=s u_0_59, u_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s v_0_59, v_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s r_0_59, r_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s s_0_59, s_0_59 <=s (const 64 ((2**60) - 1));
+
+{
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59
+    &&
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59,
+u_0_59 + v_0_59 <=s (const 64 (2**60)),
+u_0_59 - v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 + v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 - v_0_59 <=s (const 64 (2**60)),
+r_0_59 + s_0_59 <=s (const 64 (2**60)),
+r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 + s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 (-(2**60))) <=s u_0_59, u_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s v_0_59, v_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s r_0_59, r_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s s_0_59, s_0_59 <=s (const 64 ((2**60) - 1))
+}
+
 proc main (
 uint64 op_x0,
 uint64 op_x1,
@@ -1757,7 +2075,7 @@ cut
 ;
 
 
-// extraction
+// extraction, step20
 
 
 (* add	x12, x7, x6                                 #! PC = 0xaaaaafca0c08 *)
@@ -1889,26 +2207,6 @@ mov u_20_40 (-(2**20))@sint64;
 mov v_20_40 ( 0)@sint64;
 mov r_20_40 ( 0)@sint64;
 mov s_20_40 (-(2**20))@sint64;
-
-cut
-u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20)),
-r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))
-&&
-fuv = neg_f_0_low60_20_low20_0 + u_20_40 * (const 64 (2**21)) + v_20_40 * (const 64 (2**42)),
-grs = neg_g_0_low60_20_low20_0 + r_20_40 * (const 64 (2**21)) + s_20_40 * (const 64 (2**42)),
-(const 64 (-(2**20)+1)) <=s neg_f_0_low60_20_low20_0,
-neg_f_0_low60_20_low20_0 <=s (const 64 ((2**20)-1)),
-(const 64 (-(2**20)+1)) <=s neg_g_0_low60_20_low20_0,
-neg_g_0_low60_20_low20_0 <=s (const 64 ((2**20)-1)),
-fuv = (const 64 1) (mod (const 64 2)),
-(const 64 (1 + (-2)*20)) <=s delta, delta <=s (const 64 (1 + 2 * 20)),
-delta = (const 64 1) (mod (const 64 2)),
-u_20_40 = (const 64 (-(2**20))),
-v_20_40 = (const 64 (0)),
-r_20_40 = (const 64 (0)),
-s_20_40 = (const 64 (-(2**20))),
-const_2p41a2p20 = (const 64 (2**20 + 2**41))
-;
 cut
     u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20)),
     r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))
@@ -1960,6 +2258,67 @@ spl x8_target dc x8_lo 1;
 and ne@bit x8_target 1@bit;
 (* asr	x8, x8, #1                                  #! PC = 0xaaaaca6612f0 *)
 split x8 dc x8 1;
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step21
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca6615c4 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca6615c8 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca6615cc *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca6615d0 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca6615d4 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca6615d8 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca6615dc *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca6615e0 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca6615e4 *)
+split x8 dc x8 1;
+
 
 assert true &&
 or [
@@ -3171,7 +3530,7 @@ cut
 ;
 
 
-// extraction
+// extraction, step 40
 
 (* add	x16, x7, x6                                 #! PC = 0xaaaaca66159c *)
 add x16 x7 x6;
@@ -3228,22 +3587,23 @@ delta = (const 64 1) (mod (const 64 2)),
 (const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20)-1)),
 (const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20)-1)),
 (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20)-1)),
+u_20_40 + v_20_40 <=s (const 64 (2**20)),
+u_20_40 - v_20_40 <=s (const 64 (2**20)),
+(const 64 0) - u_20_40 + v_20_40 <=s (const 64 (2**20)),
+(const 64 0) - u_20_40 - v_20_40 <=s (const 64 (2**20)),
+r_20_40 + s_20_40 <=s (const 64 (2**20)),
+r_20_40 - s_20_40 <=s (const 64 (2**20)),
+(const 64 0) - r_20_40 + s_20_40 <=s (const 64 (2**20)),
+(const 64 0) - r_20_40 - s_20_40 <=s (const 64 (2**20)),
 const_2p41a2p20 = (const 64 (2**20 + 2**41))
 ;
 
 // update_fg
 
-mov x1 neg_f_0_low60_20;
-mov x2 neg_g_0_low60_20;
 // we only care about the low 60 bits, casting is required since the syntax of cryptoline
 cast x1@sint64 x1;
 cast x2@sint64 x2;
 
-mov x15 u_20_40;
-mov x16 v_20_40;
-mov x17 r_20_40;
-mov x20 s_20_40;
-nondet dcH@sint64;
 
 (* mul	x9, x15, x1                                 #! PC = 0xaaaaafca0c30 *)
 mull dcH x9 x15 x1;
@@ -3293,81 +3653,72 @@ mov x1 x9;
 
 assert true && x1 = (const 64 (-1)) * neg_f_0_low60_40 (mod (const 64 (2**44)));
 assert true && x2 = (const 64 (-1)) * neg_g_0_low60_40 (mod (const 64 (2**44)));
-mov neg_f_0_low60_40 x1;
-mov neg_g_0_low60_40 x2;
-
-nondet u_0_40@sint64;
-nondet v_0_40@sint64;
-nondet r_0_40@sint64;
-nondet s_0_40@sint64;
-assume
-    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
-    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
-    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
-    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
-&&
-    true
-;
-
-assert
+mov f_0_low60_40 x1;
+mov g_0_low60_40 x2;
+assert true &&
+f_0_low60_40 = (const 64 1) (mod (const 64 2));
+cut
     true
 &&
-    (const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 (2**20 - 1)),
-    and [(const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 (2**20 - 1)) ] prove with [all cuts],
-    (const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 (2**20 - 1)),
-    and [(const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 (2**20 - 1)) ] prove with [all cuts],
-    (const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 (2**20 - 1)),
-    and [(const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 (2**20 - 1)) ] prove with [all cuts],
-    (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 (2**20 - 1)),
-    and [(const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 (2**20 - 1)) ] prove with [all cuts]
-;
+    
+    and [
+        x11 = u_0_20,
+        x12 = v_0_20,
+        x13 = r_0_20,
+        x14 = s_0_20,
+        x15 = u_20_40,
+        x16 = v_20_40,
+        x17 = r_20_40,
+        x20 = s_20_40,
 
-assume
-    (-(2**20)) <= u_0_20, u_0_20 <= (2**20 - 1),
-    (-(2**20)) <= u_20_40, u_20_40 <= (2**20 - 1),
-    (-(2**20)) <= v_0_20, v_0_20 <= (2**20 - 1),
-    (-(2**20)) <= v_20_40, v_20_40 <= (2**20 - 1),
-    (-(2**20)) <= r_0_20, r_0_20 <= (2**20 - 1),
-    (-(2**20)) <= r_20_40, r_20_40 <= (2**20 - 1),
-    (-(2**20)) <= s_0_20, s_0_20 <= (2**20 - 1),
-    (-(2**20)) <= s_20_40, s_20_40 <= (2**20 - 1)
-&&
-    true
-;
+        (const 64 (-(2**20))) <=s u_0_20, u_0_20 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s u_20_40, u_20_40 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s v_0_20, v_0_20 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s v_20_40, v_20_40 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s r_0_20, r_0_20 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s r_20_40, r_20_40 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s s_0_20, s_0_20 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s s_20_40, s_20_40 <=s (const 64 ((2**20) - 1)),
+        u_20_40 + v_20_40 <=s (const 64 (2**20)),
+        u_20_40 - v_20_40 <=s (const 64 (2**20)),
+        (const 64 0) - u_20_40 + v_20_40 <=s (const 64 (2**20)),
+        (const 64 0) - u_20_40 - v_20_40 <=s (const 64 (2**20)),
+        r_20_40 + s_20_40 <=s (const 64 (2**20)),
+        r_20_40 - s_20_40 <=s (const 64 (2**20)),
+        (const 64 0) - r_20_40 + s_20_40 <=s (const 64 (2**20)),
+        (const 64 0) - r_20_40 - s_20_40 <=s (const 64 (2**20)),
+        u_0_20 + v_0_20 <=s (const 64 (2**20)),
+        u_0_20 - v_0_20 <=s (const 64 (2**20)),
+        (const 64 0) - u_0_20 + v_0_20 <=s (const 64 (2**20)),
+        (const 64 0) - u_0_20 - v_0_20 <=s (const 64 (2**20)),
+        r_0_20 + s_0_20 <=s (const 64 (2**20)),
+        r_0_20 - s_0_20 <=s (const 64 (2**20)),
+        (const 64 0) - r_0_20 + s_0_20 <=s (const 64 (2**20)),
+        (const 64 0) - r_0_20 - s_0_20 <=s (const 64 (2**20)),
 
-assert
-    and [(-(2**41)) <= u_0_40] prove with [algebra solver smt:z3],
-    and [u_0_40 <= ((2**41))] prove with [algebra solver smt:z3]
-&&
-    true
+        f_0_low60_40 = (const 64 1) (mod (const 64 2))
+    ] prove with [all cuts]
+    
 ;
 
 
 // update_uuvvrrss
 (* mul	x9, x15, x11                                #! PC = 0xaaaaca6615e0 *)
-mull dcH x9 x15 x11;
 (* madd	x10, x16, x13, x9                          #! PC = 0xaaaaca6615e4 *)
-mull dcH tmp x13 x16;
-adds dc x10 x9 tmp;
 (* mul	x9, x17, x11                                #! PC = 0xaaaaca6615e8 *)
-mull dcH x9 x17 x11;
 (* madd	x13, x20, x13, x9                          #! PC = 0xaaaaca6615ec *)
-mull dcH tmp x13 x20;
-adds dc x13 x9 tmp;
 (* mov	x11, x10                                    #! PC = 0xaaaaca6615f0 *)
-mov x11 x10;
 (* mul	x9, x15, x12                                #! PC = 0xaaaaca6615f4 *)
-mull dcH x9 x15 x12;
 (* madd	x10, x16, x14, x9                          #! PC = 0xaaaaca6615f8 *)
-mull dcH tmp x14 x16;
-adds dc x10 x9 tmp;
 (* mul	x9, x17, x12                                #! PC = 0xaaaaca6615fc *)
-mull dcH x9 x17 x12;
 (* madd	x14, x20, x14, x9                          #! PC = 0xaaaaca661600 *)
-mull dcH tmp x14 x20;
-adds dc x14 x9 tmp;
 (* mov	x12, x10                                    #! PC = 0xaaaaca661604 *)
-mov x12 x10;
+
+
+call update_uuvvrrss(
+x11,x12,x13,x14,x15,x16,x17,x20;
+x11,x12,x13,x14
+);
 
 
 mov u_0_40 x11;
@@ -3376,11 +3727,1492 @@ mov r_0_40 x13;
 mov s_0_40 x14;
 
 cut
-    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40 (mod (2**64)),
-    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40 (mod (2**64)),
-    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40 (mod (2**64)),
-    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40 (mod (2**64))
-&&
-true
+    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+        &&
+    u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+    u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+    r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+    r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40,
+    u_0_40 + v_0_40 <=s (const 64 (2**40)),
+    u_0_40 - v_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+    r_0_40 + s_0_40 <=s (const 64 (2**40)),
+    r_0_40 - s_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+    (const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+    (const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+    (const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1))
 ;
+
+(* and	x7, x1, #0xfffff                            #! PC = 0xaaaaca661608 *)
+and x7@sint64 x1 0xfffff@uint64;
+(* and	x8, x2, #0xfffff                            #! PC = 0xaaaaca66160c *)
+and x8@sint64 x2 0xfffff@uint64;
+(* orr	x7, x7, #0xfffffe0000000000                 #! PC = 0xaaaaca661610 *)
+or x7@sint64 x7 0xfffffe0000000000@uint64;
+(* orr	x8, x8, #0xc000000000000000                 #! PC = 0xaaaaca661614 *)
+or x8@sint64 x8 0xc000000000000000@uint64;
+
+mov fuv x7;
+mov grs x8;
+and f_0_low60_40_low20_0@sint64 f_0_low60_40 (2**20 - 1)@sint64;
+and g_0_low60_40_low20_0@sint64 g_0_low60_40 (2**20 - 1)@sint64;
+mov u_40_59 (-(2**20))@sint64;
+mov v_40_59 ( 0)@sint64;
+mov r_40_59 ( 0)@sint64;
+mov s_40_59 (-(2**20))@sint64;
+
+cut
+u_40_59 * f_0_low60_40_low20_0 + v_40_59 * g_0_low60_40_low20_0 = f_0_low60_40_low20_0 * (-(2**20)),
+r_40_59 * f_0_low60_40_low20_0 + s_40_59 * g_0_low60_40_low20_0 = g_0_low60_40_low20_0 * (-(2**20))
+&& and
+[
+fuv = f_0_low60_40_low20_0 + u_40_59 * (const 64 (2**21)) + v_40_59 * (const 64 (2**42)),
+grs = g_0_low60_40_low20_0 + r_40_59 * (const 64 (2**21)) + s_40_59 * (const 64 (2**42)),
+(const 64 (-(2**20)+1)) <=s f_0_low60_40_low20_0,
+f_0_low60_40_low20_0 <=s (const 64 ((2**20)-1)),
+(const 64 (-(2**20)+1)) <=s g_0_low60_40_low20_0,
+g_0_low60_40_low20_0 <=s (const 64 ((2**20)-1)),
+fuv = (const 64 1) (mod (const 64 2)),
+delta = (const 64 1) (mod (const 64 2)),
+(const 64 (1 + (-2) * 40)) <=s delta, delta <=s (const 64 (1 + 2*40)),
+u_40_59 = (const 64 (-(2**20))),
+v_40_59 = (const 64 (0)),
+r_40_59 = (const 64 (0)),
+s_40_59 = (const 64 (-(2**20))),
+const_2p41a2p20 = (const 64 (2**20 + 2**41)) 
+] prove with [all cuts]
+;
+
+// divsteps
+// step40
+
+(* tst	x8, #0x1                                    #! PC = 0xaaaaca661618 *)
+spl dc x8_lo x8 1;
+and ne@bit x8_lo 1@bit;
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca66161c *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661620 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661624 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661628 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca66162c *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661630 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661634 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661638 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca66163c *)
+split x8 dc x8 1;
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step41
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661be0 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661be4 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661be8 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661bec *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661bf0 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661bf4 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661bf8 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661bfc *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661c00 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step42
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661c04 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661c08 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661c0c *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661c10 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661c14 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661c18 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661c1c *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661c20 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661c24 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step43
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661c28 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661c2c *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661c30 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661c34 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661c38 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661c3c *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661c40 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661c44 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661c48 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step44
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661c4c *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661c50 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661c54 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661c58 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661c5c *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661c60 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661c64 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661c68 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661c6c *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step45
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661c70 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661c74 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661c78 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661c7c *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661c80 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661c84 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661c88 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661c8c *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661c90 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step46
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661c94 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661c98 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661c9c *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661ca0 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661ca4 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661ca8 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661cac *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661cb0 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661cb4 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step47
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661cb8 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661cbc *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661cc0 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661cc4 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661cc8 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661ccc *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661cd0 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661cd4 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661cd8 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step48
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661cdc *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661ce0 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661ce4 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661ce8 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661cec *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661cf0 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661cf4 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661cf8 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661cfc *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step49
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661d00 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661d04 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661d08 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661d0c *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661d10 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661d14 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661d18 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661d1c *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661d20 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step50
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661d24 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661d28 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661d2c *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661d30 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661d34 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661d38 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661d3c *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661d40 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661d44 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step51
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661d48 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661d4c *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661d50 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661d54 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661d58 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661d5c *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661d60 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661d64 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661d68 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step52
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661d6c *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661d70 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661d74 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661d78 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661d7c *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661d80 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661d84 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661d88 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661d8c *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step53
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661d90 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661d94 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661d98 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661d9c *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661da0 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661da4 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661da8 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661dac *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661db0 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step54
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661db4 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661db8 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661dbc *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661dc0 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661dc4 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661dc8 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661dcc *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661dd0 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661dd4 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step55
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661dd8 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661ddc *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661de0 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661de4 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661de8 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661dec *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661df0 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661df4 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661df8 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step56
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661dfc *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661e00 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661e04 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661e08 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661e0c *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661e10 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661e14 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661e18 *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661e1c *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step57
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661e20 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661e24 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661e28 *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661e2c *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661e30 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661e34 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661e38 *)
+add x3 x3 0x2@sint64;
+(* tst	x8, #0x2                                    #! PC = 0xaaaaca661e3c *)
+spl dc x8_lo x8 2;
+spl x8_target dc x8_lo 1;
+and ne@bit x8_target 1@bit;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661e40 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+// divsteps
+// step58
+
+(* csel	x10, x7, xzr, ne	// ne = any               #! PC = 0xaaaaca661e44 *)
+cmov x10 ne x7 0@sint64;	// ne = any;
+(* ccmp	x3, xzr, #0x8, ne	// ne = any              #! PC = 0xaaaaca661e48 *)
+spl ge dc x3 63;
+not ge@bit ge;
+cmov ge ne ge 0@bit;	// ne = any;
+(* cneg	x3, x3, ge	// ge = tcont                   #! PC = 0xaaaaca661e4c *)
+subs dc x3_neg 0@sint64 x3;
+cmov x3 ge x3_neg x3;	// ge = tcont;
+(* cneg	x10, x10, ge	// ge = tcont                 #! PC = 0xaaaaca661e50 *)
+subs dc x10_neg 0@sint64 x10;
+cmov x10 ge x10_neg x10;	// ge = tcont;
+(* csel	x7, x8, x7, ge	// ge = tcont               #! PC = 0xaaaaca661e54 *)
+cmov x7 ge x8 x7;	// ge = tcont;
+(* add	x8, x8, x10                                 #! PC = 0xaaaaca661e58 *)
+adds dc x8 x8 x10;
+(* add	x3, x3, #0x2                                #! PC = 0xaaaaca661e5c *)
+add x3 x3 0x2@sint64;
+(* asr	x8, x8, #1                                  #! PC = 0xaaaaca661e60 *)
+split x8 dc x8 1;
+
+
+assert true &&
+or [
+    and [
+        grs = (const 64 0) (mod (const 64 2)),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta <s (const 64 0),
+
+        x7 = fuv,
+        x8 * (const 64 2) = grs + fuv,
+        x3 = (const 64 2) + delta
+    ],
+    and [
+        grs = (const 64 1) (mod (const 64 2)),
+        delta >=s (const 64 0),
+
+        x7 = grs,
+        x8 * (const 64 2) = grs - fuv,
+        x3 = (const 64 2) - delta
+    ]
+]
+;
+
+mov fuv x7;
+mov grs x8;
+mov delta x3;
+
+nondet f_0_low60_40_low20_19@sint64;
+nondet g_0_low60_40_low20_19@sint64;
+nondet u_40_59@sint64;
+nondet v_40_59@sint64;
+nondet r_40_59@sint64;
+nondet s_40_59@sint64;
+
+// from lemma we have
+assume
+    u_40_59 * f_0_low60_40_low20_0 + v_40_59 * g_0_low60_40_low20_0 = f_0_low60_40_low20_19 * (-(2**20)),
+    r_40_59 * f_0_low60_40_low20_0 + s_40_59 * g_0_low60_40_low20_0 = g_0_low60_40_low20_19 * (-(2**20))
+&&
+    fuv = f_0_low60_40_low20_19 + u_40_59 * (const 64 (2**21)) + v_40_59 * (const 64 (2**42)),
+    grs = g_0_low60_40_low20_19 + r_40_59 * (const 64 (2**21)) + s_40_59 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s f_0_low60_40_low20_19,
+    f_0_low60_40_low20_19 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s g_0_low60_40_low20_19,
+    g_0_low60_40_low20_19 <=s (const 64 ((2**20)-1)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 59)) <=s delta, delta <=s (const 64 (1 + 2*59)),
+    (const 64 (-(2**20))) <=s u_40_59, u_40_59 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s v_40_59, v_40_59 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s r_40_59, r_40_59 <=s (const 64 ((2**20))),
+    (const 64 (-(2**20))) <=s s_40_59, s_40_59 <=s (const 64 ((2**20))),
+    u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    u_40_59 = (const 64 0) (mod (const 64 (2**(20-19)))),
+    v_40_59 = (const 64 0) (mod (const 64 (2**(20-19)))),
+    r_40_59 = (const 64 0) (mod (const 64 (2**(20-19)))),
+    s_40_59 = (const 64 0) (mod (const 64 (2**(20-19))))
+;
+
+
+nondet f_0_low60_59@sint64;
+nondet g_0_low60_59@sint64;
+assume
+    u_40_59 * f_0_low60_40 + v_40_59 * g_0_low60_40 = f_0_low60_59 * (-(2**20)),
+    r_40_59 * f_0_low60_40 + s_40_59 * g_0_low60_40 = g_0_low60_59 * (-(2**20))
+&&
+    f_0_low60_59 = (const 64 1) (mod (const 64 2))
+;
+
+cut
+    u_40_59 * f_0_low60_40 + v_40_59 * g_0_low60_40 = f_0_low60_59 * (-(2**20)),
+    r_40_59 * f_0_low60_40 + s_40_59 * g_0_low60_40 = g_0_low60_59 * (-(2**20))
+&&
+    fuv = f_0_low60_40_low20_19 + u_40_59 * (const 64 (2**21)) + v_40_59 * (const 64 (2**42)),
+    grs = g_0_low60_40_low20_19 + r_40_59 * (const 64 (2**21)) + s_40_59 * (const 64 (2**42)),
+    (const 64 (-(2**20)+1)) <=s f_0_low60_40_low20_19,
+    f_0_low60_40_low20_19 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20)+1)) <=s g_0_low60_40_low20_19,
+    g_0_low60_40_low20_19 <=s (const 64 ((2**20)-1)),
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 59)) <=s delta, delta <=s (const 64 (1 + 2*59)),
+    (const 64 (-(2**20))) <=s u_40_59, u_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_40_59, v_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_40_59, r_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_40_59, s_40_59 <=s (const 64 ((2**20)-1)),
+    u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41)),
+    f_0_low60_59 = (const 64 1) (mod (const 64 2))
+;
+
+
+// extraction, step 59
+
+(* add	x16, x7, x6                                 #! PC = 0xaaaaca66159c *)
+add x16 x7 x6;
+(* asr	x16, x16, #42                               #! PC = 0xaaaaafca0c0c *)
+cast x16@sint64 x16;
+split x16 dc x16 42;
+(* add	x15, x7, #0x100, lsl #12                    #! PC = 0xaaaaafca0c10 *)
+add x15 x7 (2**20)@sint64;
+(* lsl	x15, x15, #22                               #! PC = 0xaaaaafca0c14 *)
+split dcH x15 x15 (64-22); shl x15 x15 22;
+(* asr	x15, x15, #43                               #! PC = 0xaaaaafca0c18 *)
+cast x15@sint64 x15;
+split x15 dc x15 43;
+(* add	x20, x8, x6                                 #! PC = 0xaaaaafca0c1c *)
+add x20 x8 x6;
+(* asr	x20, x20, #42                               #! PC = 0xaaaaafca0c20 *)
+cast x20@sint64 x20;
+split x20 dc x20 42;
+(* add	x17, x8, #0x100, lsl #12                    #! PC = 0xaaaaafca0c24 *)
+add x17 x8 (2**20)@sint64;
+(* lsl	x17, x17, #22                               #! PC = 0xaaaaafca0c28 *)
+split dcH x17 x17 (64-22); shl x17 x17 22;
+(* asr	x17, x17, #43                               #! PC = 0xaaaaafca0c2c *)
+cast x17@sint64 x17;
+split x17 dc x17 43;
+
+assert true && x15 = u_40_59;
+assert true && x16 = v_40_59;
+assert true && x17 = r_40_59;
+assert true && x20 = s_40_59;
+assume x15 = u_40_59 && true;
+assume x16 = v_40_59 && true;
+assume x17 = r_40_59 && true;
+assume x20 = s_40_59 && true;
+
+mov u_40_59 x15;
+mov v_40_59 x16;
+mov r_40_59 x17;
+mov s_40_59 x20;
+cut
+    u_40_59 * f_0_low60_40 + v_40_59 * g_0_low60_40 = f_0_low60_59 * (-(2**20)),
+    r_40_59 * f_0_low60_40 + s_40_59 * g_0_low60_40 = g_0_low60_59 * (-(2**20))
+&&
+    delta = (const 64 1) (mod (const 64 2)),
+    (const 64 (1 + (-2) * 59)) <=s delta, delta <=s (const 64 (1 + 2*59)),
+    (const 64 (-(2**20))) <=s u_40_59, u_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s v_40_59, v_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s r_40_59, r_40_59 <=s (const 64 ((2**20)-1)),
+    (const 64 (-(2**20))) <=s s_40_59, s_40_59 <=s (const 64 ((2**20)-1)),
+    u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 + v_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - u_40_59 - v_40_59 <=s (const 64 (2**20)),
+    r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 + s_40_59 <=s (const 64 (2**20)),
+    (const 64 0) - r_40_59 - s_40_59 <=s (const 64 (2**20)),
+    const_2p41a2p20 = (const 64 (2**20 + 2**41)),
+    f_0_low60_59 = (const 64 1) (mod (const 64 2))
+;
+
+cut
+    true
+&&
+    
+    and [
+        x11 = u_0_40,
+        x12 = v_0_40,
+        x13 = r_0_40,
+        x14 = s_0_40,
+        x15 = u_40_59,
+        x16 = v_40_59,
+        x17 = r_40_59,
+        x20 = s_40_59,
+
+        (const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+        (const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+        (const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+        (const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1)),
+
+        (const 64 (-(2**20))) <=s u_40_59, u_40_59 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s v_40_59, v_40_59 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s r_40_59, r_40_59 <=s (const 64 ((2**20) - 1)),
+        (const 64 (-(2**20))) <=s s_40_59, s_40_59 <=s (const 64 ((2**20) - 1)),
+        u_40_59 + v_40_59 <=s (const 64 (2**20)),
+        u_40_59 - v_40_59 <=s (const 64 (2**20)),
+        (const 64 0) - u_40_59 + v_40_59 <=s (const 64 (2**20)),
+        (const 64 0) - u_40_59 - v_40_59 <=s (const 64 (2**20)),
+        r_40_59 + s_40_59 <=s (const 64 (2**20)),
+        r_40_59 - s_40_59 <=s (const 64 (2**20)),
+        (const 64 0) - r_40_59 + s_40_59 <=s (const 64 (2**20)),
+        (const 64 0) - r_40_59 - s_40_59 <=s (const 64 (2**20)),
+        u_0_40 + v_0_40 <=s (const 64 (2**40)),
+        u_0_40 - v_0_40 <=s (const 64 (2**40)),
+        (const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+        (const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+        r_0_40 + s_0_40 <=s (const 64 (2**40)),
+        r_0_40 - s_0_40 <=s (const 64 (2**40)),
+        (const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+        (const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+
+        f_0_low60_59 = (const 64 1) (mod (const 64 2))
+    ] prove with [all cuts]
+    
+;
+
+
+// update_uuvvrrss
+(* mul	x9, x15, x11                                #! PC = 0xaaaaca6615e0 *)
+(* madd	x10, x16, x13, x9                          #! PC = 0xaaaaca6615e4 *)
+(* mul	x9, x17, x11                                #! PC = 0xaaaaca6615e8 *)
+(* madd	x13, x20, x13, x9                          #! PC = 0xaaaaca6615ec *)
+(* mov	x11, x10                                    #! PC = 0xaaaaca6615f0 *)
+(* mul	x9, x15, x12                                #! PC = 0xaaaaca6615f4 *)
+(* madd	x10, x16, x14, x9                          #! PC = 0xaaaaca6615f8 *)
+(* mul	x9, x17, x12                                #! PC = 0xaaaaca6615fc *)
+(* madd	x14, x20, x14, x9                          #! PC = 0xaaaaca661600 *)
+(* mov	x12, x10                                    #! PC = 0xaaaaca661604 *)
+
+
+call update_uuvvrrss_2(
+x11,x12,x13,x14,x15,x16,x17,x20;
+x11,x12,x13,x14
+);
+
+
+mov u_0_59 x11;
+mov v_0_59 x12;
+mov r_0_59 x13;
+mov s_0_59 x14;
+
+assert 
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59
+    &&
+    u_40_59 * u_0_40 + v_40_59 * r_0_40 = u_0_59,
+    u_40_59 * v_0_40 + v_40_59 * s_0_40 = v_0_59,
+    r_40_59 * u_0_40 + s_40_59 * r_0_40 = r_0_59,
+    r_40_59 * v_0_40 + s_40_59 * s_0_40 = s_0_59,
+u_0_59 + v_0_59 <=s (const 64 (2**60)),
+u_0_59 - v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 + v_0_59 <=s (const 64 (2**60)),
+(const 64 0) - u_0_59 - v_0_59 <=s (const 64 (2**60)),
+r_0_59 + s_0_59 <=s (const 64 (2**60)),
+r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 + s_0_59 <=s (const 64 (2**60)),
+(const 64 0) - r_0_59 - s_0_59 <=s (const 64 (2**60)),
+(const 64 (-(2**60))) <=s u_0_59, u_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s v_0_59, v_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s r_0_59, r_0_59 <=s (const 64 ((2**60) - 1)),
+(const 64 (-(2**60))) <=s s_0_59, s_0_59 <=s (const 64 ((2**60) - 1))
+;
+
+(* mov	x19, #0x9                   	// #9          #! PC = 0xaaaaca661914 *)
+mov x19 9@uint64;
+
+nondet %v16@int64[2];
+nondet %v17@int64[2];
+
+
+(* 	mov	v16.d[0], x11                               #! PC = 0xaaaae76b1918 *)
+mov %v16 [x11, %v16[1]];
+(* 	mov	v16.d[1], x13                               #! PC = 0xaaaae76b191c *)
+mov %v16 [%v16[0], x13];
+(* 	mov	v17.d[0], x12                               #! PC = 0xaaaae76b1920 *)
+mov %v17 [x12, %v17[1]];
+(* 	mov	v17.d[1], x14                               #! PC = 0xaaaae76b1924 *)
+mov %v17 [%v17[0], x14];
+(* 	uzp1	v13.4s, v16.4s, v17.4s                     #! PC = 0xaaaae76b1928 *)
+cast %v16@int32[4] %v16;
+cast %v17@int32[4] %v17;
+mov %v13 [%v16[0], %v16[2], %v17[0], %v17[2]];
+(* 	and	v13.16b, v13.16b, v2.16b                    #! PC = 0xaaaae76b192c *)
+and %v13@int32[4] %v13 %v2;
+(* 	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaae76b1930 *)
+cast %v16@int64[2] %v16;
+split %v16 %dc %v16 30;
+(* 	sshr	v17.2d, v17.2d, #30                        #! PC = 0xaaaae76b1934 *)
+cast %v17@int64[2] %v17;
+split %v17 %dc %v17 30;
+(* 	uzp1	v14.4s, v16.4s, v17.4s                     #! PC = 0xaaaae76b1938 *)
+cast %v16@int32[4] %v16;
+cast %v17@int32[4] %v17;
+mov %v14 [%v16[0], %v16[2], %v17[0], %v17[2]];
+
+
+
+
 

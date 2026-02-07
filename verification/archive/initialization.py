@@ -1,0 +1,540 @@
+from gen_cl import *
+
+
+emit = ""
+
+emit += "proc main (\n"
+
+for i in range(4):
+    end_char = ",\n" 
+    if i == 3:
+        end_char = ""
+    emit += f"uint64 op_x{i}{end_char}"
+emit += """
+) =
+{
+  true
+  &&
+  true
+}
+"""
+
+addr = 0xfffff0a5bc88
+for i in range(4):
+    emit += f"mov L{hex(addr + 8 * i)} op_x{i};\n"
+
+
+emit += """
+(* ldp	q5, q6, [x1]                                #! EA = L0xfffff0a5bc88; Value = 0x0000000000000000; PC = 0xaaaaca660eb4 *)
+nondet %v5@uint64[2];
+nondet %v6@uint64[2];
+mov %v5 [L0xfffff0a5bc88, %v5[1]];
+mov %v5 [%v5[0], L0xfffff0a5bc90];
+mov %v6 [L0xfffff0a5bc98, %v6[1]];
+mov %v6 [%v6[0], L0xfffff0a5bca0];
+"""
+
+addr = 0xfffff0a5bc88
+# for i in range(4):
+#     emit += f"mov v{(i>>1)+5}_uint64_{i%2} L{hex(addr + 8 * i)};\n"
+# # mov v5_uint64_0 L0xfffff0a5bc88
+# # mov v5_uint64_1 L0xfffff0a5bc90
+# # mov v6_uint64_0 L0xfffff0a5bc98
+# # mov v6_uint64_1 L0xfffff0a5bca0
+
+emit += """
+(* movi	v4.2d, #0xffffffffffffffff                 #! PC = 0xaaaaca660eb8 *)
+nondet %v4@uint64[2];
+broadcast %v4 2 [0xffffffffffffffff@uint64];
+(* mov	x2, #0xffffffffffffffff    	// #-1          #! PC = 0xaaaaca660ebc *)
+mov x2 0xffffffffffffffff@uint64;
+(* lsr	x2, x2, #1                                  #! PC = 0xaaaaca660ec0 *)
+split x2 dcL x2 1;
+(* mov	v3.d[1], x2                                 #! PC = 0xaaaaca660ec4 *)
+nondet %v3@uint64[2];
+mov %v3 [%v3[0], x2];
+(* mov	x2, #0xffffffffffffffed    	// #-19         #! PC = 0xaaaaca660ec8 *)
+mov x2 0xffffffffffffffed@uint64;
+(* mov	v3.d[0], x2                                 #! PC = 0xaaaaca660ecc *)
+mov %v3 [x2, %v3[1]];
+(* zip1	v8.2d, v3.2d, v5.2d                        #! PC = 0xaaaaca660ed0 *)
+nondet %v8@uint64[2];
+mov %v8 [%v3[0], %v5[0]];
+(* zip2	v9.2d, v4.2d, v5.2d                        #! PC = 0xaaaaca660ed4 *)
+nondet %v9@uint64[2];
+mov %v9 [%v4[1], %v5[1]];
+(* zip1	v10.2d, v4.2d, v6.2d                       #! PC = 0xaaaaca660ed8 *)
+nondet %v10@uint64[2];
+mov %v10 [%v4[0], %v6[0]];
+(* zip2	v11.2d, v3.2d, v6.2d                       #! PC = 0xaaaaca660edc *)
+nondet %v11@uint64[2];
+mov %v11 [%v3[1], %v6[1]];
+(* ushr	v1.2d, v4.2d, #34                          #! PC = 0xaaaaca660ee0 *)
+nondet %v1@uint64[2];
+shrs %v1 %dc %v4 [34, 34];
+"""
+
+# emit += """
+# (* and	v3.16b, v8.16b, v1.16b                      #! PC = 0xaaaaca660ee4 *)
+# assert true &&
+#     v1_uint64_0 = (const 64 (2**30 - 1)),
+#     v1_uint64_1 = (const 64 (2**30 - 1));
+# split dc v3_uint64_0 v8_uint64_0 30;
+# split dc v3_uint64_1 v8_uint64_1 30;
+# """
+#
+# emit += """
+# (* ushr	v12.2d, v8.2d, #30                         #! PC = 0xaaaaca660ee8 *)
+# shrs v12_uint64_0 dc v8_uint64_0 30;
+# shrs v12_uint64_1 dc v8_uint64_1 30;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660eec *)
+# assert true &&
+#     v1_uint64_0 = (const 64 (2**30 - 1)),
+#     v1_uint64_1 = (const 64 (2**30 - 1));
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* sli	v3.2d, v12.2d, #32                          #! PC = 0xaaaaca660ef0 *)
+# cast v3_sint32_0@sint32 v3_uint64_0;
+# cast v3_sint32_2@sint32 v3_uint64_1;
+# cast v3_sint32_1@sint32 v12_uint64_0;
+# cast v3_sint32_3@sint32 v12_uint64_1;
+# """
+#
+# emit += """
+# assert true &&
+#     (const 32 0) <=s v3_sint32_0, v3_sint32_0 <=s (const 32 ((2**30) - 1)),
+#     (const 32 0) <=s v3_sint32_1, v3_sint32_1 <=s (const 32 ((2**30) - 1)),
+#     (const 32 0) <=s v3_sint32_2, v3_sint32_2 <=s (const 32 ((2**30) - 1)),
+#     (const 32 0) <=s v3_sint32_3, v3_sint32_3 <=s (const 32 ((2**30) - 1));
+# """
+#
+# emit += """
+# (* ushr	v4.2d, v8.2d, #60                          #! PC = 0xaaaaca660ef4 *)
+# shrs v4_uint64_0 dc v8_uint64_0 60;
+# shrs v4_uint64_1 dc v8_uint64_1 60;
+# """
+#
+# emit += """
+# (* shl	v12.2d, v9.2d, #4                           #! PC = 0xaaaaca660ef8 *)
+# shls dc v12_uint64_0 v9_uint64_0 4;
+# shls dc v12_uint64_1 v9_uint64_1 4;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660efc *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* orr	v4.16b, v4.16b, v12.16b                     #! PC = 0xaaaaca660f00 *)
+# or v4_uint64_0@uint64 v4_uint64_0 v12_uint64_0;
+# or v4_uint64_1@uint64 v4_uint64_1 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v12.2d, v9.2d, #26                         #! PC = 0xaaaaca660f04 *)
+# shrs v12_uint64_0 dc v9_uint64_0 26;
+# shrs v12_uint64_1 dc v9_uint64_1 26;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660f08 *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* sli	v4.2d, v12.2d, #32                          #! PC = 0xaaaaca660f0c *)
+# cast v4_sint32_0@sint32 v4_uint64_0;
+# cast v4_sint32_2@sint32 v4_uint64_1;
+# cast v4_sint32_1@sint32 v12_uint64_0;
+# cast v4_sint32_3@sint32 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v5.2d, v9.2d, #56                          #! PC = 0xaaaaca660f10 *)
+# shrs v5_uint64_0 dc v9_uint64_0 56;
+# shrs v5_uint64_1 dc v9_uint64_1 56;
+# """
+#
+# emit += """
+# (* shl	v12.2d, v10.2d, #8                          #! PC = 0xaaaaca660f14 *)
+# shls dc v12_uint64_0 v10_uint64_0 8;
+# shls dc v12_uint64_1 v10_uint64_1 8;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660f18 *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* orr	v5.16b, v5.16b, v12.16b                     #! PC = 0xaaaaca660f1c *)
+# or v5_uint64_0@uint64 v5_uint64_0 v12_uint64_0;
+# or v5_uint64_1@uint64 v5_uint64_1 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v12.2d, v10.2d, #22                        #! PC = 0xaaaaca660f20 *)
+# shrs v12_uint64_0 dc v10_uint64_0 22;
+# shrs v12_uint64_1 dc v10_uint64_1 22;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660f24 *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* sli	v5.2d, v12.2d, #32                          #! PC = 0xaaaaca660f28 *)
+# cast v5_sint32_0@sint32 v5_uint64_0;
+# cast v5_sint32_2@sint32 v5_uint64_1;
+# cast v5_sint32_1@sint32 v12_uint64_0;
+# cast v5_sint32_3@sint32 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v6.2d, v10.2d, #52                         #! PC = 0xaaaaca660f2c *)
+# shrs v6_uint64_0 dc v10_uint64_0 52;
+# shrs v6_uint64_1 dc v10_uint64_1 52;
+# """
+#
+# emit += """
+# (* shl	v12.2d, v11.2d, #12                         #! PC = 0xaaaaca660f30 *)
+# shls dc v12_uint64_0 v11_uint64_0 12;
+# shls dc v12_uint64_1 v11_uint64_1 12;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660f34 *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* orr	v6.16b, v6.16b, v12.16b                     #! PC = 0xaaaaca660f38 *)
+# or v6_uint64_0@uint64 v6_uint64_0 v12_uint64_0;
+# or v6_uint64_1@uint64 v6_uint64_1 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v12.2d, v11.2d, #18                        #! PC = 0xaaaaca660f3c *)
+# shrs v12_uint64_0 dc v11_uint64_0 18;
+# shrs v12_uint64_1 dc v11_uint64_1 18;
+# """
+#
+# emit += """
+# (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaaca660f40 *)
+# split dc v12_uint64_0 v12_uint64_0 30;
+# split dc v12_uint64_1 v12_uint64_1 30;
+# """
+#
+# emit += """
+# (* sli	v6.2d, v12.2d, #32                          #! PC = 0xaaaaca660f44 *)
+# cast v6_sint32_0@sint32 v6_uint64_0;
+# cast v6_sint32_2@sint32 v6_uint64_1;
+# cast v6_sint32_1@sint32 v12_uint64_0;
+# cast v6_sint32_3@sint32 v12_uint64_1;
+# """
+#
+# emit += """
+# (* ushr	v7.2d, v11.2d, #48                         #! PC = 0xaaaaca660f48 *)
+# shrs v7_uint64_0 dc v11_uint64_0 48;
+# shrs v7_uint64_1 dc v11_uint64_1 48;
+# """
+#
+# emit += """
+# spl v7_sint32_1 v7_sint32_0 v7_uint64_0 32;
+# spl v7_sint32_3 v7_sint32_2 v7_uint64_1 32;
+# """
+#
+# emit += """
+# (* movi	v8.2d, #0x0                                #! PC = 0xaaaaca660f4c *)
+# mov v8_sint32_0 0@sint32;
+# mov v8_sint32_1 0@sint32;
+# mov v8_sint32_2 0@sint32;
+# mov v8_sint32_3 0@sint32;
+# """
+#
+# emit += """
+# (* mov	x2, #0x1                   	// #1           #! PC = 0xaaaaca660f50 *)
+# mov x2 0x1@uint64;
+# """
+#
+# emit += """
+# (* mov	v8.d[1], x2                                 #! PC = 0xaaaaca660f54 *)
+# cast v8_sint32_2@sint32 x2;
+# """
+#
+# emit += """
+# (* movi	v9.2d, #0x0                                #! PC = 0xaaaaca660f58 *)
+# mov v9_sint32_0 0@sint32;
+# mov v9_sint32_1 0@sint32;
+# mov v9_sint32_2 0@sint32;
+# mov v9_sint32_3 0@sint32;
+# """
+#
+# emit += """
+# (* movi	v10.2d, #0x0                               #! PC = 0xaaaaca660f5c *)
+# mov v10_sint32_0 0@sint32;
+# mov v10_sint32_1 0@sint32;
+# mov v10_sint32_2 0@sint32;
+# mov v10_sint32_3 0@sint32;
+# """
+#
+# emit += """
+# (* movi	v11.2d, #0x0                               #! PC = 0xaaaaca660f60 *)
+# mov v11_sint32_0 0@sint32;
+# mov v11_sint32_1 0@sint32;
+# mov v11_sint32_2 0@sint32;
+# mov v11_sint32_3 0@sint32;
+# """
+#
+# emit += """
+# (* movi	v12.2d, #0x0                               #! PC = 0xaaaaca660f64 *)
+# mov v12_sint32_0 0@sint32;
+# mov v12_sint32_1 0@sint32;
+# mov v12_sint32_2 0@sint32;
+# mov v12_sint32_3 0@sint32;
+# """
+#
+# emit += """
+# (* uzp1	v2.4s, v1.4s, v1.4s                        #! PC = 0xaaaaca660f68 *)
+# spl v1_uint32_1 v1_uint32_0 v1_uint64_0 32;
+# spl v1_uint32_3 v1_uint32_2 v1_uint64_1 32;
+# // uzp1 takes even elements: 0, 2
+# mov v2_uint32_0 v1_uint32_0;
+# mov v2_uint32_1 v1_uint32_2;
+# mov v2_uint32_2 v1_uint32_0;
+# mov v2_uint32_3 v1_uint32_2;
+# """
+#
+# emit += """
+# (* ldp	x5, x22, [x1]                               #! EA = L0xfffff0a5bc88; Value = 0x0000000000000000; PC = 0xaaaaca660f6c *)
+# mov x5 L0xfffff0a5bc88; mov x22 L0xfffff0a5bc90;
+# """
+#
+# emit += """
+# (* mov	x4, #0xffffffffffffffed    	// #-19         #! PC = 0xaaaaca660f70 *)
+# mov x4 0xffffffffffffffed@uint64;
+# """
+#
+# emit += """
+# (* mov	x21, #0xffffffffffffffff    	// #-1         #! PC = 0xaaaaca660f74 *)
+# mov x21 0xffffffffffffffff@uint64;
+# """
+#
+# emit += """
+# (* mov	x1, x4                                      #! PC = 0xaaaaca660f78 *)
+# mov x1 x4;
+# """
+#
+# emit += """
+# (* mov	x2, x5                                      #! PC = 0xaaaaca660f7c *)
+# mov x2 x5;
+# """
+#
+# emit += """
+# (* mov	x3, #0x1                   	// #1           #! PC = 0xaaaaca660f80 *)
+# mov x3 0x1@uint64;
+# """
+#
+# emit += """
+# (* mov	x6, #0x20000000000         	// #2199023255552#! PC = 0xaaaaca660f84 *)
+# mov x6 0x20000000000@uint64;
+# """
+#
+# emit += """
+# (* add	x6, x6, #0x100, lsl #12                     #! PC = 0xaaaaca660f88 *)
+# add x6 x6 1048576@uint64;
+# """
+#
+# emit += """
+# (* mov	x7, #0x286b0000            	// #678100992   #! PC = 0xaaaaca660f8c *)
+# (* movk	x7, #0xca1b                                #! PC = 0xaaaaca660f90 *)
+# mov x7 0x286bca1b@uint64;
+# """
+#
+# emit += """
+# (* dup	v15.4s, w7                                  #! PC = 0xaaaaca660f94 *)
+# cast w7@sint32 x7;
+# mov v15_sint32_0 w7;
+# mov v15_sint32_1 w7;
+# mov v15_sint32_2 w7;
+# mov v15_sint32_3 w7;
+# """
+#
+#
+# emit += """
+# mov F_0_limb30_0 v3_sint32_0;
+# mov F_0_limb30_1 v3_sint32_1;
+# mov G_0_limb30_0 v3_sint32_2;
+# mov G_0_limb30_1 v3_sint32_3;
+# mov F_0_limb30_2 v4_sint32_0;
+# mov F_0_limb30_3 v4_sint32_1;
+# mov G_0_limb30_2 v4_sint32_2;
+# mov G_0_limb30_3 v4_sint32_3;
+# mov F_0_limb30_4 v5_sint32_0;
+# mov F_0_limb30_5 v5_sint32_1;
+# mov G_0_limb30_4 v5_sint32_2;
+# mov G_0_limb30_5 v5_sint32_3;
+# mov F_0_limb30_6 v6_sint32_0;
+# mov F_0_limb30_7 v6_sint32_1;
+# mov G_0_limb30_6 v6_sint32_2;
+# mov G_0_limb30_7 v6_sint32_3;
+# mov F_0_limb30_8 v7_sint32_0;
+# mov G_0_limb30_8 v7_sint32_2;
+# mov V_0_limb30_0 v8_sint32_0;
+# mov V_0_limb30_1 v8_sint32_1;
+# mov S_0_limb30_0 v8_sint32_2;
+# mov S_0_limb30_1 v8_sint32_3;
+# mov V_0_limb30_2 v9_sint32_0;
+# mov V_0_limb30_3 v9_sint32_1;
+# mov S_0_limb30_2 v9_sint32_2;
+# mov S_0_limb30_3 v9_sint32_3;
+# mov V_0_limb30_4 v10_sint32_0;
+# mov V_0_limb30_5 v10_sint32_1;
+# mov S_0_limb30_4 v10_sint32_2;
+# mov S_0_limb30_5 v10_sint32_3;
+# mov V_0_limb30_6 v11_sint32_0;
+# mov V_0_limb30_7 v11_sint32_1;
+# mov S_0_limb30_6 v11_sint32_2;
+# mov S_0_limb30_7 v11_sint32_3;
+# mov V_0_limb30_8 v12_sint32_0;
+# mov S_0_limb30_8 v12_sint32_2;
+#
+#
+# mov f x1;
+# mov g x2;
+# mov f_low128_0 x4;
+# mov f_low128_1 x21;
+# mov g_low128_0 x5;
+# mov g_low128_1 x22;
+# mov delta x3;
+# mov const_2p41a2p20 x6;
+#
+# """
+#
+# emit += """
+# cut
+#   true
+#   &&
+#     and [
+#     (const 32 0) <=s F_0_limb30_0, F_0_limb30_0 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_1, F_0_limb30_1 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_2, F_0_limb30_2 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_3, F_0_limb30_3 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_4, F_0_limb30_4 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_5, F_0_limb30_5 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_6, F_0_limb30_6 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_7, F_0_limb30_7 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s F_0_limb30_8, F_0_limb30_8 <=s (const 32 ((2**15)-1)),
+#
+#     (const 32 0) <=s G_0_limb30_0, G_0_limb30_0 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_1, G_0_limb30_1 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_2, G_0_limb30_2 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_3, G_0_limb30_3 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_4, G_0_limb30_4 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_5, G_0_limb30_5 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_6, G_0_limb30_6 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_7, G_0_limb30_7 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s G_0_limb30_8, G_0_limb30_8 <=s (const 32 ((2**16)-1)),
+#
+#     (const 32 0) <=s V_0_limb30_0, V_0_limb30_0 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_1, V_0_limb30_1 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_2, V_0_limb30_2 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_3, V_0_limb30_3 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_4, V_0_limb30_4 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_5, V_0_limb30_5 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_6, V_0_limb30_6 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_7, V_0_limb30_7 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s V_0_limb30_8, V_0_limb30_8 <=s (const 32 ((2**15)-1)),
+#
+#     (const 32 0) <=s S_0_limb30_0, S_0_limb30_0 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_1, S_0_limb30_1 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_2, S_0_limb30_2 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_3, S_0_limb30_3 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_4, S_0_limb30_4 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_5, S_0_limb30_5 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_6, S_0_limb30_6 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_7, S_0_limb30_7 <=s (const 32 ((2**30)-1)),
+#     (const 32 0) <=s S_0_limb30_8, S_0_limb30_8 <=s (const 32 ((2**16)-1)),
+#
+#     slimbs 30 [
+#         F_0_limb30_0, F_0_limb30_1, F_0_limb30_2, F_0_limb30_3,
+#         F_0_limb30_4, F_0_limb30_5, F_0_limb30_6, F_0_limb30_7,
+#         F_0_limb30_8
+#     ]
+#     =
+#     (const 272 (2**255 - 19))
+#     ,
+#
+#     slimbs 30 [
+#         G_0_limb30_0, G_0_limb30_1, G_0_limb30_2, G_0_limb30_3,
+#         G_0_limb30_4, G_0_limb30_5, G_0_limb30_6, G_0_limb30_7,
+#         G_0_limb30_8
+#     ]
+#     =
+#     uext (limbs 64 [op_x0, op_x1, op_x2, op_x3]) 16
+#     ,
+#     slimbs 30 [
+#         V_0_limb30_0, V_0_limb30_1, V_0_limb30_2, V_0_limb30_3,
+#         V_0_limb30_4, V_0_limb30_5, V_0_limb30_6, V_0_limb30_7,
+#         V_0_limb30_8
+#     ]
+#     =
+#     (const 272 (0))
+#     ,
+#
+#     slimbs 30 [
+#         S_0_limb30_0, S_0_limb30_1, S_0_limb30_2, S_0_limb30_3,
+#         S_0_limb30_4, S_0_limb30_5, S_0_limb30_6, S_0_limb30_7,
+#         S_0_limb30_8
+#     ]
+#     =
+#     (const 272 (1))
+#     ,
+#
+#
+#     (uext f 192) = 
+#     (const 256 ((2**255) - 19))
+#     (mod (const 256 (2**60)))
+#     ,
+#
+#     (uext g 192) = 
+#     (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+#     (mod (const 256 (2**60)))
+#     ,
+#
+#     delta = (const 64 1)
+#     ,
+#
+#     (uext (limbs 64 [f_low128_0, f_low128_1]) 128) =
+#     (const 256 ((2**255) - 19))
+#     (mod (const 256 (2**128)))
+#     ,
+#
+#     (uext (limbs 64 [g_low128_0, g_low128_1]) 128) =
+#     (limbs 64 [op_x0, op_x1, op_x2, op_x3])
+#     (mod (const 256 (2**128)))
+#     ,
+#
+#     const_2p41a2p20 = (const 64 (2**41 + 2**20))
+#     ]
+# ;
+# """
+
+
+
+with open("initialization.cl", "w") as f:
+    f.write((emit))
+
