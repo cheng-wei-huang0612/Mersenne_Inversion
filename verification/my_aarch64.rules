@@ -8,10 +8,14 @@
 #! [x$1c], $2c = %%EA
 #! [x$1c] = %%EA
 
+
+
+
 # registers
 
 #! sp = %%sp
 #! v$1c = %%v$1c
+#! q$1c -> %%v$1c
 #! w$1c = %%w$1c
 #! x$1c = %%x$1c
 
@@ -27,6 +31,7 @@
 #! adcs $1v, $2c, $3v -> adcs carry $1v $2c@uint64 $3v carry
 #! adcs $1v, $2v, $3c -> adcs carry $1v $2v $3c@uint64 carry
 #! adcs $1v, $2v, xzr -> adcs carry $1v $2v 0@uint64 carry
+#! add $1v, $2v, $3c, lsl $4c -> split dcH tmp $3c@uint64 `64 - $4c`; shl tmp tmp $4c; adds carry $1v $2v tmp
 #! add $1v, $2v, $3v -> add $1v $2v $3v
 #! add $1v, $2c, $3v -> add $1v $2c@uint63 $3v
 #! add $1v, $2v, $3c -> add $1v $2v $3c@uint64
@@ -36,13 +41,18 @@
 #! adds $1v, $2c, $3v -> adds carry $1v $2c@uint64 $3v
 #! adds $1v, $2v, $3c -> adds carry $1v $2v $3c@uint64
 #! and $1v, $2v, $3v -> and $1v@uint64 $2v $3v
+#! and $1v, $2v, $3c -> and $1v@uint64 $2v $3c@uint64
 #! ands $1v, $2v, $3c -> and $1v@uint64 $2v $3c@uint64; subc zero dc 0@uint64 $1v
 #! bic $1v, $2v, $3v -> not $3v_n@uint64 $3v; and $1v@uint64 $2v $3v_n
 #! cmp $1v, xzr -> subc zero dc 0@uint64 $1v
 #! csel $1v, $2v, $3v, cc  // .* -> cmov $1v carry $3v $2v
 #! csel $1v, $2v, $3v, cs  // .* -> cmov $1v carry $2v $3v
 #! csel $1v, $2v, $3v, eq // .*  -> cmov $1v zero $2v $3v
+#! csel $1v, $2v, $3v, ne // .*  -> cmov $1v zero $3v $2v
+#! csel $1v, $2v, $3v, ge // .*  -> cmov $1v ge $2v $3v
 #! csel $1v, $2v, xzr, eq // .*  -> cmov $1v zero $2v 0@uint64
+#! csel $1v, $2v, xzr, ne // .*  -> cmov $1v zero 0@uint64 $2v
+#! csel $1v, $2v, xzr, cc  // .* -> cmov $1v carry 0@uint64 $2v
 #! csel $1v, xzr, $2v, eq // .*  -> cmov $1v zero 0@uint64 $2v
 #! eor $1v, $2v, $3v, lsl $4c -> split dc $3v_L $3v `64 - $4c`; shl $3v_S $3v_L $4c; xor $1v@uint64 $2v $3v_L
 #! eor $1v, $2v, $3v, ror $4c -> ror $3v_R@uint64 $3v $4c; xor $1v@uint64 $2v $3v_R
@@ -57,12 +67,16 @@
 #! ldur $1v, $2ea -> mov $1v $2ea
 #! lsl $1v, $2v, $3c -> split dcH $1v $2v (64-$3c); shl $1v $1v $3c
 #! lsr $1v, $2v, $3c -> split $1v dcL $2v $3c
+#! asr $1v, $2v, $3c -> ssplit $1v dcL $2v $3c
 #! mov $1v, wzr -> mov $1v 0@uint32
 #! mov $1v, xzr -> mov $1v 0@uint64
 #! mov $1v, $2v -> mov $1v $2v
 #! mov $1v, $2c // -> mov $1v $2c@uint64
 #! mov $1v, $2c -> mov $1v $2c@uint64
 #! mul $1v, $2v, $3v -> mull dcH $1v $2v $3v
+
+#! madd $1v, $2v, $3v, $4v -> mull dcH mul_tmp $2v $3v;\nadds dc $1v mul_tmp $4v
+
 #! ngc $1v, $2v -> sbcs dc $1v 0@uint64 $2v carry
 #! ngc $1v, xzr -> sbcs dc $1v 0@uint64 0@uint64 carry
 #! ngcs $1v, $2v -> sbcs carry $1v 0@uint64 $2v carry
@@ -78,6 +92,7 @@
 #! subs $1v, $2c, $3v -> subc carry $1v $2c@uint64 $3v
 #! subs $1v, $2v, $3c -> subc carry $1v $2v $3c@uint64
 #! sbc $1v, $2v, $3v -> sbc $1v $2v $3v carry
+#! sbc $1v, $2v, xzr -> sbc $1v $2v 0@uint64 carry
 #! sbc $1v, $2c, $3v -> sbc $1v $2c@uint64 $3v carry
 #! sbc $1v, $2v, $3c -> sbc $1v $2v $3c@uint64 carry
 #! sbcs $1v, $2v, $3v -> sbcs carry $1v $2v $3v carry
@@ -96,19 +111,22 @@
 
 #! add $1v.4s, $2v.4s, $3v.4s -> add %$1v %$2v %$3v
 #! add $1v.8h, $2v.8h, $3v.8h -> add %$1v %$2v %$3v
-#! dup $1v.4s, %%w$2c -> mov %$1v [w$2c,w$2c,w$2c,w$2c]
+#! dup $1v.4s, %%w$2c -> cast w$2c@sint32 x$2c;\nmov %$1v [w$2c,w$2c,w$2c,w$2c]
 #! dup $1v.2d, %%x$2c -> mov %$1v [x$2c,x$2c]
 #! eor $1v.16b, $2v.16b, $3v.16b -> xor %$1v@uint8[16] %$2v %$3v
 #! ext $1v.16b, $2v.16b, $3v.16b, \#4 -> mov %$1v [%$2v[4],%$2v[5],%$2v[6],%$2v[7],%$2v[8],%$2v[9],%$2v[10],%$2v[11],\n        %$2v[12],%$2v[13],%$2v[14],%$2v[15],%$3v[0],%$3v[1],%$3v[2],%$3v[3]]
 
 #! ldp q$1c, q$2c, $3ea -> mov %v$1c [$3ea[+0], $3ea[+8]];\nmov %v$2c [$3ea[+16], $3ea[+24]]
+#! stp q$1c, q$2c, $3ea -> mov [$3ea[+0], $3ea[+8]] %v$1c;\nmov [$3ea[+16], $3ea[+24]] %v$2c
 #! movi $1v.2d, $2c -> broadcast %$1v 2 [$2c@uint64]
 #! mov $1v.d\[0\], $3v -> mov %$1v [$3v, %$1v[1]]
 #! mov $1v.d\[1\], $3v -> mov %$1v [%$1v[0], $3v]
 #! zip1 $1v.2d, $2v.2d, $3v.2d -> mov %$1v [%$2v[0], %$3v[0]]
 #! zip2 $1v.2d, $2v.2d, $3v.2d -> mov %$1v [%$2v[1], %$3v[1]]
+#! uzp1 $1v.4s, $2v.4s, $3v.4s -> mov %$1v [%$2v[0], %$2v[2], %$3v[0], %$3v[2]]
 #! ushr $1v.2d, $2v.2d, $3c -> shrs %$1v %dc %$2v [$3c, $3c]
 #! and  $1v.16b, $2v.16b, $3v.16b -> and %$1v@uint64[2] %$2v %$3v
+#! orr  $1v.16b, $2v.16b, $3v.16b -> or %$1v@uint64[2] %$2v %$3v
 
 #! ld1	{$1v.16b}, $2ea -> mov %$1v [$2ea[+0],$2ea[+1],$2ea[+2],$2ea[+3],\n        $2ea[+4],$2ea[+5],$2ea[+6],$2ea[+7],\n        $2ea[+8],$2ea[+9],$2ea[+10],$2ea[+11],\n        $2ea[+12],$2ea[+13],$2ea[+14],$2ea[+15]]
 #! ld1	{$1v.4s}, $2ea -> mov %$1v [$2ea[+0],$2ea[+4],$2ea[+8],$2ea[+12]]
@@ -117,6 +135,8 @@
 #! mov $1v.d\[1\], $2v.d\[0\] -> mov %$1v[1] %$2v[0]
 #! rev32 $1v.16b, $2v.16b -> mov %$1v [%$2v[3],%$2v[2],%$2v[1],%$2v[0],%$2v[7],%$2v[6],%$2v[5],%$2v[4],\n        %$2v[11],%$2v[10],%$2v[9],%$2v[8],%$2v[15],%$2v[14],%$2v[13],%$2v[12]]
 #! sli $1v.4s, $2v.4s, $3c -> split %dc %slil %$2v (32-$3c); shl %slih $3c;\nsplit %dc %$1v %$1v $3c; or %$1v@uint32[4] %slih %$1v
+#! sli $1v.2d, $2v.2d, $3c -> split %dc %slil %$2v (64-$3c); shl %slih %$2v [$3c@uint64, $3c@uint64];\nsplit %dc %$1v %$1v $3c; or %$1v@uint64[2] %slih %$1v
+#! shl $1v.2d, $2v.2d, $3c -> shls %dc %$1v %$2v [$3c, $3c]
 #! st1 {$1v.4s}, $2ea -> mov [$2ea,$2ea[+4],$2ea[+8],$2ea[+12]] %$1v
 #! st1 {$1v.4s, $2v.4s}, $3ea -> mov [$3ea,$3ea[+4],$3ea[+8],$3ea[+12]] %$1v;\nmov [$3ea[+16],$3ea[+20],$3ea[+24],$3ea[+12]] %$2v
 #! st4	{$1v.4s, $2v.4s, $3v.4s, $4v.4s}, $5ea -> mov [$5ea[+0],$5ea[+16],$5ea[+32],$5ea[+48]], %$1v;\n mov [$5ea[+4],$5ea[+20],$5ea[+36],$5ea[+52]] %$2v;\n mov [$5ea[+8],$5ea[+24],$5ea[+40],$5ea[+56]] %$3v;\n mov [$5ea[+12],$5ea[+28],$5ea[+44],$5ea[+60]] %$4v
@@ -124,6 +144,7 @@
 #! sub $1v.4s, $2v.4s, $3v.4s -> sub %$1v %$2v %$3v
 #! ushr $1v.4s, $2v.4s, $3c -> split %$1v %dc %$2v $3c
 #! sshr $1v.4s, $2v.4s, $3c -> split %$1v %dc %$2v $3c
+#! sshr $1v.2d, $2v.2d, $3c -> split %$1v %dc %$2v $3c
 #! trn1 $1v.4s, $2v.4s, $3v.4s -> mov %$1v@sint32[4] [%$2v[0],%$3v[0],%$2v[2],%$3v[2]]
 #! trn2 $1v.4s, $2v.4s, $3v.4s -> mov %$1v@sint32[4] [%$2v[1],%$3v[1],%$2v[3],%$3v[3]]
 #! trn1 $1v.2d, $2v.2d, $3v.2d -> mov %$1v@sint64[2] [%$2v[0],%$3v[0]]

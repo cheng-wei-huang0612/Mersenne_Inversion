@@ -1,6 +1,6 @@
 .PHONY: help docker-ls docker-cv-help docker-run docker-sh cv docker-cec-equivalent
 
-IMAGE ?= cesare_cryptoline:2025
+IMAGE ?= cesare_cryptoline:latest
 DOCKER ?= docker
 
 # Repo root is the parent of this directory.

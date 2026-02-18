@@ -1,4 +1,12 @@
-inverse:
+#! csel $1v, $2v, xzr, ne // .*  -> cmov $1v ne $2v 0@sint64
+#! ccmp $1v, xzr, #0x8, ne // .*  -> spl ge dc $1v 63;\nnot ge@bit ge;\ncmov ge ne ge 0@bit;	// ne = any
+#! cneg $1v, $2v, ge // .*  -> subs dc $2v_neg 0@sint64 $2v;\ncmov $1v ge $2v_neg $2v;	// ge = tcont;
+#! add $1v, $2v, $3c -> add $1v $2v $3c@sint64
+#! tst $1v, #0x1 -> spl dc $1v_lo $1v 1;\nand ne@bit $1v_lo 1@bit
+#! tst $1v, #0x2 -> spl dc $1v_lo $1v 2;\nspl $1v_target dc $1v_lo 1;\nand ne@bit $1v_target 1@bit
+#
+#
+# inverse:
 # x0 = 0xffffc68e1828
 # x1 = 0xffffc68e1808
 # x2 = 0xaaaabe372bb0

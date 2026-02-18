@@ -1,4 +1,4 @@
-proc main (%v1, %v12, %v3, %v4, %v5, %v6, L0xffffc68e1808, L0xffffc68e1810, L0xffffc68e1818, L0xffffc68e1820, carry, w7, x2) =
+proc main (%v1, %v12, %v3, %v4, %v5, %v6, L0xffffc68e1808, L0xffffc68e1810, L0xffffc68e1818, L0xffffc68e1820, carry, tmp, x2, x6, x7) =
 {
   true
   &&
@@ -14,7 +14,8 @@ mov x2 0x13@uint64;
 (* lsr	x3, x21, #63                                #! PC = 0xaaaabe370ec0 *)
 split x3 dcL x21 63;
 (* madd	x3, x2, x3, x2                             #! PC = 0xaaaabe370ec4 *)
-madd	%%x3, %%x2, %%x3, %%x2                             #! 0xaaaabe370ec4 = 0xaaaabe370ec4;
+mull dcH mul_tmp x2 x3;
+adds dc x3 mul_tmp x2;
 (* adds	x5, x5, x3                                 #! PC = 0xaaaabe370ec8 *)
 adds carry x5 x5 x3;
 (* adcs	x22, x22, xzr                              #! PC = 0xaaaabe370ecc *)
@@ -26,7 +27,7 @@ or x21@uint64 x21 0x8000000000000000@uint64;
 (* adcs	x21, x21, xzr                              #! PC = 0xaaaabe370ed8 *)
 adcs carry x21 x21 0@uint64 carry;
 (* csel	x3, x2, xzr, cc	// cc = lo, ul, last       #! PC = 0xaaaabe370edc *)
-csel	%%x3, %%x2, xzr, cc	// cc = lo, ul, last       #! 0xaaaabe370edc = 0xaaaabe370edc;
+cmov x3 carry 0@uint64 x2;
 (* subs	x5, x5, x3                                 #! PC = 0xaaaabe370ee0 *)
 subc carry x5 x5 x3;
 (* sbcs	x22, x22, xzr                              #! PC = 0xaaaabe370ee4 *)
@@ -34,9 +35,9 @@ sbcs carry x22 x22 0@uint64 carry;
 (* sbcs	x4, x4, xzr                                #! PC = 0xaaaabe370ee8 *)
 sbcs carry x4 x4 0@uint64 carry;
 (* sbc	x21, x21, xzr                               #! PC = 0xaaaabe370eec *)
-sbc	%%x21, %%x21, xzr                               #! 0xaaaabe370eec = 0xaaaabe370eec;
+sbc x21 x21 0@uint64 carry;
 (* and	x21, x21, #0x7fffffffffffffff               #! PC = 0xaaaabe370ef0 *)
-and	%%x21, %%x21, #0x7fffffffffffffff               #! 0xaaaabe370ef0 = 0xaaaabe370ef0;
+and x21@uint64 x21 0x7fffffffffffffff@uint64;
 (* mov	v5.d[0], x5                                 #! PC = 0xaaaabe370ef4 *)
 mov %v5 [x5, %v5[1]];
 (* mov	v5.d[1], x22                                #! PC = 0xaaaabe370ef8 *)
@@ -74,49 +75,53 @@ shrs %v12 %dc %v8 [30, 30];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f38 *)
 and %v12@uint64[2] %v12 %v1;
 (* sli	v3.2d, v12.2d, #32                          #! PC = 0xaaaabe370f3c *)
-sli	%%v3.2d, %%v12.2d, #32                          #! 0xaaaabe370f3c = 0xaaaabe370f3c;
+split %dc %slil %v12 (64-32); shl %slih %v12 [32@uint64, 32@uint64];
+split %dc %v3 %v3 32; or %v3@uint64[2] %slih %v3;
 (* ushr	v4.2d, v8.2d, #60                          #! PC = 0xaaaabe370f40 *)
 shrs %v4 %dc %v8 [60, 60];
 (* shl	v12.2d, v9.2d, #4                           #! PC = 0xaaaabe370f44 *)
-shl	%%v12.2d, %%v9.2d, #4                           #! 0xaaaabe370f44 = 0xaaaabe370f44;
+shls %dc %v12 %v9 [4, 4];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f48 *)
 and %v12@uint64[2] %v12 %v1;
 (* orr	v4.16b, v4.16b, v12.16b                     #! PC = 0xaaaabe370f4c *)
-orr	%%v4.16b, %%v4.16b, %%v12.16b                     #! 0xaaaabe370f4c = 0xaaaabe370f4c;
+or %v4@uint64[2] %v4 %v12;
 (* ushr	v12.2d, v9.2d, #26                         #! PC = 0xaaaabe370f50 *)
 shrs %v12 %dc %v9 [26, 26];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f54 *)
 and %v12@uint64[2] %v12 %v1;
 (* sli	v4.2d, v12.2d, #32                          #! PC = 0xaaaabe370f58 *)
-sli	%%v4.2d, %%v12.2d, #32                          #! 0xaaaabe370f58 = 0xaaaabe370f58;
+split %dc %slil %v12 (64-32); shl %slih %v12 [32@uint64, 32@uint64];
+split %dc %v4 %v4 32; or %v4@uint64[2] %slih %v4;
 (* ushr	v5.2d, v9.2d, #56                          #! PC = 0xaaaabe370f5c *)
 shrs %v5 %dc %v9 [56, 56];
 (* shl	v12.2d, v10.2d, #8                          #! PC = 0xaaaabe370f60 *)
-shl	%%v12.2d, %%v10.2d, #8                          #! 0xaaaabe370f60 = 0xaaaabe370f60;
+shls %dc %v12 %v10 [8, 8];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f64 *)
 and %v12@uint64[2] %v12 %v1;
 (* orr	v5.16b, v5.16b, v12.16b                     #! PC = 0xaaaabe370f68 *)
-orr	%%v5.16b, %%v5.16b, %%v12.16b                     #! 0xaaaabe370f68 = 0xaaaabe370f68;
+or %v5@uint64[2] %v5 %v12;
 (* ushr	v12.2d, v10.2d, #22                        #! PC = 0xaaaabe370f6c *)
 shrs %v12 %dc %v10 [22, 22];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f70 *)
 and %v12@uint64[2] %v12 %v1;
 (* sli	v5.2d, v12.2d, #32                          #! PC = 0xaaaabe370f74 *)
-sli	%%v5.2d, %%v12.2d, #32                          #! 0xaaaabe370f74 = 0xaaaabe370f74;
+split %dc %slil %v12 (64-32); shl %slih %v12 [32@uint64, 32@uint64];
+split %dc %v5 %v5 32; or %v5@uint64[2] %slih %v5;
 (* ushr	v6.2d, v10.2d, #52                         #! PC = 0xaaaabe370f78 *)
 shrs %v6 %dc %v10 [52, 52];
 (* shl	v12.2d, v11.2d, #12                         #! PC = 0xaaaabe370f7c *)
-shl	%%v12.2d, %%v11.2d, #12                         #! 0xaaaabe370f7c = 0xaaaabe370f7c;
+shls %dc %v12 %v11 [12, 12];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f80 *)
 and %v12@uint64[2] %v12 %v1;
 (* orr	v6.16b, v6.16b, v12.16b                     #! PC = 0xaaaabe370f84 *)
-orr	%%v6.16b, %%v6.16b, %%v12.16b                     #! 0xaaaabe370f84 = 0xaaaabe370f84;
+or %v6@uint64[2] %v6 %v12;
 (* ushr	v12.2d, v11.2d, #18                        #! PC = 0xaaaabe370f88 *)
 shrs %v12 %dc %v11 [18, 18];
 (* and	v12.16b, v12.16b, v1.16b                    #! PC = 0xaaaabe370f8c *)
 and %v12@uint64[2] %v12 %v1;
 (* sli	v6.2d, v12.2d, #32                          #! PC = 0xaaaabe370f90 *)
-sli	%%v6.2d, %%v12.2d, #32                          #! 0xaaaabe370f90 = 0xaaaabe370f90;
+split %dc %slil %v12 (64-32); shl %slih %v12 [32@uint64, 32@uint64];
+split %dc %v6 %v6 32; or %v6@uint64[2] %slih %v6;
 (* ushr	v7.2d, v11.2d, #48                         #! PC = 0xaaaabe370f94 *)
 shrs %v7 %dc %v11 [48, 48];
 (* movi	v8.2d, #0x0                                #! PC = 0xaaaabe370f98 *)
@@ -134,7 +139,7 @@ broadcast %v11 2 [0x0@uint64];
 (* movi	v12.2d, #0x0                               #! PC = 0xaaaabe370fb0 *)
 broadcast %v12 2 [0x0@uint64];
 (* uzp1	v2.4s, v1.4s, v1.4s                        #! PC = 0xaaaabe370fb4 *)
-uzp1	%%v2.4s, %%v1.4s, %%v1.4s                        #! 0xaaaabe370fb4 = 0xaaaabe370fb4;
+mov %v2 [%v1[0], %v1[2], %v1[0], %v1[2]];
 (* mov	x4, #0xffffffffffffffed    	// #-19         #! PC = 0xaaaabe370fb8 *)
 mov x4 0xffffffffffffffed@uint64;
 (* mov	x21, #0xffffffffffffffff    	// #-1         #! PC = 0xaaaabe370fbc *)
@@ -148,17 +153,12 @@ mov x3 0x1@uint64;
 (* mov	x6, #0x20000000000         	// #2199023255552#! PC = 0xaaaabe370fcc *)
 mov x6 0x20000000000@uint64;
 (* add	x6, x6, #0x100, lsl #12                     #! PC = 0xaaaabe370fd0 *)
-add x6 x6 0x100@uint64, lsl;
+split dcH tmp 0x100@uint64 52; shl tmp tmp 12; adds carry x6 x6 tmp;
 (* mov	x7, #0x286b0000            	// #678100992   #! PC = 0xaaaabe370fd4 *)
 mov x7 0x286b0000@uint64;
 (* movk	x7, #0xca1b                                #! PC = 0xaaaabe370fd8 *)
 movk	%%x7, #0xca1b                                #! 0xaaaabe370fd8 = 0xaaaabe370fd8;
 (* dup	v15.4s, w7                                  #! PC = 0xaaaabe370fdc *)
+cast w7@sint32 x7;
 mov %v15 [w7,w7,w7,w7];
-
-{
-  true
-  &&
-  true
-}
 

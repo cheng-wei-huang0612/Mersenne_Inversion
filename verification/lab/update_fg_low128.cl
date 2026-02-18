@@ -264,22 +264,39 @@ abs_v * ( -(sign_v + sign_v * (2**64)) )
 +
 ((sign_u * 2 + 1) * f_1 + sign_u) * abs_u * (2**64)
 (mod (2**128))
-,
+// ,
+// limbs 64 [x15, x16] = 
+// ((2 * sign_u + 1) * f_0) * abs_u +
+// abs_v * ( -(sign_v + sign_v * (2**64)) )
+// +
+// ((sign_u * 2 + 1) * f_1 ) * abs_u * (2**64)
+// (mod (2**128))
+// ,
+// limbs 64 [x15, x16] = 
+// ((2 * sign_u + 1) * (f_0 + f_1 * (2**64))) * abs_u +
+// abs_v * ( -(sign_v + sign_v * (2**64)) )
+// (mod (2**128))
+// ,
+// limbs 64 [x15, x16] = 
+// (abs_u * (2 * sign_u + 1)) * (f_0 + f_1 * (2**64)) +
+// abs_v * ( -(sign_v + sign_v * (2**64)) )
+// (mod (2**128)) 
+&& true;
+
+cut 
 limbs 64 [x15, x16] = 
-((2 * sign_u + 1) * f_0) * abs_u +
+(abs_u * (2 * sign_u + 1)) * (f_0 + f_1 * (2**64)) +
 abs_v * ( -(sign_v + sign_v * (2**64)) )
-+
-((sign_u * 2 + 1) * f_1 ) * abs_u * (2**64)
-(mod (2**128))
-,
+(mod (2**128)),
+(sign_u * 2 + 1) * abs_u = u,
+(sign_v * 2 + 1) * abs_v = v,
+(sign_r * 2 + 1) * abs_r = r,
+(sign_s * 2 + 1) * abs_s = s
+&& true;
+
+assert
 limbs 64 [x15, x16] = 
-((2 * sign_u + 1) * (f_0 + f_1 * (2**64))) * abs_u +
-abs_v * ( -(sign_v + sign_v * (2**64)) )
-(mod (2**128))
-,
-limbs 64 [x15, x16] = 
-u * (f_0 + f_1 * (2**64))
-+
+(u) * (f_0 + f_1 * (2**64)) +
 abs_v * ( -(sign_v + sign_v * (2**64)) )
 (mod (2**128))
 && true;
