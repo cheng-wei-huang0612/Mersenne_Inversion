@@ -1976,6 +1976,8 @@ mov v_20_40 ( 0)@sint64;
 mov r_20_40 ( 0)@sint64;
 mov s_20_40 (-(2**20))@sint64;
 cut
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
     u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20)),
     r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))
 &&
@@ -2515,6 +2517,8 @@ assume
 ;
 
 cut
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
     u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
     r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
     u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
@@ -2640,10 +2644,57 @@ call update_fg_2(
 (* mov	x12, x10                                    #! PC = 0xaaaabe37164c *)
 
 
+    assert 
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    # x11 * f_0_low60_0 + x12 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
+    && true;
+    # mov u_0_20 x11;
+    # mov v_0_20 x12;
+    # mov r_0_20 x13;
+    # mov s_0_20 x14;
+
+
 call update_uuvvrrss(
 x11,x12,x13,x14,x15,x16,x17,x20;
 x11,x12,x13,x14
 );
+
+
+    mov u_0_40 x11;
+    mov v_0_40 x12;
+    mov r_0_40 x13;
+    mov s_0_40 x14;
+
+    assert 
+    # u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    # r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
+    # u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
+    # r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
+    u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+    r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20)),
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+    &&
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40,
+u_0_40 + v_0_40 <=s (const 64 (2**40)),
+u_0_40 - v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+r_0_40 + s_0_40 <=s (const 64 (2**40)),
+r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1));
+
 
 (* and	x7, x1, #0xfffff                            #! PC = 0xaaaabe371650 *)
 and x7@uint64 x1 0xfffff@uint64;
@@ -3304,6 +3355,19 @@ call update_uuvvrrss_2(
     x11, x12, x13, x14
 );
 
+
+# cut and [
+#     # u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+#     # r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
+#     # u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+#     # r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20)),
+#     u_40_59 * f_0_low60_40 + v_40_59 * g_0_low60_40 = f_0_low60_59 * (-(2**20)),
+#     r_40_59 * f_0_low60_40 + s_40_59 * g_0_low60_40 = g_0_low60_59 * (-(2**20))
+#     ] prove with [all cuts]
+# &&
+#     true
+#  ;
+
 (* mov	x19, #0x9                   	// #9          #! PC = 0xaaaabe37195c *)
 
 // x19 is the loop counter
@@ -3326,167 +3390,115 @@ call update_uuvvrrss_2(
 (* uzp1	v14.4s, v16.4s, v17.4s                     #! PC = 0xaaaabe371980 *)
 
 
-    call prepare_vec_uuvvrrss(
-    x11, x12, x13, x14,
-    %v2;
-    %v13, %v14
-);
-//
-// (* cmp	x11, xzr                                    #! PC = 0xaaaabe371984 *)
-// subc zero dc 0@uint64 x11;
-//
-// (* csetm	x23, mi	// mi = first                     #! PC = 0xaaaabe371988 *)
-// csetm	%%x23, mi	// mi = first                     #! 0xaaaabe371988 = 0xaaaabe371988;
-//
-// (* cneg	x11, x11, mi	// mi = first                 #! PC = 0xaaaabe37198c *)
-// cneg	%%x11, %%x11, mi	// mi = first                 #! 0xaaaabe37198c = 0xaaaabe37198c;
-//
-// (* cmp	x12, xzr                                    #! PC = 0xaaaabe371990 *)
-// subc zero dc 0@uint64 x12;
-//
-// (* csetm	x24, mi	// mi = first                     #! PC = 0xaaaabe371994 *)
-// csetm	%%x24, mi	// mi = first                     #! 0xaaaabe371994 = 0xaaaabe371994;
-//
-// (* cneg	x12, x12, mi	// mi = first                 #! PC = 0xaaaabe371998 *)
-// cneg	%%x12, %%x12, mi	// mi = first                 #! 0xaaaabe371998 = 0xaaaabe371998;
-//
-// (* cmp	x13, xzr                                    #! PC = 0xaaaabe37199c *)
-// subc zero dc 0@uint64 x13;
-//
-// (* csetm	x25, mi	// mi = first                     #! PC = 0xaaaabe3719a0 *)
-// csetm	%%x25, mi	// mi = first                     #! 0xaaaabe3719a0 = 0xaaaabe3719a0;
-//
-// (* cneg	x13, x13, mi	// mi = first                 #! PC = 0xaaaabe3719a4 *)
-// cneg	%%x13, %%x13, mi	// mi = first                 #! 0xaaaabe3719a4 = 0xaaaabe3719a4;
-//
-// (* cmp	x14, xzr                                    #! PC = 0xaaaabe3719a8 *)
-// subc zero dc 0@uint64 x14;
-//
-// (* csetm	x26, mi	// mi = first                     #! PC = 0xaaaabe3719ac *)
-// csetm	%%x26, mi	// mi = first                     #! 0xaaaabe3719ac = 0xaaaabe3719ac;
-//
-// (* cneg	x14, x14, mi	// mi = first                 #! PC = 0xaaaabe3719b0 *)
-// cneg	%%x14, %%x14, mi	// mi = first                 #! 0xaaaabe3719b0 = 0xaaaabe3719b0;
-//
-// (* and	x27, x11, x23                               #! PC = 0xaaaabe3719b4 *)
-// and x27@uint64 x11 x23;
-//
-// (* and	x28, x12, x24                               #! PC = 0xaaaabe3719b8 *)
-// and x28@uint64 x12 x24;
-//
-// (* add	x15, x27, x28                               #! PC = 0xaaaabe3719bc *)
-// add x15 x27 x28;
-//
-// (* eor	x27, x4, x23                                #! PC = 0xaaaabe3719c0 *)
-// xor x27@uint64 x4 x23;
-//
-// (* mul	x9, x27, x11                                #! PC = 0xaaaabe3719c4 *)
-// mull dcH x9 x27 x11;
-//
-// (* umulh	x10, x27, x11                             #! PC = 0xaaaabe3719c8 *)
-// mull x10 dcL x27 x11;
-//
-// (* adds	x15, x9, x15                               #! PC = 0xaaaabe3719cc *)
-// adds carry x15 x9 x15;
-//
-// (* adc	x16, x10, xzr                               #! PC = 0xaaaabe3719d0 *)
-// adc x16 x10 0@uint64 carry;
-//
-// (* eor	x27, x21, x23                               #! PC = 0xaaaabe3719d4 *)
-// xor x27@uint64 x21 x23;
-//
-// (* mul	x9, x27, x11                                #! PC = 0xaaaabe3719d8 *)
-// mull dcH x9 x27 x11;
-//
-// (* add	x16, x16, x9                                #! PC = 0xaaaabe3719dc *)
-// add x16 x16 x9;
-//
-// (* eor	x27, x5, x24                                #! PC = 0xaaaabe3719e0 *)
-// xor x27@uint64 x5 x24;
-//
-// (* mul	x9, x27, x12                                #! PC = 0xaaaabe3719e4 *)
-// mull dcH x9 x27 x12;
-//
-// (* umulh	x10, x27, x12                             #! PC = 0xaaaabe3719e8 *)
-// mull x10 dcL x27 x12;
-//
-// (* adds	x15, x9, x15                               #! PC = 0xaaaabe3719ec *)
-// adds carry x15 x9 x15;
-//
-// (* adc	x16, x10, x16                               #! PC = 0xaaaabe3719f0 *)
-// adc x16 x10 x16 carry;
-//
-// (* eor	x27, x22, x24                               #! PC = 0xaaaabe3719f4 *)
-// xor x27@uint64 x22 x24;
-//
-// (* mul	x9, x27, x12                                #! PC = 0xaaaabe3719f8 *)
-// mull dcH x9 x27 x12;
-//
-// (* add	x16, x16, x9                                #! PC = 0xaaaabe3719fc *)
-// add x16 x16 x9;
-//
-// (* extr	x1, x16, x15, #60                          #! PC = 0xaaaabe371a00 *)
-// spl dc extr_H x16 60; spl extr_L dc x15 60; join x1 extr_H extr_L;
-//
-// (* and	x27, x13, x25                               #! PC = 0xaaaabe371a04 *)
-// and x27@uint64 x13 x25;
-//
-// (* and	x28, x14, x26                               #! PC = 0xaaaabe371a08 *)
-// and x28@uint64 x14 x26;
-//
-// (* add	x17, x27, x28                               #! PC = 0xaaaabe371a0c *)
-// add x17 x27 x28;
-//
-// (* eor	x27, x4, x25                                #! PC = 0xaaaabe371a10 *)
-// xor x27@uint64 x4 x25;
-//
-// (* mul	x9, x27, x13                                #! PC = 0xaaaabe371a14 *)
-// mull dcH x9 x27 x13;
-//
-// (* umulh	x10, x27, x13                             #! PC = 0xaaaabe371a18 *)
-// mull x10 dcL x27 x13;
-//
-// (* adds	x17, x9, x17                               #! PC = 0xaaaabe371a1c *)
-// adds carry x17 x9 x17;
-//
-// (* adc	x20, x10, xzr                               #! PC = 0xaaaabe371a20 *)
-// adc x20 x10 0@uint64 carry;
-//
-// (* eor	x27, x21, x25                               #! PC = 0xaaaabe371a24 *)
-// xor x27@uint64 x21 x25;
-//
-// (* mul	x9, x27, x13                                #! PC = 0xaaaabe371a28 *)
-// mull dcH x9 x27 x13;
-//
-// (* add	x20, x20, x9                                #! PC = 0xaaaabe371a2c *)
-// add x20 x20 x9;
-//
-// (* eor	x27, x5, x26                                #! PC = 0xaaaabe371a30 *)
-// xor x27@uint64 x5 x26;
-//
-// (* mul	x9, x27, x14                                #! PC = 0xaaaabe371a34 *)
-// mull dcH x9 x27 x14;
-//
-// (* umulh	x10, x27, x14                             #! PC = 0xaaaabe371a38 *)
-// mull x10 dcL x27 x14;
-//
-// (* adds	x17, x9, x17                               #! PC = 0xaaaabe371a3c *)
-// adds carry x17 x9 x17;
-//
-// (* adc	x20, x10, x20                               #! PC = 0xaaaabe371a40 *)
-// adc x20 x10 x20 carry;
-//
-// (* eor	x27, x22, x26                               #! PC = 0xaaaabe371a44 *)
-// xor x27@uint64 x22 x26;
-//
-// (* mul	x9, x27, x14                                #! PC = 0xaaaabe371a48 *)
-// mull dcH x9 x27 x14;
-//
-// (* add	x20, x20, x9                                #! PC = 0xaaaabe371a4c *)
-// add x20 x20 x9;
-//
-// (* extr	x2, x20, x17, #60                          #! PC = 0xaaaabe371a50 *)
-// spl dc extr_H x20 60; spl extr_L dc x17 60; join x2 extr_H extr_L;
+# call prepare_vec_uuvvrrss(
+#     x11, x12, x13, x14,
+#     %v2;
+#     %v13, %v14
+# );
+
+(* cmp	x11, xzr                                    #! PC = 0xaaaabe371984 *)
+
+(* csetm	x23, mi	// mi = first                     #! PC = 0xaaaabe371988 *)
+
+(* cneg	x11, x11, mi	// mi = first                 #! PC = 0xaaaabe37198c *)
+
+(* cmp	x12, xzr                                    #! PC = 0xaaaabe371990 *)
+
+(* csetm	x24, mi	// mi = first                     #! PC = 0xaaaabe371994 *)
+
+(* cneg	x12, x12, mi	// mi = first                 #! PC = 0xaaaabe371998 *)
+
+(* cmp	x13, xzr                                    #! PC = 0xaaaabe37199c *)
+
+(* csetm	x25, mi	// mi = first                     #! PC = 0xaaaabe3719a0 *)
+
+(* cneg	x13, x13, mi	// mi = first                 #! PC = 0xaaaabe3719a4 *)
+
+(* cmp	x14, xzr                                    #! PC = 0xaaaabe3719a8 *)
+
+(* csetm	x26, mi	// mi = first                     #! PC = 0xaaaabe3719ac *)
+
+(* cneg	x14, x14, mi	// mi = first                 #! PC = 0xaaaabe3719b0 *)
+
+(* and	x27, x11, x23                               #! PC = 0xaaaabe3719b4 *)
+
+(* and	x28, x12, x24                               #! PC = 0xaaaabe3719b8 *)
+
+(* add	x15, x27, x28                               #! PC = 0xaaaabe3719bc *)
+
+(* eor	x27, x4, x23                                #! PC = 0xaaaabe3719c0 *)
+
+(* mul	x9, x27, x11                                #! PC = 0xaaaabe3719c4 *)
+
+(* umulh	x10, x27, x11                             #! PC = 0xaaaabe3719c8 *)
+
+(* adds	x15, x9, x15                               #! PC = 0xaaaabe3719cc *)
+
+(* adc	x16, x10, xzr                               #! PC = 0xaaaabe3719d0 *)
+
+(* eor	x27, x21, x23                               #! PC = 0xaaaabe3719d4 *)
+
+(* mul	x9, x27, x11                                #! PC = 0xaaaabe3719d8 *)
+
+(* add	x16, x16, x9                                #! PC = 0xaaaabe3719dc *)
+
+(* eor	x27, x5, x24                                #! PC = 0xaaaabe3719e0 *)
+
+(* mul	x9, x27, x12                                #! PC = 0xaaaabe3719e4 *)
+
+(* umulh	x10, x27, x12                             #! PC = 0xaaaabe3719e8 *)
+
+(* adds	x15, x9, x15                               #! PC = 0xaaaabe3719ec *)
+
+(* adc	x16, x10, x16                               #! PC = 0xaaaabe3719f0 *)
+
+(* eor	x27, x22, x24                               #! PC = 0xaaaabe3719f4 *)
+
+(* mul	x9, x27, x12                                #! PC = 0xaaaabe3719f8 *)
+
+(* add	x16, x16, x9                                #! PC = 0xaaaabe3719fc *)
+
+(* extr	x1, x16, x15, #60                          #! PC = 0xaaaabe371a00 *)
+
+(* and	x27, x13, x25                               #! PC = 0xaaaabe371a04 *)
+
+(* and	x28, x14, x26                               #! PC = 0xaaaabe371a08 *)
+
+(* add	x17, x27, x28                               #! PC = 0xaaaabe371a0c *)
+
+(* eor	x27, x4, x25                                #! PC = 0xaaaabe371a10 *)
+
+(* mul	x9, x27, x13                                #! PC = 0xaaaabe371a14 *)
+
+(* umulh	x10, x27, x13                             #! PC = 0xaaaabe371a18 *)
+
+(* adds	x17, x9, x17                               #! PC = 0xaaaabe371a1c *)
+
+(* adc	x20, x10, xzr                               #! PC = 0xaaaabe371a20 *)
+
+(* eor	x27, x21, x25                               #! PC = 0xaaaabe371a24 *)
+
+(* mul	x9, x27, x13                                #! PC = 0xaaaabe371a28 *)
+
+(* add	x20, x20, x9                                #! PC = 0xaaaabe371a2c *)
+
+(* eor	x27, x5, x26                                #! PC = 0xaaaabe371a30 *)
+
+(* mul	x9, x27, x14                                #! PC = 0xaaaabe371a34 *)
+
+(* umulh	x10, x27, x14                             #! PC = 0xaaaabe371a38 *)
+
+(* adds	x17, x9, x17                               #! PC = 0xaaaabe371a3c *)
+
+(* adc	x20, x10, x20                               #! PC = 0xaaaabe371a40 *)
+
+(* eor	x27, x22, x26                               #! PC = 0xaaaabe371a44 *)
+
+(* mul	x9, x27, x14                                #! PC = 0xaaaabe371a48 *)
+
+(* add	x20, x20, x9                                #! PC = 0xaaaabe371a4c *)
+
+(* extr	x2, x20, x17, #60                          #! PC = 0xaaaabe371a50 *)
 
 (* smull	v16.2d, v13.2s, v3.s[0]                   #! PC = 0xaaaabe371a54 *)
 

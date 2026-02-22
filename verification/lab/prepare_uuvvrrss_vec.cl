@@ -58,5 +58,14 @@ mov %vec_uu1_rr1_vv1_ss1 %v14;
     sext (slimbs 30 [%vec_uu0_rr0_vv0_ss0[0], %vec_uu1_rr1_vv1_ss1[0]]) 2 = u,
     sext (slimbs 30 [%vec_uu0_rr0_vv0_ss0[1], %vec_uu1_rr1_vv1_ss1[1]]) 2 = r,
     sext (slimbs 30 [%vec_uu0_rr0_vv0_ss0[2], %vec_uu1_rr1_vv1_ss1[2]]) 2 = v,
-    sext (slimbs 30 [%vec_uu0_rr0_vv0_ss0[3], %vec_uu1_rr1_vv1_ss1[3]]) 2 = s
+    sext (slimbs 30 [%vec_uu0_rr0_vv0_ss0[3], %vec_uu1_rr1_vv1_ss1[3]]) 2 = s,
+
+    (0)@sint32 <=s %vec_uu0_rr0_vv0_ss0[0], %vec_uu0_rr0_vv0_ss0[0] <=s ((2**30)-1)@sint32,
+    (0)@sint32 <=s %vec_uu0_rr0_vv0_ss0[1], %vec_uu0_rr0_vv0_ss0[1] <=s ((2**30)-1)@sint32,
+    (0)@sint32 <=s %vec_uu0_rr0_vv0_ss0[2], %vec_uu0_rr0_vv0_ss0[2] <=s ((2**30)-1)@sint32,
+    (0)@sint32 <=s %vec_uu0_rr0_vv0_ss0[3], %vec_uu0_rr0_vv0_ss0[3] <=s ((2**30)-1)@sint32,
+    (-(2**30))@sint32 <=s %vec_uu1_rr1_vv1_ss1[0], %vec_uu1_rr1_vv1_ss1[0] <=s ((2**30)-1)@sint32,
+    (-(2**30))@sint32 <=s %vec_uu1_rr1_vv1_ss1[1], %vec_uu1_rr1_vv1_ss1[1] <=s ((2**30)-1)@sint32,
+    (-(2**30))@sint32 <=s %vec_uu1_rr1_vv1_ss1[2], %vec_uu1_rr1_vv1_ss1[2] <=s ((2**30)-1)@sint32,
+    (-(2**30))@sint32 <=s %vec_uu1_rr1_vv1_ss1[3], %vec_uu1_rr1_vv1_ss1[3] <=s ((2**30)-1)@sint32
 }

@@ -172,3 +172,7 @@
 #! srsra $1v.4s, $2v.4s, $3c -> split %HI %LO %$2v $3c; split %LO1 %dc %LO ($3c-1);\ncast %LO0@sint32[4] %LO1;\nadd %$1v %$1v %LO0; add %$1v %$1v %HI
 #! srsra $1v.8h, $2v.8h, $3c -> split %HI %LO %$2v $3c; split %LO1 %dc %LO ($3c-1);\ncast %LO0@sint16[8] %LO1;\nadd %$1v %$1v %LO0; add %$1v %$1v %HI
 
+#! smull $1v.2d, $2v.2s, $3v.s\[$4c\] -> broadcast %tmp1@int32[2] 2 [%$3v[0]];\nmov %tmp2@int32[2] [%$2v[0], %$2v[1]];\nsmulj %$1v@int64[2] %tmp1 %tmp2
+#! smlal  $1v.2d, $2v.2s, $3v.s\[$4c\] -> broadcast %tmp1@int32[2] 2 [%$3v[$4c]];\nmov %tmp2@int32[2] [%$2v[0], %$2v[1]];\nsmulj %tmp3@int64[2] %tmp1 %tmp2;\nadds %dc %$1v@int64[2] %$1v %tmp3
+
+#! smlal2 $1v.2d, $2v.4s, $3v.s\[$4c\] -> broadcast %tmp1@int32[2] 2 [%$3v[$4c]];\nmov %tmp2@int32[2] [%$2v[2], %$2v[3]];\nsmulj %tmp3@int64[2] %tmp1 %tmp2;\nadds %dc %$1v@int64[2] %$1v %tmp3

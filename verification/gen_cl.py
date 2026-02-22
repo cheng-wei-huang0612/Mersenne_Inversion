@@ -367,6 +367,14 @@ def cl_rand(*args):
 
 
 
+def cl_elimbs(radix, symbols):
+    eexpr = f"limbs {radix} ["
+    for num, i in enumerate(symbols, 1):
+        end_char = "]" if num == len(symbols) else ", "
+        eexpr += f"{i}{end_char}"
+    return eexpr
+
+
 
 
 

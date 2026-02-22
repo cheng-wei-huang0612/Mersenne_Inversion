@@ -1,0 +1,68 @@
+#! and  $1v.16b, $2v.16b, $3v.16b -> and %$1v@sint64[2] %$2v %$3v
+#! orr  $1v.16b, $2v.16b, $3v.16b -> or %$1v@sint64[2] %$2v %$3v;\ncast %$1v@sint32[4] %$1v
+#! shl  $1v.2d, $2v.2d, $3c -> mov [tmp1, tmp2] %$2v;\nshl tmp1 tmp1 32;\nshl tmp2 tmp2 32;\nmov %$1v [tmp1, tmp2]
+
+
+	smull	v16.2d, v13.2s, v3.s[0]                   #! PC = 0xaaaabe371a54
+	smlal2	v16.2d, v13.4s, v3.s[2]                  #! PC = 0xaaaabe371a58
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371a5c
+	smlal	v16.2d, v14.2s, v3.s[0]                   #! PC = 0xaaaabe371a60
+	smlal2	v16.2d, v14.4s, v3.s[2]                  #! PC = 0xaaaabe371a64
+	smlal	v16.2d, v13.2s, v3.s[1]                   #! PC = 0xaaaabe371a68
+	smlal2	v16.2d, v13.4s, v3.s[3]                  #! PC = 0xaaaabe371a6c
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371a70
+	smlal	v16.2d, v14.2s, v3.s[1]                   #! PC = 0xaaaabe371a74
+	smlal2	v16.2d, v14.4s, v3.s[3]                  #! PC = 0xaaaabe371a78
+	smlal	v16.2d, v13.2s, v4.s[0]                   #! PC = 0xaaaabe371a7c
+	smlal2	v16.2d, v13.4s, v4.s[2]                  #! PC = 0xaaaabe371a80
+	and	v3.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371a84
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371a88
+	smlal	v16.2d, v14.2s, v4.s[0]                   #! PC = 0xaaaabe371a8c
+	smlal2	v16.2d, v14.4s, v4.s[2]                  #! PC = 0xaaaabe371a90
+	smlal	v16.2d, v13.2s, v4.s[1]                   #! PC = 0xaaaabe371a94
+	smlal2	v16.2d, v13.4s, v4.s[3]                  #! PC = 0xaaaabe371a98
+	and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371a9c
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371aa0
+	shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371aa4
+	orr	v3.16b, v3.16b, v17.16b                     #! PC = 0xaaaabe371aa8
+	smlal	v16.2d, v14.2s, v4.s[1]                   #! PC = 0xaaaabe371aac
+	smlal2	v16.2d, v14.4s, v4.s[3]                  #! PC = 0xaaaabe371ab0
+	smlal	v16.2d, v13.2s, v5.s[0]                   #! PC = 0xaaaabe371ab4
+	smlal2	v16.2d, v13.4s, v5.s[2]                  #! PC = 0xaaaabe371ab8
+	and	v4.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371abc
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371ac0
+	smlal	v16.2d, v14.2s, v5.s[0]                   #! PC = 0xaaaabe371ac4
+	smlal2	v16.2d, v14.4s, v5.s[2]                  #! PC = 0xaaaabe371ac8
+	smlal	v16.2d, v13.2s, v5.s[1]                   #! PC = 0xaaaabe371acc
+	smlal2	v16.2d, v13.4s, v5.s[3]                  #! PC = 0xaaaabe371ad0
+	and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371ad4
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371ad8
+	shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371adc
+	orr	v4.16b, v4.16b, v17.16b                     #! PC = 0xaaaabe371ae0
+	smlal	v16.2d, v14.2s, v5.s[1]                   #! PC = 0xaaaabe371ae4
+	smlal2	v16.2d, v14.4s, v5.s[3]                  #! PC = 0xaaaabe371ae8
+	smlal	v16.2d, v13.2s, v6.s[0]                   #! PC = 0xaaaabe371aec
+	smlal2	v16.2d, v13.4s, v6.s[2]                  #! PC = 0xaaaabe371af0
+	and	v5.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371af4
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371af8
+	smlal	v16.2d, v14.2s, v6.s[0]                   #! PC = 0xaaaabe371afc
+	smlal2	v16.2d, v14.4s, v6.s[2]                  #! PC = 0xaaaabe371b00
+	smlal	v16.2d, v13.2s, v6.s[1]                   #! PC = 0xaaaabe371b04
+	smlal2	v16.2d, v13.4s, v6.s[3]                  #! PC = 0xaaaabe371b08
+	and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371b0c
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371b10
+	shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371b14
+	orr	v5.16b, v5.16b, v17.16b                     #! PC = 0xaaaabe371b18
+	smlal	v16.2d, v14.2s, v6.s[1]                   #! PC = 0xaaaabe371b1c
+	smlal2	v16.2d, v14.4s, v6.s[3]                  #! PC = 0xaaaabe371b20
+	smlal	v16.2d, v13.2s, v7.s[0]                   #! PC = 0xaaaabe371b24
+	smlal2	v16.2d, v13.4s, v7.s[2]                  #! PC = 0xaaaabe371b28
+	and	v6.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371b2c
+	sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371b30
+	smlal	v16.2d, v14.2s, v7.s[0]                   #! PC = 0xaaaabe371b34
+	smlal2	v16.2d, v14.4s, v7.s[2]                  #! PC = 0xaaaabe371b38
+	and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371b3c
+	sshr	v7.2d, v16.2d, #30                         #! PC = 0xaaaabe371b40
+	shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371b44
+	orr	v6.16b, v6.16b, v17.16b                     #! PC = 0xaaaabe371b48
+

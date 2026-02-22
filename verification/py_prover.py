@@ -1473,6 +1473,8 @@ mov v_20_40 ( 0)@sint64;
 mov r_20_40 ( 0)@sint64;
 mov s_20_40 (-(2**20))@sint64;
 cut
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
     u_20_40 * neg_f_0_low60_20_low20_0 + v_20_40 * neg_g_0_low60_20_low20_0 = neg_f_0_low60_20_low20_0 * (-(2**20)),
     r_20_40 * neg_f_0_low60_20_low20_0 + s_20_40 * neg_g_0_low60_20_low20_0 = neg_g_0_low60_20_low20_0 * (-(2**20))
 &&
@@ -1594,6 +1596,8 @@ assume
 ;
 
 cut
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
     u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
     r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
     u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
@@ -1670,7 +1674,17 @@ call update_fg_2(
 """)
     byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 10, with_cl = False)
 
-
+    emit_blocks.append("""
+    assert 
+    u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    # x11 * f_0_low60_0 + x12 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20))
+    && true;
+    # mov u_0_20 x11;
+    # mov v_0_20 x12;
+    # mov r_0_20 x13;
+    # mov s_0_20 x14;
+""")
 
     emit_blocks.append("""
 call update_uuvvrrss(
@@ -1678,6 +1692,45 @@ x11,x12,x13,x14,x15,x16,x17,x20;
 x11,x12,x13,x14
 );
 """)
+
+    emit_blocks.append("""
+    mov u_0_40 x11;
+    mov v_0_40 x12;
+    mov r_0_40 x13;
+    mov s_0_40 x14;
+
+    assert 
+    # u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+    # r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
+    # u_20_40 * neg_f_0_low60_20 + v_20_40 * neg_g_0_low60_20 = neg_f_0_low60_40 * (-(2**20)),
+    # r_20_40 * neg_f_0_low60_20 + s_20_40 * neg_g_0_low60_20 = neg_g_0_low60_40 * (-(2**20)),
+    u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+    r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20)),
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40
+    &&
+u_20_40 * u_0_20 + v_20_40 * r_0_20 = u_0_40,
+u_20_40 * v_0_20 + v_20_40 * s_0_20 = v_0_40,
+r_20_40 * u_0_20 + s_20_40 * r_0_20 = r_0_40,
+r_20_40 * v_0_20 + s_20_40 * s_0_20 = s_0_40,
+u_0_40 + v_0_40 <=s (const 64 (2**40)),
+u_0_40 - v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 + v_0_40 <=s (const 64 (2**40)),
+(const 64 0) - u_0_40 - v_0_40 <=s (const 64 (2**40)),
+r_0_40 + s_0_40 <=s (const 64 (2**40)),
+r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 + s_0_40 <=s (const 64 (2**40)),
+(const 64 0) - r_0_40 - s_0_40 <=s (const 64 (2**40)),
+(const 64 (-(2**40))) <=s u_0_40, u_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s v_0_40, v_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s r_0_40, r_0_40 <=s (const 64 ((2**40) - 1)),
+(const 64 (-(2**40))) <=s s_0_40, s_0_40 <=s (const 64 ((2**40) - 1));
+
+""")
+
+
     byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 4)
     emit_blocks.append("""
     cast x1@sint64 x1;
@@ -1896,17 +1949,31 @@ call update_uuvvrrss_2(
 );
 """)
 
+    emit_blocks.append("""
+# cut and [
+#     # u_0_20 * f_0_low60_0 + v_0_20 * g_0_low60_0 = f_0_low60_20 * (-(2**20)),
+#     # r_0_20 * f_0_low60_0 + s_0_20 * g_0_low60_0 = g_0_low60_20 * (-(2**20)),
+#     # u_20_40 * f_0_low60_20 + v_20_40 * g_0_low60_20 = f_0_low60_40 * (-(2**20)),
+#     # r_20_40 * f_0_low60_20 + s_20_40 * g_0_low60_20 = g_0_low60_40 * (-(2**20)),
+#     u_40_59 * f_0_low60_40 + v_40_59 * g_0_low60_40 = f_0_low60_59 * (-(2**20)),
+#     r_40_59 * f_0_low60_40 + s_40_59 * g_0_low60_40 = g_0_low60_59 * (-(2**20))
+#     ] prove with [all cuts]
+# &&
+#     true
+#  ;
+""")
+
     byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 1, with_cl = False)
     emit_blocks.append("// x19 is the loop counter")
     byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 9, with_cl = False)
     emit_blocks.append("""
-    call prepare_vec_uuvvrrss(
-    x11, x12, x13, x14,
-    %v2;
-    %v13, %v14
-);
+# call prepare_vec_uuvvrrss(
+#     x11, x12, x13, x14,
+#     %v2;
+#     %v13, %v14
+# );
 """)
-    byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 52)
+    byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 52, with_cl = False)
     byte_ptr = getandappend_multiple_next_instruction(byte_ptr, emit_blocks, 52, with_cl = False)
 
 
