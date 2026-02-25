@@ -1,4 +1,65 @@
 
+proc insert_high(%vec_target@sint64[2], %vec_insertant@sint64[2]; %vec_out@sint32[4]) = 
+{true &&
+%vec_target >=s [0@sint64, 0@sint64],
+%vec_target <=s [((2**30)-1)@sint64, ((2**30)-1)@sint64],
+%vec_insertant >=s [0@sint64, 0@sint64],
+%vec_insertant <=s [((2**30)-1)@sint64, ((2**30)-1)@sint64]
+}
+
+mov %v3 %vec_target;
+mov %v17 %vec_insertant;
+
+
+
+(* shl	v17.2d, v17.2d, #32 *)
+mov [tmp1, tmp2] %v17;
+shl tmp1 tmp1 32;
+shl tmp2 tmp2 32;
+mov %v17 [tmp1, tmp2];
+
+(* orr	v3.16b, v3.16b, v17.16b *)
+or %v3@sint64[2] %v3 %v17;
+cast %v3@sint32[4] %v3;
+
+
+mov %vec_out %v3;
+
+assert true &&
+(sext (%vec_out[0]) 32) = %vec_target[0] (mod ((2**30)@64))
+,
+(sext (%vec_out[1]) 32) = %vec_insertant[0] (mod ((2**30)@64))
+,
+(sext (%vec_out[2]) 32) = %vec_target[1] (mod ((2**30)@64))
+,
+(sext (%vec_out[3]) 32) = %vec_insertant[1] (mod ((2**30)@64))
+;
+
+assume 
+%vec_out[0] = %vec_target[0],
+%vec_out[1] = %vec_insertant[0],
+%vec_out[2] = %vec_target[1],
+%vec_out[3] = %vec_insertant[1]
+&& true;
+
+
+{
+%vec_out[0] = %vec_target[0],
+%vec_out[1] = %vec_insertant[0],
+%vec_out[2] = %vec_target[1],
+%vec_out[3] = %vec_insertant[1]
+&& 
+(sext (%vec_out[0]) 32) = %vec_target[0] (mod ((2**30)@64)),
+(sext (%vec_out[1]) 32) = %vec_insertant[0] (mod ((2**30)@64)),
+(sext (%vec_out[2]) 32) = %vec_target[1] (mod ((2**30)@64)),
+(sext (%vec_out[3]) 32) = %vec_insertant[1] (mod ((2**30)@64))
+}
+
+
+
+
+
+
 proc main (
     sint32[4] %vec_uu0_rr0_vv0_ss0, sint32[4] %vec_uu1_rr1_vv1_ss1,
     sint32[4] %vec_F0_F1_G0_G1, sint32[4] %vec_F2_F3_G2_G3,
@@ -43,7 +104,7 @@ proc main (
         %vec_F4_F5_G4_G5_expected[0], %vec_F4_F5_G4_G5_expected[1],
         %vec_F6_F7_G6_G7_expected[0], %vec_F6_F7_G6_G7_expected[1],
         %vec_F8_F9_G8_G9_expected[0], %vec_F8_F9_G8_G9_expected[1]
-    ] * (-(2**60))
+    ] * ((2**60))
     ,
     
     // r * F + s * G  
@@ -74,7 +135,7 @@ proc main (
         %vec_F4_F5_G4_G5_expected[2], %vec_F4_F5_G4_G5_expected[3],
         %vec_F6_F7_G6_G7_expected[2], %vec_F6_F7_G6_G7_expected[3],
         %vec_F8_F9_G8_G9_expected[2], %vec_F8_F9_G8_G9_expected[3]
-    ] * (-(2**60))
+    ] * ((2**60))
 
     ,
     %vec_2x_2p30m1 = [((2**30)-1), ((2**30)-1)],
@@ -88,6 +149,16 @@ proc main (
     %vec_F6_F7_G6_G7 >= [0, 0, 0, 0],
     %vec_F8_F9_G8_G9 <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
     %vec_F8_F9_G8_G9 >= [0, 0, 0, 0],
+    %vec_F0_F1_G0_G1_expected <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
+    %vec_F0_F1_G0_G1_expected >= [0, 0, 0, 0],
+    %vec_F2_F3_G2_G3_expected <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
+    %vec_F2_F3_G2_G3_expected >= [0, 0, 0, 0],
+    %vec_F4_F5_G4_G5_expected <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
+    %vec_F4_F5_G4_G5_expected >= [0, 0, 0, 0],
+    %vec_F6_F7_G6_G7_expected <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
+    %vec_F6_F7_G6_G7_expected >= [0, 0, 0, 0],
+    %vec_F8_F9_G8_G9_expected <= [((2**30)-1), ((2**30)-1), ((2**30)-1), ((2**30)-1)],
+    %vec_F8_F9_G8_G9_expected >= [0, 0, 0, 0],
     
     (0) <= %vec_uu0_rr0_vv0_ss0[0], %vec_uu0_rr0_vv0_ss0[0] <= ((2**30)-1),
     (0) <= %vec_uu0_rr0_vv0_ss0[1], %vec_uu0_rr0_vv0_ss0[1] <= ((2**30)-1),
@@ -150,24 +221,31 @@ mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
+assert
+    and [
+        %v16[0] = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2],
+        %v16[1] = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2]
+    ]
 
-assert 
-and [
-    %v16[0] = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2],
-    %v16[1] = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2]
-] prove with [algebra solver smt:z3],
-%v16[0] = 0 (mod (2**30)),
-%v16[1] = 0 (mod (2**30))
-&& true;
-
-assume 
-%v16[0] = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2],
-%v16[1] = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2],
-%v16[0] = 0 (mod (2**30)),
-%v16[1] = 0 (mod (2**30))
+ prove with [algebra solver smt:z3],
+    %v16[0] = 0 (mod (2**30)),
+    %v16[1] = 0 (mod (2**30))
 &&
-%v16[0] = 0@64 (mod ((2**30)@sint64)),
-%v16[1] = 0@64 (mod ((2**30)@sint64));
+    true
+;
+
+
+assume
+    %v16[0] = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2],
+    %v16[1] = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2],
+    %v16[0] = 0 (mod (2**30)),
+    %v16[1] = 0 (mod (2**30))
+&&
+    %v16[0] = 0@64 (mod ((2**30)@sint64)),
+    %v16[1] = 0@64 (mod ((2**30)@sint64))
+;
+
+
 
 ghost %v16_old0@sint64[2]:
 %v16_old0 = %v16 &&
@@ -191,6 +269,11 @@ assume
 assert
     %v16[0] * (2**30) = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] prove with [algebra solver smt:z3],
     %v16[1] * (2**30) = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] prove with [algebra solver smt:z3]
+&& true;
+
+assume
+    %v16[0] * (2**30) = %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2],
+    %v16[1] * (2**30) = %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2]
 && true;
 
 
@@ -383,7 +466,6 @@ cut and[
     ]
     && true;
 
-
 (* smlal	v16.2d, v14.2s, v3.s[1]                   #! PC = 0xaaaabe371a74 *)
 broadcast %tmp1@int32[2] 2 [%v3[1]];
 mov %tmp2@int32[2] [%v14[0], %v14[1]];
@@ -464,6 +546,8 @@ and [
 ]
 && true;
 
+
+
 assert 
 and [
     %v16[0] * (2**60) = 
@@ -517,110 +601,67 @@ and [
 ]
 && true;
 
-(* and	v3.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371a84 *)
-and %v3@sint64[2] %v16 %v1;
-
-
-assert true
-&&
-(const 64 0) <=s %v3[0], %v3[0] <=s (const 64 ((2**30)-1)),
-(const 64 0) <=s %v3[1], %v3[1] <=s (const 64 ((2**30)-1)),
-%v3[0] = %v16[0] (mod ((2**30)@64)),
-%v3[1] = %v16[1] (mod ((2**30)@64));
-
-assume
-0 <= %v3[0], %v3[0] <= ((2**30)-1),
-0 <= %v3[1], %v3[1] <= ((2**30)-1),
-%v3[0] = %v16[0] (mod (2**30)),
-%v3[1] = %v16[1] (mod (2**30))
-&&
-(const 64 0) <=s %v3[0], %v3[0] <=s (const 64 ((2**30)-1)),
-(const 64 0) <=s %v3[1], %v3[1] <=s (const 64 ((2**30)-1)),
-%v3[0] = %v16[0] (mod ((2**30)@64)),
-%v3[1] = %v16[1] (mod ((2**30)@64));
-
-
-assert and [
-%v3[0] * (2**60) = (-1) * (%vec_F0_F1_G0_G1_expected[0]) * (2**60) (mod (2**90)) ,
-%v3[1] * (2**60) = (-1) * (%vec_F0_F1_G0_G1_expected[2]) * (2**60) (mod (2**90)) 
-] prove with [precondition]
-&& true;
-
-assume and [
-%v3[0] * (2**60) = (-1) * (%vec_F0_F1_G0_G1_expected[0]) * (2**60) (mod (2**90)) ,
-%v3[1] * (2**60) = (-1) * (%vec_F0_F1_G0_G1_expected[2]) * (2**60) (mod (2**90)) 
-]
-&& true;
-
-// XXX probablistic solver
-# assert and [
-# %v3[0] = (-1) * (%vec_F0_F1_G0_G1_expected[0]) (mod (2**30)),
-# %v3[1] = (-1) * (%vec_F0_F1_G0_G1_expected[2]) (mod (2**30))
-# ] 
-# prove with [algebra solver smt:z3]
-# && true;
-
-assume and [
-%v3[0] = (-1) * (%vec_F0_F1_G0_G1_expected[0]) (mod (2**30)),
-%v3[1] = (-1) * (%vec_F0_F1_G0_G1_expected[2]) (mod (2**30))
-] 
-&& true;
+cut
+and [
+   %v16[0] * (2**60) = 
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60)
+   ,
+   %v16[1] * (2**60) = 
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60)
+] prove with [all cuts, precondition]
+&& true prove with [all cuts, precondition];
 
 
 ghost %v16_old2@sint64[2]:
-%v16_old2 = %v16 &&
-%v16_old2 = %v16 ;
+	%v16_old2 = %v16
+	&&
+	%v16_old2 = %v16
+	;
 
+(* and	v3.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371a84 *)
+and %v3@sint64[2] %v16 %v1;
 
 (* sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371a88 *)
 split %v16 %dc %v16 30;
 
-
-assert 
-true
-&& 
+assert true &&
 %v16[0] * (const 64 (2**30)) + %v3[0] = %v16_old2[0],
-%v16[1] * (const 64 (2**30)) + %v3[1] = %v16_old2[1]
+%v16[1] * (const 64 (2**30)) + %v3[1] = %v16_old2[1],
+(const 64 0) <=s %v3[0], %v3[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v3[1], %v3[1] <=s (const 64 ((2**30)-1))
 ;
 
-assume
+assume 
 %v16[0] * (2**30) + %v3[0] = %v16_old2[0],
-%v16[1] * (2**30) + %v3[1] = %v16_old2[1]
-&& 
+%v16[1] * (2**30) + %v3[1] = %v16_old2[1],
+0 <= %v3[0], %v3[0] <= ((2**30)-1),
+0 <= %v3[1], %v3[1] <= ((2**30)-1)
+&&
 %v16[0] * (const 64 (2**30)) + %v3[0] = %v16_old2[0],
-%v16[1] * (const 64 (2**30)) + %v3[1] = %v16_old2[1]
+%v16[1] * (const 64 (2**30)) + %v3[1] = %v16_old2[1],
+(const 64 0) <=s %v3[0], %v3[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v3[1], %v3[1] <=s (const 64 ((2**30)-1))
 ;
 
-cut 
-%v3[0] = (-1) * (%vec_F0_F1_G0_G1_expected[0]) (mod (2**30)),
-%v3[1] = (-1) * (%vec_F0_F1_G0_G1_expected[2]) (mod (2**30)),
-%v16[0] * (2**90) = (
-        %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
-        (
-            %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
-            %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
-        ) * (2**30) +
-        (
-            %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
-            %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
-        ) * (2**60)
-    )
-- %v3[0] * (2**60)
-,
-%v16[1] * (2**90) = (
-        %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
-        (
-            %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
-            %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
-        ) * (2**30) +
-        (
-            %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
-            %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
-        ) * (2**60)
-    )
-- %v3[1] * (2**60)
 
-&& true prove with [all cuts, precondition];
+
+
 
 
 (* smlal	v16.2d, v14.2s, v4.s[0]                   #! PC = 0xaaaabe371a8c *)
@@ -647,39 +688,76 @@ mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
-
 assert 
 and [
-    %v16[0] * (2**90) = 
-    %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
-    (
-        %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
-        %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
-    ) * (2**30) +
-    (
-        %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
-        %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
-    ) * (2**60) +
-    (
-        %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[0] +
-        %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+%v16[0] * (2**90) + %v3[0] * (2**60) = 
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
     ) * (2**90)
-    - %v3[0] * (2**60)
-    (mod (2**154))
-    # ,
-    # %v16[1] * (2**90) = 
-    # %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
-    # (
-    #     %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
-    #     %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
-    # ) * (2**30) +
-    # (
-    #     %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
-    #     %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
-    # ) * (2**60)
-    # (mod (2**124))
-] prove with [all cuts, precondition]
+(mod (2**154))
+,
+%v16[1] * (2**90) + %v3[1] * (2**60) = 
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+(mod (2**154))
+]
 && true;
+
+
+assert and [
+%v3[0] * (2**60) = %vec_F0_F1_G0_G1_expected[0] * ((2**60)) (mod (2**90)),
+%v3[1] * (2**60) = %vec_F0_F1_G0_G1_expected[2] * ((2**60)) (mod (2**90))
+]
+prove with [precondition]
+&& true;
+
+assume 
+%v3[0] * (2**60) = %vec_F0_F1_G0_G1_expected[0] * ((2**60)) (mod (2**90)),
+%v3[1] * (2**60) = %vec_F0_F1_G0_G1_expected[2] * ((2**60)) (mod (2**90))
+&& true;
+
+
+assert and [
+%v3[0] = (%vec_F0_F1_G0_G1_expected[0] * (1)) (mod (2**30)),
+%v3[1] = (%vec_F0_F1_G0_G1_expected[2] * (1)) (mod (2**30))
+]
+prove with [precondition, algebra solver smt:z3]
+&& true;
+
+assume and [
+%v3[0] = (%vec_F0_F1_G0_G1_expected[0] * (1)) (mod (2**30)),
+%v3[1] = (%vec_F0_F1_G0_G1_expected[2] * (1)) (mod (2**30))
+]
+&& true;
+
+
+ghost %v16_old3@sint64[2]:
+	%v16_old3 = %v16
+	&&
+	%v16_old3 = %v16
+	;
+
 
 (* and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371a9c *)
 and %v17@sint64[2] %v16 %v1;
@@ -687,15 +765,180 @@ and %v17@sint64[2] %v16 %v1;
 (* sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371aa0 *)
 split %v16 %dc %v16 30;
 
-(* shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371aa4 *)
-mov [tmp1, tmp2] %v17;
-shl tmp1 tmp1 32;
-shl tmp2 tmp2 32;
-mov %v17 [tmp1, tmp2];
+assert true &&
+%v16[0] * (const 64 (2**30)) + %v17[0] = %v16_old3[0],
+%v16[1] * (const 64 (2**30)) + %v17[1] = %v16_old3[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
 
+assume
+%v16[0] * (2**30) + %v17[0] = %v16_old3[0],
+%v16[1] * (2**30) + %v17[1] = %v16_old3[1],
+0 <= %v17[0], %v17[0] <= ((2**30)-1),
+0 <= %v17[1], %v17[1] <= ((2**30)-1)
+&&
+%v16[0] * (const 64 (2**30)) + %v17[0] = %v16_old3[0],
+%v16[1] * (const 64 (2**30)) + %v17[1] = %v16_old3[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
+
+
+(* shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371aa4 *)
 (* orr	v3.16b, v3.16b, v17.16b                     #! PC = 0xaaaabe371aa8 *)
-or %v3@sint64[2] %v3 %v17;
-cast %v3@sint32[4] %v3;
+mov %v3_in %v3;
+nondet %v3@sint32[4];
+call insert_high(%v3_in, %v17; %v3);
+
+assert 
+%v16[0] * (2**30) + %v3[1] = %v16_old3[0]
+,
+%v16[1] * (2**30) + %v3[3] = %v16_old3[1]
+&& true;
+
+
+assert
+%v16[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+(mod (2**154))
+,
+%v16[1] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+(mod (2**154))
+&& true;
+
+
+
+
+
+assert and [
+%v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+    (mod (2**120))
+    ,
+%v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+    (mod (2**120))
+]
+,
+and [
+%v3[1] * (2**90) + %v3[0] * (2**60)  = 
+        (1) * ( %vec_F0_F1_G0_G1_expected[0] * (2**60) + %vec_F0_F1_G0_G1_expected[1] * (2**90) )
+    (mod (2**120))
+,
+%v3[3] * (2**90) + %v3[2] * (2**60)  = 
+        (1) * ( %vec_F0_F1_G0_G1_expected[2] * (2**60) + %vec_F0_F1_G0_G1_expected[3] * (2**90) )
+    (mod (2**120))
+] prove with [precondition, all cuts]
+
+&& true;
+
+assume
+%v3[1] * (2**90) + %v3[0] * (2**60)  = 
+        (1) * ( %vec_F0_F1_G0_G1_expected[0] * (2**60) + %vec_F0_F1_G0_G1_expected[1] * (2**90) )
+    (mod (2**120))
+    ,
+%v3[3] * (2**90) + %v3[2] * (2**60)  = 
+        (1) * ( %vec_F0_F1_G0_G1_expected[2] * (2**60) + %vec_F0_F1_G0_G1_expected[3] * (2**90) )
+    (mod (2**120))
+    && true;
+
+assert and [
+%v3 = %vec_F0_F1_G0_G1_expected
+] prove with [algebra solver smt:z3, precondition]
+&& true;
+
+
+
+
+
+
+
+
+cut
+%v16[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+(mod (2**154))
+,
+%v16[1] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90)
+(mod (2**154))
+&& true prove with [all cuts, precondition];
+
+
 
 (* smlal	v16.2d, v14.2s, v4.s[1]                   #! PC = 0xaaaabe371aac *)
 broadcast %tmp1@int32[2] 2 [%v4[1]];
@@ -720,6 +963,55 @@ broadcast %tmp1@int32[2] 2 [%v5[2]];
 mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
+
+assert
+%v16[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+    ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+    ) * (2**120)
+(mod (2**184))
+// ,
+// %v16[1] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+//    %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+//    (
+//        %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+//        %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+//    ) * (2**30) +
+//    (
+//        %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+//        %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+//    ) * (2**60) +
+//    (
+//        %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+//        %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+//     ) * (2**90) +
+//    (
+//        %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+//        %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+//     ) * (2**120)
+// (mod (2**184))
+&& true;
+
+ghost %v16_old4@sint64[2]:
+	%v16_old4 = %v16
+	&&
+	%v16_old4 = %v16
+	;
+
 
 (* and	v4.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371abc *)
 and %v4@sint64[2] %v16 %v1;
