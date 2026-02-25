@@ -1580,7 +1580,8 @@ assert and [
 ]
 && true;
 
-assume and [
+
+cut and [
 %v16[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
    %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
    (
@@ -1627,35 +1628,7 @@ assume and [
        %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
    ) * (2**150)
 ]
-&& true;
-
-assert 
-and [
-%v4[1] * (2**150) + %v4[0] * (2**120)  +
-%v3[1] * (2**90) + %v3[0] * (2**60)  = 
-%vec_F0_F1_G0_G1_expected[0] * (2**60) + %vec_F0_F1_G0_G1_expected[1] * (2**90) +
-%vec_F2_F3_G2_G3_expected[0] * (2**120) + %vec_F2_F3_G2_G3_expected[1] * (2**150)
-    (mod (2**180))
-
-] prove with [precondition]
-
-&& true;
-
-// assume
-// %v3[1] * (2**90) + %v3[0] * (2**60)  = 
-//         (1) * ( %vec_F0_F1_G0_G1_expected[0] * (2**60) + %vec_F0_F1_G0_G1_expected[1] * (2**90) )
-//     (mod (2**120))
-//     ,
-// %v3[3] * (2**90) + %v3[2] * (2**60)  = 
-//         (1) * ( %vec_F0_F1_G0_G1_expected[2] * (2**60) + %vec_F0_F1_G0_G1_expected[3] * (2**90) )
-//     (mod (2**120))
-//     && true;
-//
-// assert and [
-// %v4 = %vec_F2_F3_G2_G3_expected
-// ] prove with [algebra solver smt:z3, precondition]
-// && true;
-
+&& true prove with [all cuts, precondition];
 
 (* smlal	v16.2d, v14.2s, v5.s[1]                   #! PC = 0xaaaabe371ae4 *)
 broadcast %tmp1@int32[2] 2 [%v5[1]];
@@ -1681,11 +1654,270 @@ mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
+assert and [
+%v16[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+   (mod (2**244))
+,
+%v16[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+   (mod (2**244))
+]
+&& true;
+
+assert and [
+%v16[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+,
+%v16[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+]
+prove with [algebra solver smt:z3, precondition]
+&& true;
+
+assume and [
+%v16[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+,
+%v16[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+]
+&& true;
+
+ghost %v16_old6@sint64[2]:
+	%v16_old6 = %v16
+	&&
+	%v16_old6 = %v16
+	;
+
 (* and	v5.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371af4 *)
 and %v5@sint64[2] %v16 %v1;
 
 (* sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371af8 *)
 split %v16 %dc %v16 30;
+
+assert true &&
+%v16[0] * (const 64 (2**30)) + %v5[0] = %v16_old6[0],
+%v16[1] * (const 64 (2**30)) + %v5[1] = %v16_old6[1],
+(const 64 0) <=s %v5[0], %v5[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v5[1], %v5[1] <=s (const 64 ((2**30)-1))
+;
+
+assume 
+%v16[0] * (2**30) + %v5[0] = %v16_old6[0],
+%v16[1] * (2**30) + %v5[1] = %v16_old6[1],
+0 <= %v5[0], %v5[0] <= ((2**30)-1),
+0 <= %v5[1], %v5[1] <= ((2**30)-1)
+&&
+%v16[0] * (const 64 (2**30)) + %v5[0] = %v16_old6[0],
+%v16[1] * (const 64 (2**30)) + %v5[1] = %v16_old6[1],
+(const 64 0) <=s %v5[0], %v5[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v5[1], %v5[1] <=s (const 64 ((2**30)-1))
+;
+
+cut and [
+%v16[0] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+,
+%v16[1] * (2**210) + %v5[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180)
+]
+&& 
+(const 64 0) <=s %v5[0], %v5[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v5[1], %v5[1] <=s (const 64 ((2**30)-1)),
+true prove with [all cuts, precondition];
 
 (* smlal	v16.2d, v14.2s, v6.s[0]                   #! PC = 0xaaaabe371afc *)
 broadcast %tmp1@int32[2] 2 [%v6[0]];
@@ -1711,21 +1943,313 @@ mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
+assert and [
+%v16[0] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+   (mod (2**274))
+,
+%v16[1] * (2**210) + %v5[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+   (mod (2**274))
+]
+&& true;
+
+assert and [
+%v16[0] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+,
+%v16[1] * (2**210) + %v5[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+] prove with [algebra solver smt:z3, precondition]
+&& true;
+
+assume and [
+%v16[0] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+,
+%v16[1] * (2**210) + %v5[1] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+]
+&& true;
+
+ghost %v16_old7@sint64[2]:
+	%v16_old7 = %v16
+	&&
+	%v16_old7 = %v16
+	;
+
 (* and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371b0c *)
 and %v17@sint64[2] %v16 %v1;
 
 (* sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371b10 *)
 split %v16 %dc %v16 30;
 
-(* shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371b14 *)
-mov [tmp1, tmp2] %v17;
-shl tmp1 tmp1 32;
-shl tmp2 tmp2 32;
-mov %v17 [tmp1, tmp2];
+assert true &&
+%v16[0] * (const 64 (2**30)) + %v17[0] = %v16_old7[0],
+%v16[1] * (const 64 (2**30)) + %v17[1] = %v16_old7[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
 
+assume 
+%v16[0] * (2**30) + %v17[0] = %v16_old7[0],
+%v16[1] * (2**30) + %v17[1] = %v16_old7[1],
+0 <= %v17[0], %v17[0] <= ((2**30)-1),
+0 <= %v17[1], %v17[1] <= ((2**30)-1)
+&&
+%v16[0] * (const 64 (2**30)) + %v17[0] = %v16_old7[0],
+%v16[1] * (const 64 (2**30)) + %v17[1] = %v16_old7[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
+
+(* shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371b14 *)
 (* orr	v5.16b, v5.16b, v17.16b                     #! PC = 0xaaaabe371b18 *)
-or %v5@sint64[2] %v5 %v17;
-cast %v5@sint32[4] %v5;
+mov %v5_in %v5;
+nondet %v5@sint32[4];
+call insert_high(%v5_in, %v17; %v5);
+
+assert 
+%v16[0] * (2**30) + %v5[1] = %v16_old7[0]
+,
+%v16[1] * (2**30) + %v5[3] = %v16_old7[1]
+&& true;
+
+cut and [
+%v16[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+,
+%v16[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210)
+]
+&& true prove with [precondition, all cuts];
+
+
+
 
 (* smlal	v16.2d, v14.2s, v6.s[1]                   #! PC = 0xaaaabe371b1c *)
 broadcast %tmp1@int32[2] 2 [%v6[1]];
@@ -1751,11 +2275,332 @@ mov %tmp2@int32[2] [%v13[2], %v13[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
+assert and [
+%v16[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+    (mod (2**304))
+,
+%v16[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+    (mod (2**304))
+]
+&& true;
+
+assert and [
+%v16[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+,
+%v16[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+] prove with [algebra solver smt:z3, precondition]
+&& true;
+
+assume and [
+%v16[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+,
+%v16[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+]
+&& true;
+ghost %v16_old8@sint64[2]:
+	%v16_old8 = %v16
+	&&
+	%v16_old8 = %v16
+	;
+
 (* and	v6.16b, v16.16b, v1.16b                     #! PC = 0xaaaabe371b2c *)
 and %v6@sint64[2] %v16 %v1;
 
 (* sshr	v16.2d, v16.2d, #30                        #! PC = 0xaaaabe371b30 *)
 split %v16 %dc %v16 30;
+
+assert true &&
+%v16[0] * (const 64 (2**30)) + %v6[0] = %v16_old8[0],
+%v16[1] * (const 64 (2**30)) + %v6[1] = %v16_old8[1],
+(const 64 0) <=s %v6[0], %v6[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v6[1], %v6[1] <=s (const 64 ((2**30)-1))
+;
+
+assume 
+%v16[0] * (2**30) + %v6[0] = %v16_old8[0],
+%v16[1] * (2**30) + %v6[1] = %v16_old8[1],
+0 <= %v6[0], %v6[0] <= ((2**30)-1),
+0 <= %v6[1], %v6[1] <= ((2**30)-1)
+&&
+%v16[0] * (const 64 (2**30)) + %v6[0] = %v16_old8[0],
+%v16[1] * (const 64 (2**30)) + %v6[1] = %v16_old8[1],
+(const 64 0) <=s %v6[0], %v6[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v6[1], %v6[1] <=s (const 64 ((2**30)-1))
+;
+
+cut and [
+%v16[0] * (2**270) + %v6[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+,
+%v16[1] * (2**270) + %v6[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240)
+]
+&& 
+(const 64 0) <=s %v6[0], %v6[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v6[1], %v6[1] <=s (const 64 ((2**30)-1)),
+true prove with [all cuts, precondition];
 
 (* smlal	v16.2d, v14.2s, v7.s[0]                   #! PC = 0xaaaabe371b34 *)
 broadcast %tmp1@int32[2] 2 [%v7[0]];
@@ -1769,22 +2614,461 @@ mov %tmp2@int32[2] [%v14[2], %v14[3]];
 smulj %tmp3@int64[2] %tmp1 %tmp2;
 adds %dc %v16@int64[2] %v16 %tmp3;
 
+assert and [
+%v16[0] * (2**270) + %v6[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+   (mod (2**334))
+,
+%v16[1] * (2**270) + %v6[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+   (mod (2**334))
+]
+&& true;
+
+assert and [
+%v16[0] * (2**270) + %v6[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+,
+%v16[1] * (2**270) + %v6[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+] prove with [algebra solver smt:z3, precondition]
+&& true;
+assume and [
+%v16[0] * (2**270) + %v6[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+,
+%v16[1] * (2**270) + %v6[1] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+]
+&& true;
+
+ghost %v16_old9@sint64[2]:
+	%v16_old9 = %v16
+	&&
+	%v16_old9 = %v16
+	;
+
 (* and	v17.16b, v16.16b, v1.16b                    #! PC = 0xaaaabe371b3c *)
 and %v17@sint64[2] %v16 %v1;
 
 (* sshr	v7.2d, v16.2d, #30                         #! PC = 0xaaaabe371b40 *)
 split %v7 %dc %v16 30;
 
+assert true &&
+%v7[0] * (const 64 (2**30)) + %v17[0] = %v16_old9[0],
+%v7[1] * (const 64 (2**30)) + %v17[1] = %v16_old9[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
+
+assume 
+%v7[0] * (2**30) + %v17[0] = %v16_old9[0],
+%v7[1] * (2**30) + %v17[1] = %v16_old9[1],
+0 <= %v17[0], %v17[0] <= ((2**30)-1),
+0 <= %v17[1], %v17[1] <= ((2**30)-1)
+&&
+%v7[0] * (const 64 (2**30)) + %v17[0] = %v16_old9[0],
+%v7[1] * (const 64 (2**30)) + %v17[1] = %v16_old9[1],
+(const 64 0) <=s %v17[0], %v17[0] <=s (const 64 ((2**30)-1)),
+(const 64 0) <=s %v17[1], %v17[1] <=s (const 64 ((2**30)-1))
+;
+
+
 (* shl	v17.2d, v17.2d, #32                         #! PC = 0xaaaabe371b44 *)
-mov [tmp1, tmp2] %v17;
-shl tmp1 tmp1 32;
-shl tmp2 tmp2 32;
-mov %v17 [tmp1, tmp2];
-
 (* orr	v6.16b, v6.16b, v17.16b                     #! PC = 0xaaaabe371b48 *)
-or %v6@sint64[2] %v6 %v17;
-cast %v6@sint32[4] %v6;
+mov %v6_in %v6;
+nondet %v6@sint32[4];
+call insert_high(%v6_in, %v17; %v6);
 
+assert 
+%v7[0] * (2**30) + %v6[1] = %v16_old9[0]
+,
+%v7[1] * (2**30) + %v6[3] = %v16_old9[1]
+&& true;
+
+cut and [
+%v7[0] * (2**300) + %v6[1] * (2**270) + %v6[0] * (2**240) + %v5[1] * (2**210) + %v5[0] * (2**180) + %v4[1] * (2**150) + %v4[0] * (2**120) + %v3[1] * (2**90) + %v3[0] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+,
+%v7[1] * (2**300) + %v6[3] * (2**270) + %v6[2] * (2**240) + %v5[3] * (2**210) + %v5[2] * (2**180) + %v4[3] * (2**150) + %v4[2] * (2**120) + %v3[3] * (2**90) + %v3[2] * (2**60)  =
+   %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[1] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[1] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[3] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+]
+&& true prove with [precondition, all cuts];
+
+
+
+assert and [
+    limbs 30 [
+        %vec_uu0_rr0_vv0_ss0[0], %vec_uu1_rr1_vv1_ss1[0]
+    ] *
+    limbs 30 [
+        %vec_F0_F1_G0_G1[0], %vec_F0_F1_G0_G1[1],
+        %vec_F2_F3_G2_G3[0], %vec_F2_F3_G2_G3[1],
+        %vec_F4_F5_G4_G5[0], %vec_F4_F5_G4_G5[1],
+        %vec_F6_F7_G6_G7[0], %vec_F6_F7_G6_G7[1],
+        %vec_F8_F9_G8_G9[0], %vec_F8_F9_G8_G9[1]
+    ]
+    +
+    limbs 30 [
+        %vec_uu0_rr0_vv0_ss0[2], %vec_uu1_rr1_vv1_ss1[2]
+    ] *
+    limbs 30 [
+        %vec_F0_F1_G0_G1[2], %vec_F0_F1_G0_G1[3],
+        %vec_F2_F3_G2_G3[2], %vec_F2_F3_G2_G3[3],
+        %vec_F4_F5_G4_G5[2], %vec_F4_F5_G4_G5[3],
+        %vec_F6_F7_G6_G7[2], %vec_F6_F7_G6_G7[3],
+        %vec_F8_F9_G8_G9[2], %vec_F8_F9_G8_G9[3]
+    ] = 
+    limbs 30 [
+        %vec_F0_F1_G0_G1_expected[0], %vec_F0_F1_G0_G1_expected[1],
+        %vec_F2_F3_G2_G3_expected[0], %vec_F2_F3_G2_G3_expected[1],
+        %vec_F4_F5_G4_G5_expected[0], %vec_F4_F5_G4_G5_expected[1],
+        %vec_F6_F7_G6_G7_expected[0], %vec_F6_F7_G6_G7_expected[1],
+        %vec_F8_F9_G8_G9_expected[0], %vec_F8_F9_G8_G9_expected[1]
+    ] * ((2**60))
+    ,
+    limbs 30 [
+        %vec_uu0_rr0_vv0_ss0[0], %vec_uu1_rr1_vv1_ss1[0]
+    ] *
+    limbs 30 [
+        %vec_F0_F1_G0_G1[0], %vec_F0_F1_G0_G1[1],
+        %vec_F2_F3_G2_G3[0], %vec_F2_F3_G2_G3[1],
+        %vec_F4_F5_G4_G5[0], %vec_F4_F5_G4_G5[1],
+        %vec_F6_F7_G6_G7[0], %vec_F6_F7_G6_G7[1],
+        %vec_F8_F9_G8_G9[0], %vec_F8_F9_G8_G9[1]
+    ]
+    +
+    limbs 30 [
+        %vec_uu0_rr0_vv0_ss0[2], %vec_uu1_rr1_vv1_ss1[2]
+    ] *
+    limbs 30 [
+        %vec_F0_F1_G0_G1[2], %vec_F0_F1_G0_G1[3],
+        %vec_F2_F3_G2_G3[2], %vec_F2_F3_G2_G3[3],
+        %vec_F4_F5_G4_G5[2], %vec_F4_F5_G4_G5[3],
+        %vec_F6_F7_G6_G7[2], %vec_F6_F7_G6_G7[3],
+        %vec_F8_F9_G8_G9[2], %vec_F8_F9_G8_G9[3]
+    ] = 
+   %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[2] +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F0_F1_G0_G1[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F0_F1_G0_G1[3]
+   ) * (2**30) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F0_F1_G0_G1[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F0_F1_G0_G1[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[2]
+   ) * (2**60) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F2_F3_G2_G3[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F2_F3_G2_G3[3]
+   ) * (2**90) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F2_F3_G2_G3[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F2_F3_G2_G3[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[2]
+   ) * (2**120) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F4_F5_G4_G5[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F4_F5_G4_G5[3]
+   ) * (2**150) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F4_F5_G4_G5[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F4_F5_G4_G5[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[2]
+   ) * (2**180) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[2] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F6_F7_G6_G7[1] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F6_F7_G6_G7[3]
+   ) * (2**210) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F6_F7_G6_G7[1] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F6_F7_G6_G7[3] +
+       %vec_uu0_rr0_vv0_ss0[0] * %vec_F8_F9_G8_G9[0] + %vec_uu0_rr0_vv0_ss0[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**240) +
+   (
+       %vec_uu1_rr1_vv1_ss1[0] * %vec_F8_F9_G8_G9[0] + %vec_uu1_rr1_vv1_ss1[2] * %vec_F8_F9_G8_G9[2]
+   ) * (2**270)
+
+
+
+    ] prove with [precondition]
+    && true;
 
 
 cut true && true prove with [all cuts, precondition];
