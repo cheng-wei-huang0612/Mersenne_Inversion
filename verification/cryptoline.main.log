@@ -1,0 +1,45 @@
+===== Verifying program safety =====
+=== Cut #0 ===
+INPUT IN SMTLIB2 FORMAT:
+; Verify: safety
+; Track: default
+; Cut: #0
+; Verify: safety (all in one query)
+; Output file: /tmp/outputqfbv_ee39c9.log
+(set-logic QF_BV)
+(set-info :smt-lib-version 2.0)
+
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert true)
+(assert (not (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and (and true true) true) true) true) true) true) true) true) true) true) true) true) true) true) true) true) true) true) true) true)))
+(check-sat)
+(exit)
+
+Run boolector with command: boolector  /tmp/inputqfbv_8c07c5.smt2
+Execution time of boolector: 0.0019 seconds
+OUTPUT FROM boolector:
+unsat
+
+Execution of safety task: 0.0096 seconds
+===== Verifying range assertions =====
+===== Verifying range specifications =====
+===== Verifying algebraic assertions =====
