@@ -568,6 +568,41 @@ asm_main += f"adcs {Vlimb64_2}, {Vlimb64_2}, {tmp}\n"
 asm_main += f"lsr {tmp}, {tmp}, #1\n"
 asm_main += f"adcs {Vlimb64_3}, {Vlimb64_3}, {tmp}\n"
 
+#if N=1 then += P
+asm_main += f"adds xzr, {Vlimb64_3}, #0\n"
+
+asm_main += f"mov {tmp}, #-19\n"
+asm_main += f"csel {tmp}, {tmp}, xzr, mi\n"
+asm_main += f"adds {Vlimb64_0}, {Vlimb64_0}, {tmp}\n"
+
+asm_main += f"asr {tmp}, {tmp}, #5\n"
+asm_main += f"adcs {Vlimb64_1}, {Vlimb64_1}, {tmp}\n"
+asm_main += f"adcs {Vlimb64_2}, {Vlimb64_2}, {tmp}\n"
+
+asm_main += f"lsr {tmp}, {tmp}, #1\n"
+asm_main += f"adcs {Vlimb64_3}, {Vlimb64_3}, {tmp}\n"
+
+
+# x14, x15, x16, x17
+asm_main += f"mov {tmp}, #19\n"
+asm_main += f"adds x14, {Vlimb64_0}, {tmp}\n"
+asm_main += f"adcs x15, {Vlimb64_1}, xzr\n"
+asm_main += f"adcs x16, {Vlimb64_2}, xzr\n"
+asm_main += f"adcs x17, {Vlimb64_3}, xzr\n"
+
+asm_main += f"mov {tmp}, #1\n"
+asm_main += f"ror {tmp}, {tmp}, #1\n"
+asm_main += f"sub x17, x17, {tmp}\n"
+
+asm_main += f"csel {Vlimb64_0}, x14, {Vlimb64_0}, mi\n"
+asm_main += f"csel {Vlimb64_1}, x15, {Vlimb64_1}, mi\n"
+asm_main += f"csel {Vlimb64_2}, x16, {Vlimb64_2}, mi\n"
+asm_main += f"csel {Vlimb64_3}, x17, {Vlimb64_3}, mi\n"
+
+
+
+
+
 
 
 
