@@ -2596,6 +2596,38 @@ sshr   v18.2d, v11.2d, #30
 ushr   v18.2d, v18.2d, #32
 add    v12.4s, v12.4s, v18.4s
 bic    v11.16b, v11.16b, v17.16b
+sshr   v18.4s, v12.4s, #15
+mla    v8.4s, v18.4s, v16.4s
+shl    v16.2d, v18.2d, #15
+sub    v12.4s, v12.4s, v16.4s
+sshr   v18.4s,  v8.4s, #30
+shl    v18.2d,  v18.2d, #32
+add    v8.4s, v8.4s, v18.4s
+sshr   v18.2d, v8.2d, #30
+ushr   v18.2d, v18.2d, #32
+add    v9.4s, v9.4s, v18.4s
+bic    v8.16b, v8.16b, v17.16b
+sshr   v18.4s,  v9.4s, #30
+shl    v18.2d,  v18.2d, #32
+add    v9.4s, v9.4s, v18.4s
+sshr   v18.2d, v9.2d, #30
+ushr   v18.2d, v18.2d, #32
+add    v10.4s, v10.4s, v18.4s
+bic    v9.16b, v9.16b, v17.16b
+sshr   v18.4s,  v10.4s, #30
+shl    v18.2d,  v18.2d, #32
+add    v10.4s, v10.4s, v18.4s
+sshr   v18.2d, v10.2d, #30
+ushr   v18.2d, v18.2d, #32
+add    v11.4s, v11.4s, v18.4s
+bic    v10.16b, v10.16b, v17.16b
+sshr   v18.4s,  v11.4s, #30
+shl    v18.2d,  v18.2d, #32
+add    v11.4s, v11.4s, v18.4s
+sshr   v18.2d, v11.2d, #30
+ushr   v18.2d, v18.2d, #32
+add    v12.4s, v12.4s, v18.4s
+bic    v11.16b, v11.16b, v17.16b
 smov x9, v8.s[0]
 smov x10, v8.s[1]
 smov x11, v9.s[0]
