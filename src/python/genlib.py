@@ -1925,6 +1925,119 @@ def update_VS_carry(vec_V0_V1_S0_S1,
     asm_script += f"add    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_buffer}.4s\n"
     asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
 
+    # asm_script += f"sshr   {vec_buffer}.2d, {vec_V8_V9_S8_S9}.2d, #15\n"
+    # asm_script += f"shl    {vec_prod}.2d, {vec_buffer}.2d, #15\n"
+    # asm_script += f"sub    {vec_V8_V9_S8_S9}.2d, {vec_V8_V9_S8_S9}.2d, {vec_prod}.2d\n"
+    # asm_script += f"mla    {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s, {vec_m19}.4s\n"
+
+    return asm_script
+
+def update_VS_carry_2(vec_V0_V1_S0_S1, 
+              vec_V2_V3_S2_S3, 
+              vec_V4_V5_S4_S5, 
+              vec_V6_V7_S6_S7,
+              vec_V8_V9_S8_S9,
+              vec_2x_2p30m1,
+              vec_m19,
+              vec_prod,
+              vec_buffer):
+
+    asm_script = ""
+
+
+    # carry process
+    vec_carry_clearer = vec_prod
+    asm_script += f"dup    {vec_carry_clearer}.4s, {vec_2x_2p30m1}.s[0]\n"
+    asm_script += f"mvn    {vec_carry_clearer}.16b, {vec_carry_clearer}.16b\n"
+
+    # asm_script += f"add    {vec_V0_V1_S0_S1}.2d, {vec_V0_V1_S0_S1}.2d, {vec_m19}.2d\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V0_V1_S0_S1}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V0_V1_S0_S1}.4s, {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V0_V1_S0_S1}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V0_V1_S0_S1}.16b, {vec_V0_V1_S0_S1}.16b, {vec_carry_clearer}.16b\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V2_V3_S2_S3}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V2_V3_S2_S3}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V2_V3_S2_S3}.16b, {vec_V2_V3_S2_S3}.16b, {vec_carry_clearer}.16b\n"
+
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V4_V5_S4_S5}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V4_V5_S4_S5}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V4_V5_S4_S5}.16b, {vec_V4_V5_S4_S5}.16b, {vec_carry_clearer}.16b\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V6_V7_S6_S7}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V6_V7_S6_S7}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
+
+
+
+    # asm_script += f"sshr   {vec_buffer}.2d, {vec_V8_V9_S8_S9}.2d, #15\n"
+    # asm_script += f"shl    {vec_prod}.2d, {vec_buffer}.2d, #15\n"
+    # asm_script += f"sub    {vec_V8_V9_S8_S9}.2d, {vec_V8_V9_S8_S9}.2d, {vec_prod}.2d\n"
+    # asm_script += f"sub    {vec_V0_V1_S0_S1}.4s, {vec_V0_V1_S0_S1}.4s, {vec_m19}.4s\n"
+    # asm_script += f"mla    {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s, {vec_m19}.4s\n"
+
+    asm_script += f"sshr   {vec_buffer}.4s, {vec_V8_V9_S8_S9}.4s, #15\n"
+    asm_script += f"mla    {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s, {vec_m19}.4s\n"
+    asm_script += f"shl    {vec_m19}.2d, {vec_buffer}.2d, #15\n"
+    asm_script += f"sub    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_m19}.4s\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V0_V1_S0_S1}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V0_V1_S0_S1}.4s, {vec_V0_V1_S0_S1}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V0_V1_S0_S1}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V0_V1_S0_S1}.16b, {vec_V0_V1_S0_S1}.16b, {vec_carry_clearer}.16b\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V2_V3_S2_S3}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V2_V3_S2_S3}.4s, {vec_V2_V3_S2_S3}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V2_V3_S2_S3}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V2_V3_S2_S3}.16b, {vec_V2_V3_S2_S3}.16b, {vec_carry_clearer}.16b\n"
+
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V4_V5_S4_S5}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V4_V5_S4_S5}.4s, {vec_V4_V5_S4_S5}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V4_V5_S4_S5}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V4_V5_S4_S5}.16b, {vec_V4_V5_S4_S5}.16b, {vec_carry_clearer}.16b\n"
+
+
+    asm_script += f"sshr   {vec_buffer}.4s,  {vec_V6_V7_S6_S7}.4s, #30\n"
+    asm_script += f"shl    {vec_buffer}.2d,  {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V6_V7_S6_S7}.4s, {vec_V6_V7_S6_S7}.4s, {vec_buffer}.4s\n"
+    asm_script += f"sshr   {vec_buffer}.2d, {vec_V6_V7_S6_S7}.2d, #30\n"
+    asm_script += f"ushr   {vec_buffer}.2d, {vec_buffer}.2d, #32\n"
+    asm_script += f"add    {vec_V8_V9_S8_S9}.4s, {vec_V8_V9_S8_S9}.4s, {vec_buffer}.4s\n"
+    asm_script += f"bic    {vec_V6_V7_S6_S7}.16b, {vec_V6_V7_S6_S7}.16b, {vec_carry_clearer}.16b\n"
 
     return asm_script
 
