@@ -1766,6 +1766,27 @@ adcs x10, x10, x13
 adcs x11, x11, x13
 lsr x13, x13, #1
 adcs x12, x12, x13
+adds xzr, x12, #0
+mov x13, #-19
+csel x13, x13, xzr, mi
+adds x9, x9, x13
+asr x13, x13, #5
+adcs x10, x10, x13
+adcs x11, x11, x13
+lsr x13, x13, #1
+adcs x12, x12, x13
+mov x13, #19
+adds x14, x9, x13
+adcs x15, x10, xzr
+adcs x16, x11, xzr
+adcs x17, x12, xzr
+mov x13, #1
+ror x13, x13, #1
+sub x17, x17, x13
+csel x9, x14, x9, mi
+csel x10, x15, x10, mi
+csel x11, x16, x11, mi
+csel x12, x17, x12, mi
 stp x9, x10, [x0]
 stp x11, x12, [x0, #16]
 ldp q14, q15, [sp], #32
